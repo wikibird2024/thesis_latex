@@ -10,17 +10,18 @@
 % ---------------------------------------------------------------------
 %                          FRONT MATTER
 % ---------------------------------------------------------------------
-% Include the title page from the frontmatter directory
+% The title page must be the very first element of the document.
 \input{frontmatter/titlepage.tex}
-
-% Set page numbering to Roman numerals (i, ii, iii, ...)
-\pagestyle{plain}
-\pagenumbering{roman}
-
-% Include the abstract
+\input{frontmatter/_trang_nhiem_vu.tex}
 \input{frontmatter/abstract.tex}
 
-% Include the acknowledgements
+% Set page numbering to Roman numerals (i, ii, iii, ...)
+% This should be done after the title pages and before the TOC.
+\pagestyle{plain}
+\pagenumbering{roman}
+\setcounter{page}{1}
+
+% The acknowledgements and table of contents should come after the title pages.
 \input{frontmatter/acknowledgements.tex}
 
 % Generate the table of contents and lists
@@ -41,6 +42,7 @@
 %                          MAIN MATTER
 % ---------------------------------------------------------------------
 % Start page numbering with Arabic numerals (1, 2, 3, ...) and reset to 1
+% This should be done right before the first chapter.
 \pagestyle{fancy}
 \pagenumbering{arabic}
 \setcounter{page}{1}

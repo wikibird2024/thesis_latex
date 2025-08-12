@@ -1,23 +1,23 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                        LANGUAGE & ENCODING
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Use UTF-8 for special characters support
+% UTF-8 for special characters
 \usepackage[utf8]{inputenc}
-% T5 font encoding for Vietnamese
+% T5 encoding for Vietnamese
 \usepackage[T5]{fontenc}
-% Configure language support for Vietnamese
+% Vietnamese language support
 \usepackage[vietnamese]{babel}
-% Use Times font for better Vietnamese support
+% Times font for Vietnamese compatibility
 \usepackage{newtxtext,newtxmath}
 
-% Define macros for thesis name
+% Thesis name macros
 \newcommand{\TENLUANVAN}{Hệ thống phát hiện và cảnh báo té ngã thời gian thực tích hợp cảm biến, xử lý ảnh và định vị}
 \newcommand{\THESISNAME}{Real-time fall detection and alert system integrating sensors, image processing, and positioning}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                        PAGE & LAYOUT SETTINGS
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Configure page margins
+% Page margins
 \usepackage{geometry}
 \geometry{
     top=2.5cm,
@@ -26,67 +26,59 @@
     right=2.5cm
 }
 
-% Set line spacing to 1.5
+% 1.5 line spacing
 \usepackage{setspace}
 \onehalfspacing
 
-% Indent the first paragraph of each chapter
+% Indent first paragraph
 \usepackage{indentfirst}
-% Set paragraph indentation size
 \setlength{\parindent}{1.2em}
-% Set space between paragraphs to 0
 \setlength{\parskip}{0pt}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                       HEADERS, FOOTERS & TITLES
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Customize title formatting
+% Title formatting
 \usepackage{titlesec}
-% Custom headers and footers
+% Headers/footers
 \usepackage{fancyhdr}
-% Set headheight to prevent warnings
 \setlength{\headheight}{18pt}
-% Apply the custom page style
 \pagestyle{fancy}
-% Clear default header/footer settings
 \fancyhf{}
-% Display chapter title in the top-left header
 \fancyhead[L]{\nouppercase{\leftmark}}
-% Display the page number in the center of the footer
 \fancyfoot[C]{\thepage}
-% Set header rule thickness
 \renewcommand{\headrulewidth}{0.4pt}
-% Remove footer rule
 \renewcommand{\footrulewidth}{0pt}
-% Define header format for chapters
 \renewcommand{\chaptermark}[1]{\markboth{\chaptername\ \thechapter: #1}{}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                       DOCUMENT CONTENT PACKAGES
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Advanced math symbols and environments
+% Math support
 \usepackage{amsmath,amssymb}
-% Include images
+% Images
 \usepackage{graphicx}
-% Resize content blocks
+% Resize blocks
 \usepackage{adjustbox}
-% Advanced table formatting
+% Tables
 \usepackage{array,booktabs,tabularx}
-% Lists, columns, and figure placement
+% Lists, columns, figures
 \usepackage{enumitem,multicol,wrapfig,float}
-% Customize captions for figures and tables
+% Captions
 \usepackage[font=small,labelfont=bf]{caption}
+% Subfigures
+\usepackage{subcaption}
 
-% Code listings with syntax highlighting
+% Code listings (important: loaded once)
 \usepackage{listings}
-% Color definitions
+% Colors
 \usepackage[table]{xcolor}
 \definecolor{darkblue}{RGB}{0,82,147}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                        CODE LISTINGS (JSON)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Define JSON language for listings
+% JSON language definition
 \lstdefinelanguage{json}{
   keywords={true,false,null},
   keywordstyle=\color{blue}\bfseries,
@@ -96,14 +88,11 @@
   commentstyle=\color{gray},
   basicstyle=\ttfamily\footnotesize,
   showstringspaces=false,
-  literate={á}{{\'a}}1 {à}{{\`a}}1 {ã}{{\~a}}1 {â}{{\^a}}1 % Vietnamese support
-           {é}{{\'e}}1 {è}{{\`e}}1 {ê}{{\^e}}1
-           {í}{{\'i}}1 {ì}{{\`i}}1
-           {ó}{{\'o}}1 {ò}{{\`o}}1 {õ}{{\~o}}1 {ô}{{\^o}}1
-           {ú}{{\'u}}1 {ù}{{\`u}}1 {ư}{{\'u}}1,
+  % Vietnamese characters should be handled by the main document setup,
+  % not individually in the listings environment. Removing this makes it more robust.
 }
 
-% Configure listings style
+% Listings style (example usage: \lstinputlisting[language=json]{file.json})
 \lstset{
   backgroundcolor=\color{gray!10},
   frame=single,
@@ -119,21 +108,29 @@
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                   BIBLIOGRAPHY & CITATIONS
+%                    ALGORITHMS & PSEUDOCODE
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Bibliography with numeric style
+% Algorithm support
+\usepackage{algorithm}
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                    BIBLIOGRAPHY & CITATIONS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Numeric bibliography
 \usepackage[backend=biber,style=numeric]{biblatex}
 \addbibresource{bibliography.bib}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %               ADVANCED PACKAGES (LOAD LAST)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Drawing with TikZ
+% TikZ for diagrams
 \usepackage{tikz}
 \usetikzlibrary{shapes,arrows.meta,positioning}
 
-% Hyperlinks (loaded last)
-\usepackage{hyperref}
+% Hyperlinks (unicode for Vietnamese bookmarks)
+\usepackage[unicode]{hyperref}
 \hypersetup{
     colorlinks=true,
     linkcolor=darkblue,
@@ -141,6 +138,6 @@
     urlcolor=darkblue
 }
 
-% Hide page number on title page
+% Hide title page number
 \usepackage{etoolbox}
 \AtBeginDocument{\thispagestyle{empty}}
