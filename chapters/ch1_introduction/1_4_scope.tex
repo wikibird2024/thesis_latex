@@ -1,0 +1,26 @@
+\section{Phạm vi Nghiên cứu}
+
+Luận văn này tập trung vào việc thiết kế và xây dựng một hệ thống phát hiện té ngã đa phương thức với phạm vi nghiên cứu được xác định như sau:
+
+\begin{enumerate}
+    \item \textbf{Về mặt kỹ thuật và công nghệ:} Đề tài tập trung khai thác và tích hợp các công nghệ chính bao gồm:
+    \begin{itemize}
+        \item Nền tảng nhúng ESP32, tích hợp cảm biến chuyển động MPU6050 và module định vị GPS EC800K.
+        \item Các thư viện xử lý ảnh mã nguồn mở như MediaPipe và OpenCV để phân tích tư thế người.
+        \item Giao thức truyền thông MQTT cho kết nối Internet và SIP Asterisk cho cảnh báo nội bộ qua mạng LAN.
+    \end{itemize}
+
+    \item \textbf{Về mặt chức năng và tính năng:} Hệ thống được phát triển với các tính năng chính sau:
+    \begin{itemize}
+        \item Phát hiện sự kiện té ngã dựa trên thuật toán kết hợp dữ liệu từ cảm biến và phân tích hình ảnh.
+        \item Gửi cảnh báo đa kênh (cuộc gọi SIP nội bộ, tin nhắn SMS, thông báo qua bot Telegram).
+        \item Luận văn không tập trung vào việc xây dựng ứng dụng di động chuyên biệt hay giao diện người dùng trên nền web để quản lý và giám sát từ xa.
+    \end{itemize}
+
+    \item \textbf{Về mặt dữ liệu và môi trường:}
+    \begin{itemize}
+        \item Dữ liệu thử nghiệm được thu thập từ một camera cố định trong môi trường trong nhà.
+        \item Đánh giá hiệu năng được thực hiện trong các điều kiện môi trường lý tưởng như ánh sáng đầy đủ và kết nối mạng ổn định.
+        \item Hệ thống chưa được tối ưu để hoạt động trong điều kiện thiếu sáng hoặc môi trường phức tạp ngoài trời.
+    \end{itemize}
+\end{enumerate}

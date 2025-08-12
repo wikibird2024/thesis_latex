@@ -1,0 +1,146 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                        LANGUAGE & ENCODING
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Use UTF-8 for special characters support
+\usepackage[utf8]{inputenc}
+% T5 font encoding for Vietnamese
+\usepackage[T5]{fontenc}
+% Configure language support for Vietnamese
+\usepackage[vietnamese]{babel}
+% Use Times font for better Vietnamese support
+\usepackage{newtxtext,newtxmath}
+
+% Define macros for thesis name
+\newcommand{\TENLUANVAN}{Hệ thống phát hiện và cảnh báo té ngã thời gian thực tích hợp cảm biến, xử lý ảnh và định vị}
+\newcommand{\THESISNAME}{Real-time fall detection and alert system integrating sensors, image processing, and positioning}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                        PAGE & LAYOUT SETTINGS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Configure page margins
+\usepackage{geometry}
+\geometry{
+    top=2.5cm,
+    bottom=2.5cm,
+    left=2.5cm,
+    right=2.5cm
+}
+
+% Set line spacing to 1.5
+\usepackage{setspace}
+\onehalfspacing
+
+% Indent the first paragraph of each chapter
+\usepackage{indentfirst}
+% Set paragraph indentation size
+\setlength{\parindent}{1.2em}
+% Set space between paragraphs to 0
+\setlength{\parskip}{0pt}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                       HEADERS, FOOTERS & TITLES
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Customize title formatting
+\usepackage{titlesec}
+% Custom headers and footers
+\usepackage{fancyhdr}
+% Set headheight to prevent warnings
+\setlength{\headheight}{18pt}
+% Apply the custom page style
+\pagestyle{fancy}
+% Clear default header/footer settings
+\fancyhf{}
+% Display chapter title in the top-left header
+\fancyhead[L]{\nouppercase{\leftmark}}
+% Display the page number in the center of the footer
+\fancyfoot[C]{\thepage}
+% Set header rule thickness
+\renewcommand{\headrulewidth}{0.4pt}
+% Remove footer rule
+\renewcommand{\footrulewidth}{0pt}
+% Define header format for chapters
+\renewcommand{\chaptermark}[1]{\markboth{\chaptername\ \thechapter: #1}{}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                       DOCUMENT CONTENT PACKAGES
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Advanced math symbols and environments
+\usepackage{amsmath,amssymb}
+% Include images
+\usepackage{graphicx}
+% Resize content blocks
+\usepackage{adjustbox}
+% Advanced table formatting
+\usepackage{array,booktabs,tabularx}
+% Lists, columns, and figure placement
+\usepackage{enumitem,multicol,wrapfig,float}
+% Customize captions for figures and tables
+\usepackage[font=small,labelfont=bf]{caption}
+
+% Code listings with syntax highlighting
+\usepackage{listings}
+% Color definitions
+\usepackage[table]{xcolor}
+\definecolor{darkblue}{RGB}{0,82,147}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                        CODE LISTINGS (JSON)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Define JSON language for listings
+\lstdefinelanguage{json}{
+  keywords={true,false,null},
+  keywordstyle=\color{blue}\bfseries,
+  string=[s]{"}{"},
+  stringstyle=\color{red},
+  comment=[l]{//},
+  commentstyle=\color{gray},
+  basicstyle=\ttfamily\footnotesize,
+  showstringspaces=false,
+  literate={á}{{\'a}}1 {à}{{\`a}}1 {ã}{{\~a}}1 {â}{{\^a}}1 % Vietnamese support
+           {é}{{\'e}}1 {è}{{\`e}}1 {ê}{{\^e}}1
+           {í}{{\'i}}1 {ì}{{\`i}}1
+           {ó}{{\'o}}1 {ò}{{\`o}}1 {õ}{{\~o}}1 {ô}{{\^o}}1
+           {ú}{{\'u}}1 {ù}{{\`u}}1 {ư}{{\'u}}1,
+}
+
+% Configure listings style
+\lstset{
+  backgroundcolor=\color{gray!10},
+  frame=single,
+  framesep=5pt,
+  aboveskip=10pt,
+  belowskip=10pt,
+  captionpos=b,
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=2,
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                   BIBLIOGRAPHY & CITATIONS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Bibliography with numeric style
+\usepackage[backend=biber,style=numeric]{biblatex}
+\addbibresource{bibliography.bib}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%               ADVANCED PACKAGES (LOAD LAST)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Drawing with TikZ
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows.meta,positioning}
+
+% Hyperlinks (loaded last)
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=darkblue,
+    citecolor=darkblue,
+    urlcolor=darkblue
+}
+
+% Hide page number on title page
+\usepackage{etoolbox}
+\AtBeginDocument{\thispagestyle{empty}}

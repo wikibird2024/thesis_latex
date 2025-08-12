@@ -1,0 +1,136 @@
+\section{Tình hình nghiên cứu trong và ngoài nước}
+
+Trong những năm gần đây, sự gia tăng dân số cao tuổi toàn cầu đã thúc đẩy nhu cầu phát triển các hệ thống phát hiện té ngã nhằm cải thiện chất lượng cuộc sống và đảm bảo an toàn cho người cao tuổi. Theo World Health Organization, té ngã là nguyên nhân hàng đầu gây thương tích không cố ý cho người cao tuổi, với khoảng 684,000 trường hợp tử vong hàng năm do té ngã trên toàn thế giới. Điều này đã khiến cộng đồng nghiên cứu tập trung phát triển các hệ thống phát hiện té ngã tự động với độ chính xác cao và khả năng triển khai thực tế.
+
+Các nghiên cứu hiện tại có thể được phân loại thành ba hướng tiếp cận chính: (1) phương pháp dựa trên thị giác máy tính (vision-based), (2) phương pháp dựa trên cảm biến đeo trên người (wearable sensor-based), và (3) phương pháp kết hợp đa phương thức (multi-modal approach). Mỗi phương pháp đều có những ưu điểm và hạn chế riêng, dẫn đến việc nghiên cứu các giải pháp tích hợp để tối ưu hóa hiệu suất tổng thể.
+
+\subsection{Nghiên cứu quốc tế}
+
+Nghiên cứu về phát hiện té ngã đã thu hút sự chú ý toàn cầu, đặc biệt trong lĩnh vực chăm sóc sức khỏe thông minh, với mục tiêu bảo vệ các đối tượng dễ bị tổn thương như người cao tuổi. Các hệ thống dựa trên camera, đặc biệt sử dụng các kỹ thuật \textbf{pose estimation} như OpenPose, MediaPipe và MoveNet, đã đạt được nhiều kết quả đáng chú ý.
+
+\subsubsection{Nghiên cứu sử dụng thị giác máy tính}
+
+\paragraph{Nghiên cứu sử dụng MediaPipe Pose Estimation}
+\textbf{Bugarin và cộng sự (2022)} đã phát triển một hệ thống phát hiện té ngã dựa trên thị giác máy tính sử dụng \textbf{MediaPipe Pose} với khả năng giám sát và cảnh báo IoT \cite{bugarin2022}. Nghiên cứu này nhằm giải quyết các thách thức của các hệ thống vision-based truyền thống bao gồm chi phí tính toán lớn, yêu cầu sử dụng camera chuyên dụng và khó khăn trong việc tích hợp vào smartphone. Hệ thống được thiết kế với khả năng hoạt động trong thời gian thực trên các thiết bị di động, sử dụng thuật toán MediaPipe để phát hiện các điểm khớp chính của cơ thể người và phân tích tư thế để xác định trạng thái té ngã. Hệ thống đạt F1-score \textbf{91.4\%} trên tập dữ liệu MCFD, với độ trễ dưới 0.5 giây trên smartphone. Tuy nhiên, độ chính xác giảm trong điều kiện ánh sáng yếu hoặc khi có che khuất (occlusion), điều này hạn chế khả năng sử dụng trong môi trường thực tế \cite{bugarin2022}.
+
+\textbf{Saraswat và Malathi (2024)} đã công bố nghiên cứu về hệ thống phát hiện té ngã dựa trên ước tính tư thế sử dụng MediaPipe \cite{saraswat2024}. Nghiên cứu chỉ ra rằng các hệ thống phát hiện té ngã dựa trên thị giác tốt hơn nhiều so với các phương pháp khác về độ tiện lợi và độ chính xác, đồng thời chi phí tính toán liên quan đến số lượng lớn tham số trong các hệ thống không dựa trên thị giác khiến chúng kém hiệu quả về mặt hiệu suất trong thời gian thực. Nhóm nghiên cứu đã phát triển một framework sử dụng MediaPipe để trích xuất các đặc trưng từ chuỗi video một cách hiệu quả, giảm đáng kể chi phí tính toán so với các phương pháp truyền thống.
+
+\paragraph{Nghiên cứu sử dụng YOLO và các mô hình Deep Learning tiên tiến}
+\textbf{Han và cộng sự (2024)} đã đề xuất một giải pháp đa phương thức tiên tiến kết hợp \textbf{YOLOv5 cải tiến với MediaPipe} cho phát hiện té ngã \cite{han2024}. Hệ thống tận dụng khả năng phát hiện keypoint chính xác của MediaPipe và khả năng định vị đối tượng mạnh mẽ của YOLOv5 để tính toán các chỉ số quan trọng như vận tốc giảm (velocity decline) và tỷ lệ khung hình bounding box. Kết quả thực nghiệm cho thấy mô hình YOLOv5 cải tiến đạt được sự cải thiện đáng kể về mean Average Precision (mAP), đạt tới \textbf{98.6\%}, tăng 4.8\% so với YOLOv5s gốc. Một nghiên cứu khác của \textbf{Chen và cộng sự (2022)} cũng kết hợp YOLOv5 và MediaPipe để cải thiện khả năng phát hiện, đạt độ chính xác \textbf{92.7\%} và giảm false positive nhờ tích hợp các đặc trưng đa quy mô. Tuy nhiên, hệ thống này vẫn gặp thách thức khi tích hợp vào thiết bị nhúng do yêu cầu tính toán cao.
+
+Các nghiên cứu gần đây đã chứng minh tiềm năng vượt trội của các mô hình YOLO trong phát hiện té ngã. \textbf{LFD-YOLO}, một mô hình phát hiện té ngã nhẹ dựa trên YOLOv5, đã được phát triển để giải quyết vấn đề độ phức tạp tính toán cao của các mô hình phát hiện đối tượng hiện tại, hạn chế việc triển khai trên các thiết bị edge có tài nguyên hạn chế \cite{lfdyolo2025}. Mặc dù các mô hình nhẹ có thể giảm yêu cầu tính toán, nhưng chúng thường làm giảm độ chính xác phát hiện. LFD-YOLO đã đạt được sự cân bằng tối ưu giữa hiệu suất và độ chính xác.
+
+Nghiên cứu khác đáng chú ý là \textbf{SDES-YOLO}, một mô hình cải tiến dựa trên YOLOv8 được đề xuất để giải quyết các thách thức trong phát hiện té ngã do sự thay đổi ánh sáng, che khuất và tư thế phức tạp của con người \cite{sdesyolo2025}. Mô hình này đã tích hợp các cải tiến kiến trúc nhằm nâng cao khả năng phát hiện trong môi trường phức tạp.
+
+\paragraph{Nghiên cứu sử dụng Transformer và Human Pose Estimation}
+Nghiên cứu tiên phong về ``Next-generation fall detection'' đã tận dụng công nghệ \textbf{human pose estimation và transformer} để phát triển hệ thống phát hiện té ngã thế hệ mới \cite{stylios2024}. Nghiên cứu này kiểm tra ba framework human pose estimation hàng đầu được kết hợp với các mô hình deep learning transformer để phát triển một hệ thống phát hiện té ngã nhẹ, bảo vệ quyền riêng tư. Việc sử dụng transformer technology cho phép mô hình học được các mối quan hệ phức tạp giữa các điểm khớp của cơ thể qua thời gian, cải thiện đáng kể độ chính xác phát hiện. Tương tự, nghiên cứu của \textbf{Zhang và cộng sự (2022)} sử dụng MediaPipe để trích xuất 33 keypoint của cơ thể, kết hợp với Transformer để phân tích tốc độ di chuyển của các điểm mốc. Kết quả cho thấy độ chính xác \textbf{97.6\%} trên tập dữ liệu URFD, với độ trễ thấp hơn so với các phương pháp CNN truyền thống. Tuy nhiên, hệ thống này yêu cầu phần cứng mạnh (GPU), gây khó khăn khi triển khai trên thiết bị nhúng.
+
+Một nghiên cứu khác về ``Sudden Fall Detection of Human Body Using Transformer Model'' đã được công bố trên PMC \cite{pmc2024}, trình bày một mô hình phát hiện té ngã mới được xây dựng dựa trên transformer, nhấn mạnh tầm quan trọng của việc phát hiện té ngã chính xác và kịp thời trong chăm sóc sức khỏe, đặc biệt là giám sát người cao tuổi.
+
+\subsubsection{Nghiên cứu sử dụng cảm biến đeo (Wearable Sensor-based)}
+Các hệ thống sử dụng \textbf{cảm biến quán tính (IMU)} như MPU6050 thường được tích hợp vào thiết bị đeo như đồng hồ thông minh hoặc dây đeo.
+
+\paragraph{Nghiên cứu sử dụng IMU và MPU}
+Nghiên cứu quan trọng được công bố trên tạp chí Sensors (2023) đã đề xuất ``Fall Recognition Based on an IMU Wearable Device and Fall Verification through a Smart Speaker and the IoT'' \cite{xu2023}. Khi dân số toàn cầu tiếp tục già hóa, có nhu cầu cấp thiết phải phát triển các hệ thống phát hiện té ngã. Nghiên cứu này đề xuất một hệ thống nhận diện và xác minh té ngã dựa trên thiết bị đeo ở ngực, có thể được sử dụng cho các cơ sở chăm sóc sức khỏe người cao tuổi hoặc chăm sóc tại nhà. Hệ thống này không chỉ dừng lại ở việc phát hiện té ngã mà còn tích hợp cơ chế xác minh thông qua loa thông minh và IoT, giảm đáng kể tỷ lệ báo động giả. Thiết bị sử dụng các cảm biến IMU để thu thập dữ liệu gia tốc và con quay hồi chuyển, sau đó áp dụng các thuật toán machine learning để phân biệt giữa té ngã thật và các hoạt động sinh hoạt hàng ngày.
+
+Các nghiên cứu về \textbf{MPU} đã cho thấy tiềm năng lớn của cảm biến này trong ứng dụng phát hiện té ngã. Module cảm biến MPU6050 tích hợp sẵn con quay hồi chuyển và cảm biến gia tốc. Con quay hồi chuyển được sử dụng để xác định hướng và gia tốc kế cung cấp thông tin về các tham số góc như dữ liệu trục X, Y, và Z. Để phát hiện té ngã, hệ thống so sánh gia tốc với các ngưỡng được thiết lập trước \cite{iotproject2024}. \textbf{Hussain và cộng sự (2019)} sử dụng MPU6050 kết hợp với mạng LSTM để phát hiện té ngã, đạt độ chính xác \textbf{94.1\%} trên tập dữ liệu SISFALL. Hệ thống này có ưu điểm là chi phí thấp và dễ triển khai, nhưng hạn chế là yêu cầu người dùng phải đeo thiết bị liên tục, gây bất tiện, đặc biệt với người cao tuổi. Một nghiên cứu khác của \textbf{Alarifi và Alwadain (2021)} sử dụng bộ ba cảm biến (gia tốc kế, con quay hồi chuyển, từ kế) trên nền tảng wearable IoT, đạt độ chính xác \textbf{93.5\%}. Tuy nhiên, hệ thống gặp vấn đề về false positive khi người dùng thực hiện các hoạt động tương tự té ngã, như ngồi xuống nhanh.
+
+\paragraph{Nghiên cứu ứng dụng Deep Learning cho cảm biến}
+Nghiên cứu đáng chú ý được công bố trên Journal of Medical Internet Research (2024) đã trình bày ``An Effective Deep Learning Framework for Fall Detection'' \cite{chen2024}. Nghiên cứu này chứng minh rằng mô hình DSCS có thể cải thiện đáng kể độ chính xác của phát hiện té ngã trên 2 bộ dữ liệu có sẵn công khai và hoạt động mạnh mẽ trong xác nhận thực tế. Mô hình sử dụng cơ chế self-attention để học các đặc trưng phức tạp từ dữ liệu cảm biến, vượt trội hơn so với các phương pháp ngưỡng truyền thống.
+
+\subsubsection{Nghiên cứu kết hợp đa phương thức (Multi-modal Approach)}
+Một số nghiên cứu đã cố gắng kết hợp dữ liệu từ camera và cảm biến để tăng độ chính xác.
+
+\paragraph{Nghiên cứu tiên phong của Rougier và cộng sự}
+\textbf{Rougier và cộng sự (2011)} đã tiên phong trong việc đề xuất phương pháp kết hợp thông tin từ camera và cảm biến gia tốc để tăng độ tin cậy của hệ thống phát hiện té ngã \cite{rougier2011}. Nghiên cứu ``Robust Video Surveillance for Fall Detection Based on Human Shape Deformation'' đã sử dụng thuật toán fusion để kết hợp quyết định từ hai nguồn dữ liệu khác nhau, đạt độ chính xác \textbf{95.2\%} và giảm tỷ lệ báo động giả xuống \textbf{4.1\%}. Tuy nhiên, hệ thống yêu cầu cấu hình phức tạp và chi phí triển khai cao. Tương tự, nghiên cứu của \textbf{Liu và cộng sự (2018)} tích hợp dữ liệu từ cảm biến IMU và camera RGB-D, sử dụng mạng CNN để phân loại té ngã. Hệ thống đạt độ chính xác \textbf{95.6\%} trên tập dữ liệu PKU-MMD, nhưng yêu cầu nhiều tài nguyên tính toán và không phù hợp với thiết bị nhúng.
+
+\paragraph{Xu hướng nghiên cứu đa phương thức hiện đại}
+Các nghiên cứu gần đây đã chứng minh rằng việc kết hợp nhiều phương thức cảm biến có thể cải thiện đáng kể độ tin cậy và độ chính xác của hệ thống. Nghiên cứu tổng quan hệ thống về deep learning cho computer vision trong nhận dạng hoạt động và phát hiện té ngã của người cao tuổi đã nhấn mạnh tầm quan trọng của các hệ thống Ambient Assisted Living (AAL) nhằm giảm bớt các mối quan ngại liên quan đến việc sống độc lập của người cao tuổi \cite{keskes2021}. \textbf{Keskes và Noumeir (2021)} sử dụng ST-GCN (Spatio-Temporal Graph Convolutional Network) để kết hợp dữ liệu skeleton từ OpenPose và tín hiệu IMU, đạt F1-score \textbf{93.2\%}. Tuy nhiên, hệ thống này chưa được tối ưu cho thời gian thực trên thiết bị có tài nguyên hạn chế.
+
+\subsection{Nghiên cứu trong nước}
+Tại Việt Nam, các nghiên cứu về phát hiện té ngã vẫn còn ở giai đoạn phát triển và chủ yếu tập trung tại các trường đại học. Việc tích hợp thị giác máy tính và AI học sâu còn hạn chế.
+
+\subsubsection{Tình hình nghiên cứu tại các trường đại học Việt Nam}
+Các nghiên cứu hiện tại thường sử dụng các công nghệ có sẵn như Arduino, ESP32, và các cảm biến IMU cơ bản để xây dựng các hệ thống proof-of-concept. Hầu hết các nghiên cứu trong nước tập trung vào việc ứng dụng các thuật toán đã được phát triển ở nước ngoài vào môi trường Việt Nam, thay vì phát triển các phương pháp mới. Điều này một phần do hạn chế về tài nguyên nghiên cứu và thiết bị, cũng như thiếu các bộ dữ liệu chuẩn cho nghiên cứu phát hiện té ngã.
+
+\subsubsection{Các dự án ứng dụng và triển khai thực tế}
+Các dự án nghiên cứu ứng dụng trong nước chủ yếu sử dụng vi điều khiển ESP32 hoặc Arduino kết hợp với cảm biến MPU6050. Những hệ thống này thường có độ chính xác chưa cao (khoảng 75-85\%) và chưa được thử nghiệm trong môi trường thực tế với quy mô lớn. Một số nghiên cứu đã tích hợp khả năng gửi cảnh báo qua SMS hoặc ứng dụng di động, nhưng chưa có nghiên cứu nào phát triển được hệ thống hoàn chỉnh có thể triển khai thương mại. Các hệ thống sử dụng camera RGB kết hợp với OpenCV để phát hiện chuyển động cũng có độ chính xác thấp (dưới \textbf{85\%}) và khó áp dụng trong môi trường thực tế do không sử dụng các kỹ thuật pose estimation tiên tiến.
+
+\subsubsection{Thách thức và hạn chế trong nghiên cứu nội địa}
+Nghiên cứu trong nước gặp nhiều thách thức bao gồm:
+\begin{itemize}
+    \item \textbf{Thiếu dữ liệu huấn luyện:} Chưa có bộ dữ liệu chuẩn về té ngã của người Việt Nam, dẫn đến việc phải sử dụng dữ liệu quốc tế có thể không phù hợp với đặc điểm sinh học và văn hóa địa phương.
+    \item \textbf{Hạn chế về tài nguyên:} Thiếu kinh phí và thiết bị nghiên cứu chuyên dụng, hạn chế khả năng phát triển các hệ thống phức tạp.
+    \item \textbf{Khoảng cách giữa nghiên cứu và ứng dụng:} Hầu hết các nghiên cứu dừng lại ở mức độ thử nghiệm trong phòng lab, chưa được triển khai thực tế.
+    \item \textbf{Thiếu thử nghiệm thực tế với người dùng thật:} Đặc biệt là người cao tuổi, ảnh hưởng đến tính xác thực và độ tin cậy của các giải pháp.
+\end{itemize}
+
+
+\subsection{Nhận xét tổng hợp và định hướng nghiên cứu}
+\subsubsection{Thành tựu đã đạt được}
+Các nghiên cứu quốc tế trong lĩnh vực phát hiện té ngã đã đạt được những thành tựu đáng kể, đặt nền móng vững chắc cho các hướng phát triển tiếp theo:
+\begin{itemize}
+    \item \textbf{Độ chính xác cao:} Nhiều hệ thống hiện đại đã đạt được độ chính xác trên 98\% khi đánh giá trong các môi trường có kiểm soát, chứng tỏ hiệu quả nhận diện té ngã trong điều kiện lý tưởng.
+
+    \item \textbf{Thời gian phản hồi nhanh:} Các hệ thống phát hiện té ngã hiện nay có khả năng phản ứng trong vòng 1–2 giây, thậm chí một số mô hình tối ưu đạt độ trễ dưới 0.5 giây, đáp ứng yêu cầu thời gian thực trong các tình huống khẩn cấp.
+
+    \item \textbf{Tính thực tiễn cao:} Không chỉ dừng lại ở mức nghiên cứu lý thuyết, nhiều giải pháp đã được triển khai thử nghiệm trong môi trường thực tế như bệnh viện, viện dưỡng lão, hoặc hộ gia đình, qua đó khẳng định tính khả thi khi đưa vào ứng dụng thực tiễn.
+
+    \item \textbf{Sự đa dạng trong phương pháp tiếp cận:} Các nghiên cứu đã phát triển nhiều hướng tiếp cận khác nhau như sử dụng cảm biến đeo, thị giác máy tính, phân tích âm thanh hoặc kết hợp đa cảm biến, nhằm đáp ứng nhu cầu trong các kịch bản và nhóm người dùng khác nhau.
+\end{itemize}
+
+\subsubsection{Khoảng trống nghiên cứu hiện tại}
+Mặc dù đã đạt được nhiều tiến bộ trong lĩnh vực phát hiện té ngã, các nghiên cứu hiện tại vẫn còn tồn tại những khoảng trống quan trọng cần được giải quyết:
+\begin{itemize}
+    \item \textbf{Thiếu nghiên cứu trong môi trường thực tế phức tạp:} Phần lớn các thử nghiệm được tiến hành trong môi trường có kiểm soát, chưa phản ánh đầy đủ các tình huống có điều kiện ánh sáng yếu, vật thể che khuất, hoặc chuyển động bất thường như té ngã khi đang chạy hoặc xoay người đột ngột.
+    
+    \item \textbf{Chưa có tiêu chuẩn đánh giá thống nhất:} Việc sử dụng các bộ dữ liệu và chỉ số đo lường (metrics) khác nhau giữa các nghiên cứu khiến cho việc so sánh hiệu quả mô hình trở nên khó khăn và thiếu khách quan.
+
+    \item \textbf{Hạn chế về tính khái quát hóa mô hình:} Nhiều mô hình chỉ được huấn luyện trên một nhóm người cụ thể, dẫn đến khả năng suy giảm độ chính xác khi áp dụng cho các đối tượng có đặc điểm nhân trắc học hoặc hành vi khác biệt.
+
+    \item \textbf{Khoảng cách giữa nghiên cứu và triển khai thực tế:} Nhiều giải pháp vẫn còn đòi hỏi phần cứng chuyên dụng hoặc chi phí cao, chưa phù hợp để áp dụng rộng rãi trong cộng đồng, đặc biệt là tại các quốc gia đang phát triển.
+
+    \item \textbf{Chưa tối ưu hóa đủ cho thiết bị nhúng:} Các thuật toán pose estimation và mô hình học sâu hiện nay còn đòi hỏi tài nguyên xử lý lớn, gây khó khăn khi triển khai trên các vi điều khiển như ESP32 với bộ nhớ và năng lực tính toán hạn chế.
+
+    \item \textbf{Thiếu giải pháp tích hợp dữ liệu hiệu quả:} Việc kết hợp dữ liệu từ camera và cảm biến chuyển động vẫn còn mang tính rời rạc; cần có phương pháp fusion thông minh để tăng độ chính xác và giảm cảnh báo sai (false positive).
+\end{itemize}
+
+
+\subsection{Định hướng của đề tài \TENLUANVAN}
+
+Dựa trên phân tích toàn diện các công trình hiện có, đề tài định hướng phát triển một hệ thống phát hiện té ngã tích hợp thị giác máy tính và cảm biến chuyển động, cụ thể là kết hợp MediaPipe và MPU6050. Hệ thống này được xây dựng trên kiến trúc hybrid, tận dụng ưu thế của cả hai loại dữ liệu. Thuật toán kết hợp (fusion) được thiết kế thông minh nhằm tối ưu độ chính xác, giảm thiểu cảnh báo sai (false positive), và có khả năng tự điều chỉnh ngưỡng phát hiện (adaptive threshold) phù hợp với từng đối tượng và môi trường sử dụng. Để đáp ứng yêu cầu triển khai trên thiết bị nhúng, đề tài xem xét áp dụng các mô hình học sâu đơn giản như CNN hoặc LSTM với cấu hình nhẹ.
+
+Bên cạnh hiệu quả kỹ thuật, hệ thống cũng hướng đến khả năng triển khai thực tế với chi phí hợp lý , đáp ứng yêu cầu thời gian thực (độ trễ thấp), đơn giản dễ sử dụng, đồng thời đảm bảo khả năng bảo trì thông qua thiết kế dạng module, thuận tiện cho việc nâng cấp và sửa chữa.
+
+Một điểm nhấn quan trọng là việc tích hợp các dịch vụ IoT nhằm nâng cao tính linh hoạt và tiện ích cho người dùng. Hệ thống hỗ trợ nhiều kênh thông báo như SMS, push notification, và gọi điện khẩn cấp. Tích hợp GPS để xác định vị trí chính xác khi có sự cố; kết nối với nền tảng đám mây để lưu trữ dữ liệu, phân tích xu hướng và cập nhật mô hình học; đồng thời có thể liên hệ tự động với người thân hoặc cơ quan y tế khi cần thiết.
+
+
+\section{Nhiệm vụ Luận Văn}
+
+Đề tài hướng đến việc xây dựng một hệ thống giám sát và cảnh báo té ngã thông minh cho người cao tuổi, bệnh nhân, có khả năng phát hiện sự kiện thời gian thực, xử lý dữ liệu cảm biến và hình ảnh, đồng thời truyền thông cảnh báo qua nhiều kênh khác nhau. Hệ thống được thiết kế với kiến trúc phân lớp, kết hợp mạng nội bộ  \textbf{Linux SIP Server (Asterisk)} để xử lý cảnh báo cục bộ và \textbf{mạng Internet MQTT} để giám sát từ xa ngoài tầm nhìn. Mục tiêu tổng thể là tạo ra giải pháp ổn định, chi phí thấp, mở rộng dễ dàng, phù hợp với điều kiện triển khai thực tế tại gia đình hoặc viện dưỡng lão.
+
+\subsection{Tìm hiểu nguyên lý kỹ thuật, phát triển hệ thống phân tích hình ảnh thời gian thực bằng Python}
+
+Khai thác các thư viện xử lý hình ảnh mã nguồn mở MediaPipe, OpenCV, YOLO để phân tích tư thế người từ luồng video thời gian thực và phát hiện hành vi té ngã dựa trên đặc trưng chuyển động. Hệ thống triển khai pipeline xử lý ảnh trích xuất keypoints cơ thể người, phân tích góc nghiêng, vận tốc và tỉ lệ khung xương để nhận diện té ngã.
+
+Tập dữ liệu tư thế được xây dựng gồm các tình huống té ngã và hoạt động bình thường, huấn luyện mô hình học máy SVM hoặc Decision Tree. Dữ liệu được tích hợp với cảm biến ESP32 thông qua đồng bộ thời gian và thuật toán kết hợp dữ liệu (sensor fusion) để tăng độ chính xác và giảm cảnh báo sai. Kết quả đầu ra là phần mềm Python xử lý hình ảnh và phân loại tư thế real-time với giao diện giám sát trực quan luồng ảnh và dữ liệu cảm biến.
+
+\subsection{Phát triển hệ thống nhúng ESP32 xử lý dữ liệu cảm biến và cảnh báo tại chỗ}
+
+Xây dựng module nhúng tích hợp cảm biến chuyển động MPU6050 và module định vị GPS EC800K, có khả năng phát hiện té ngã bằng thuật toán xử lý dữ liệu tại thiết bị. Hệ thống gửi cảnh báo theo hai hướng: \textbf{truyền thông nội bộ qua mạng LAN} đến server SIP Asterisk để thực hiện cuộc gọi cảnh báo, và \textbf{truyền thông ngoài tầm nhìn qua Internet} gửi bản tin MQTT chứa dữ liệu sự kiện và tọa độ GPS đến server giám sát từ xa.
+
+Phần mềm nhúng được thiết kế với giao tiếp I2C/UART để thu thập tín hiệu, thuật toán phát hiện té ngã theo ngưỡng động học (gia tốc, góc nghiêng, bất động), và cơ chế gửi cảnh báo linh hoạt qua wifi hoặc mạng 4g về máy linxux Asterisk thông qua qua MQTT để giám sát từ xa. Kết quả đầu ra là thiết bị cảm biến nhúng hoạt động độc lập, tiết kiệm năng lượng và có thể mở rộng.
+
+\subsection{Tìm hiểu nguyên lý thiết lập hệ thống truyền thông cảnh báo nội bộ và internet }
+
+Phát triển hệ thống truyền thông song song bao gồm \textbf{mạng nội bộ LAN} dùng giao thức SIP/Asterisk chạy trên Linux server để xử lý cảnh báo khẩn cấp tại chỗ, và \textbf{mạng Internet} dùng giao thức MQTT để gửi dữ liệu cảm biến ra môi trường giám sát từ xa.
+
+Asterisk SIP Server được cấu hình với tài khoản SIP, dialplan, softphone/IP phone, kết nối UART với ESP32 để nhận tín hiệu và thực hiện cuộc gọi cảnh báo nội bộ không phụ thuộc Internet. Hạ tầng MQTT Internet sử dụng MQTT Broker Mosquitto, kết nối ESP32 qua 4G/Wi-Fi để gửi dữ liệu ra cloud hoặc dashboard từ xa.
+
+Tầng ứng dụng được xây dựng với Backend API (Flask/FastAPI), dashboard (Grafana, HTML), và Node-RED để điều phối logic cảnh báo, tích hợp các hành động gửi email, push notification, SMS. Hệ thống hỗ trợ cảnh báo đa kênh: gọi SIP nội bộ, tin nhắn MQTT, email hoặc thông báo app, với khả năng tích hợp mở rộng mobile app hoặc hệ thống báo động khác.
+
+\subsection{Đánh giá hiệu năng và giới hạn hệ thống}
+
+Hệ thống được thiết kế đạt các chỉ số: tổng độ trễ dưới 5 giây, tỷ lệ phát hiện chính xác trên 90\% với false alarm dưới 8\%, uptime truyền thông SIP/MQTT trên 99\%, hỗ trợ  nhiều node cảm biến , đánh giá tính kinh tế và thực tiễn.
+
+Giới hạn hệ thống bao gồm hoạt động tốt trong môi trường ánh sáng đầy đủ và kết nối ổn định, chỉ thử nghiệm trên thiết bị nhúng nhỏ gọn ESP32 chưa triển khai học sâu toàn phần tại thiết bị, không phát triển app di động chuyên biệt. Sử dụng và thiết lập mạng nội bộ bằng linux và các hệ thống mã nguồn mở và đã được chứng minh tính ổn định, sử dung broker MQTT sẵn có cung cấp miễn phí để test tính khả thi của hệ thống.

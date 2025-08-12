@@ -1,0 +1,71 @@
+% Set up the document class
+\documentclass[12pt, a4paper]{report}
+
+% Include packages and configurations from the preamble file
+\input{preamble.tex}
+
+% Begin the document
+\begin{document}
+
+% ---------------------------------------------------------------------
+%                          FRONT MATTER
+% ---------------------------------------------------------------------
+% Include the title page from the frontmatter directory
+\input{frontmatter/titlepage.tex}
+
+% Set page numbering to Roman numerals (i, ii, iii, ...)
+\pagestyle{plain}
+\pagenumbering{roman}
+
+% Include the abstract
+\input{frontmatter/abstract.tex}
+
+% Include the acknowledgements
+\input{frontmatter/acknowledgements.tex}
+
+% Generate the table of contents and lists
+\clearpage
+\tableofcontents
+\clearpage
+
+\listoffigures
+\clearpage
+
+\listoftables
+\clearpage
+
+\lstlistoflistings
+\clearpage
+
+% ---------------------------------------------------------------------
+%                          MAIN MATTER
+% ---------------------------------------------------------------------
+% Start page numbering with Arabic numerals (1, 2, 3, ...) and reset to 1
+\pagestyle{fancy}
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+% Include the chapters from the "chapters" directory
+% Each chapter is in its own file for easy management
+\input{chapters/ch1_introduction/chapter1.tex}
+\input{chapters/ch2_background/chapter2.tex}
+\input{chapters/ch3_methodology/chapter3.tex}
+\input{chapters/ch4_results/chapter4.tex}
+\input{chapters/ch5_conclusion/chapter5.tex}
+
+% ---------------------------------------------------------------------
+%                          BACK MATTER
+% ---------------------------------------------------------------------
+% Add the appendix
+\clearpage
+\appendix
+\chapter{Appendix}
+\input{backmatter/appendix_A_code.tex}
+
+% Create the bibliography page
+\clearpage
+\addcontentsline{toc}{chapter}{Bibliography}
+\printbibliography[heading=none]
+
+% End the document
+\end{document}

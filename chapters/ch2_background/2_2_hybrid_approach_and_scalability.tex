@@ -1,0 +1,63 @@
+\section{Phương pháp tiếp cận lai và ưu điểm vượt trội}
+
+Các phương pháp phát hiện té ngã đơn lẻ, dù dựa trên cảm biến hay thị giác máy tính, đều tồn tại những hạn chế nhất định. Để giải quyết triệt để các vấn đề về độ chính xác, phạm vi giám sát và tính kinh tế, hệ thống mà đề tài hướng tới đề xuất và phát triển một phương pháp tiếp cận lai (hybrid approach) độc đáo. Phương pháp này không chỉ đơn thuần là sự kết hợp các công nghệ, mà là một kiến trúc thông minh và linh hoạt, mang lại nhiều ưu điểm vượt trội về mọi mặt.
+
+\subsection{Tăng cường độ chính xác và giảm thiểu cảnh báo sai}
+
+Một trong những thách thức lớn nhất của các hệ thống phát hiện té ngã hiện nay là tỷ lệ cảnh báo sai (false positive) cao. Phương pháp tiếp cận lai giải quyết vấn đề này bằng cách sử dụng cơ chế xác thực đa yếu tố, một hình thức của \textbf{kết hợp dữ liệu (data fusion)}.
+
+\subsubsection{Cơ chế kết hợp dữ liệu (Data Fusion)}
+
+Hệ thống mà đề tài hướng tới thực hiện việc kết hợp ở cấp độ quyết định (decision-level fusion). Một sự kiện chỉ được xác nhận là té ngã khi cả hai hệ thống con đưa ra kết luận độc lập và khớp với nhau:
+\begin{itemize}
+    \item \textbf{Từ cảm biến chuyển động quán tính:} Cảm biến trên thiết bị đeo được phân tích các thay đổi đột ngột của gia tốc tuyến tính và tốc độ góc, một dấu hiệu đặc trưng của một cú té ngã. Thuật toán sẽ kích hoạt khi gia tốc vượt ngưỡng xác định, theo sau là một trạng thái bất động kéo dài.
+    \item \textbf{Từ thị giác máy tính:} Máy chủ cục bộ sẽ phân tích luồng video từ camera. Các thuật toán ước tính tư thế (pose estimation) sẽ xác định vị trí của các khớp xương, và một mô hình logic sẽ nhận diện khi tỉ lệ chiều cao cơ thể so với chiều rộng giảm đột ngột dưới một ngưỡng xác định, cho thấy tư thế từ đứng thẳng chuyển sang nằm ngang.
+\end{itemize}
+**Ví dụ so sánh:**
+- Một người dùng đang đứng bỗng ngồi thụp xuống ghế một cách nhanh chóng. \textbf{Hệ thống chỉ dùng cảm biến} có thể phát hiện một thay đổi gia tốc đột ngột và gây ra cảnh báo sai.
+- \textbf{Hệ thống chỉ dùng camera} cũng có thể nhận diện sự thay đổi tư thế và kích hoạt cảnh báo.
+- \textbf{Hệ thống mà đề tài hướng tới} sẽ phát hiện cả hai tín hiệu nhưng, nhờ vào logic kết hợp, nó sẽ phân tích thêm bối cảnh và từ chối cảnh báo, chỉ kích hoạt khi xác nhận có một cú ngã thực sự trên sàn nhà.
+
+\subsection{Mở rộng phạm vi giám sát và tính linh hoạt}
+
+Một trong những ưu điểm cốt lõi của phương pháp lai là khả năng mở rộng phạm vi giám sát, vượt qua các hạn chế vật lý của các giải pháp truyền thống.
+
+\subsubsection{Giám sát tại chỗ (In-situ Monitoring)}
+
+Khi người dùng ở trong tầm phủ sóng của camera và kết nối Wi-Fi ổn định, hệ thống hoạt động ở chế độ giám sát tại chỗ.
+\begin{itemize}
+    \item \textbf{Kiến trúc:} Một thiết bị camera nhúng liên tục truyền luồng video đến một máy chủ cục bộ. Máy chủ này, chạy các thuật toán học máy phức tạp, sẽ đảm nhận vai trò xử lý dữ liệu hình ảnh.
+    \item \textbf{Ưu điểm:} Việc phân tải xử lý lên máy chủ cho phép sử dụng các mô hình học sâu mạnh mẽ hơn, cung cấp thông tin bối cảnh phong phú và độ chính xác vượt trội. Dữ liệu từ cảm biến đeo được sẽ đóng vai trò xác thực phụ, tăng độ tin cậy của hệ thống.
+\end{itemize}
+
+\subsubsection{Giám sát di động (Mobile Monitoring)}
+
+Khi người dùng di chuyển ra khỏi tầm nhìn của camera hoặc mất kết nối Wi-Fi, hệ thống mà đề tài hướng tới tự động chuyển sang chế độ di động.
+\begin{itemize}
+    \item \textbf{Kiến trúc:} Thiết bị nhúng đeo trên người sẽ sử dụng cảm biến chuyển động quán tính để phát hiện té ngã bằng các thuật toán xử lý tại thiết bị (edge computing). Đồng thời, module định vị toàn cầu cung cấp tọa độ vị trí chính xác.
+    \item \textbf{Ưu điểm:} Dữ liệu cảnh báo (gồm sự kiện và tọa độ) sẽ được gửi đi qua mạng di động, đảm bảo sự an toàn không bị gián đoạn. Chế độ này giải quyết triệt để bài toán "điểm mù" của camera và cung cấp sự bảo vệ toàn diện cho người dùng, cả trong và ngoài ngôi nhà.
+\end{itemize}
+
+\subsection{Tính ổn định, kinh tế và hiệu quả triển khai}
+
+Sự kết hợp các công nghệ mã nguồn mở và kiến trúc module mang lại một giải pháp ổn định, kinh tế và dễ dàng triển khai.
+
+\begin{itemize}
+    \item \textbf{Tính dự phòng (Redundancy) trong truyền thông:} Hệ thống mà đề tài hướng tới được thiết kế với hai kênh truyền thông độc lập. Kênh mạng nội bộ \textbf{LAN} sử dụng tổng đài SIP để gọi điện khẩn cấp, không phụ thuộc vào Internet. Kênh \textbf{Internet} sử dụng giao thức MQTT để giám sát từ xa. Sự kết hợp này đảm bảo cảnh báo luôn được gửi đi ngay cả khi một trong hai kênh gặp sự cố.
+    \item \textbf{Hiệu quả kinh tế:} Bằng cách sử dụng các linh kiện nhúng và cảm biến giá thành thấp, cùng với các nền tảng mã nguồn mở, tổng chi phí đầu tư ban đầu thấp hơn đáng kể so với các giải pháp thương mại.
+    \item \textbf{Khả năng mở rộng (Scalability):} Kiến trúc dạng module cho phép dễ dàng mở rộng hệ thống bằng cách thêm các thiết bị camera và cảm biến mới. Điều này rất phù hợp cho việc triển khai tại các cơ sở y tế hoặc viện dưỡng lão, nơi cần giám sát nhiều người cùng lúc.
+\end{itemize}
+
+\subsection{Tính bảo mật và quyền riêng tư}
+
+Bảo mật và quyền riêng tư là ưu tiên hàng đầu, đặc biệt với các hệ thống có sử dụng camera.
+
+\begin{itemize}
+    \item \textbf{Xử lý cục bộ (On-premise Processing):} Dữ liệu video thô được xử lý trên máy chủ cục bộ, không bao giờ được truyền ra Internet, giảm thiểu tối đa nguy cơ bị lộ lọt.
+    \item \textbf{Dữ liệu tối thiểu:} Chỉ các thông tin đã được xử lý (như sự kiện té ngã và tọa độ) được gửi đi.
+    \item \textbf{Tùy chọn linh hoạt:} Hệ thống có thể được cấu hình để chỉ sử dụng cảm biến ở những khu vực nhạy cảm về quyền riêng tư như phòng tắm.
+\end{itemize}
+
+\subsection{Kết luận}
+
+Tóm lại, phương pháp tiếp cận lai không chỉ là một sự kết hợp công nghệ mà còn là một giải pháp toàn diện và chiến lược. Nó giải quyết triệt để các vấn đề cốt lõi về độ chính xác, phạm vi giám sát, chi phí và tính linh hoạt, mang lại một hệ thống phát hiện té ngã mạnh mẽ, đáng tin cậy và có tính ứng dụng thực tiễn cao.

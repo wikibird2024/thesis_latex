@@ -1,0 +1,42 @@
+# LaTeX auxiliary files (generated during compilation)
+*.aux
+*.bbl
+*.blg
+*.log
+*.out
+*.toc
+*.synctex.gz
+*.fls
+*.fdb_latexmk
+*.nav
+*.snm
+*.vrb
+*.idx
+*.ind
+*.ilg
+*.lot
+*.lof
+*.lbx
+*.dvi
+*.ps
+
+# LaTeX build directory (as specified in latex.lua)
+build/
+
+# PDF output files (optional, depending on whether you want to track PDFs)
+*.pdf
+
+# Editor and IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Miscellaneous
+.DS_Store
+Thumbs.db
+
+# Bibliography cache files
+*.bcf
+*.run.xml

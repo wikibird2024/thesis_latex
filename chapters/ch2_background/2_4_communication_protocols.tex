@@ -1,0 +1,257 @@
+\section{Các Giao Thức Truyền Thông}
+\label{sec:communication_protocols}
+
+Phần này trình bày các giao thức truyền thông cơ bản cho phép trao đổi dữ liệu liền mạch và cơ chế điều khiển trong hệ thống cảnh báo viễn thông nhúng IoT. Các giao thức được thảo luận bao gồm Session Initiation Protocol (SIP) cho báo hiệu viễn thông, Message Queuing Telemetry Transport (MQTT) cho truyền thông thiết bị IoT, và JavaScript Object Notation (JSON) cho trao đổi dữ liệu có cấu trúc.
+
+\subsection{Giao Thức Session Initiation Protocol (SIP)}
+\label{subsec:sip_protocol}
+
+Session Initiation Protocol (SIP) đóng vai trò là giao thức báo hiệu cơ bản được sử dụng rộng rãi trong các hệ thống truyền thông hiện đại để khởi tạo, quản lý và kết thúc các phiên đa phương tiện qua mạng Internet Protocol (IP)~\cite{sip_rfc3261}. Là nền tảng của các hệ thống Voice over Internet Protocol (VoIP), SIP cho phép các tính năng như cuộc gọi thoại, hội nghị truyền hình, tin nhắn tức thời và thông tin hiện diện, làm cho nó trở nên thiết yếu cho các hệ thống phân phối cảnh báo tự động.
+
+\subsubsection{Kiến Trúc SIP và Luồng Thông Điệp}
+\label{subsubsec:sip_architecture}
+
+SIP hoạt động thông qua việc trao đổi thông điệp giữa các User Agent Clients (UACs) và User Agent Servers (UASs), thường được trung gian bởi các máy chủ proxy SIP và máy chủ đăng ký. Giao thức định nghĩa một số loại thông điệp chính hỗ trợ việc thiết lập và điều khiển phiên:
+
+\begin{itemize}
+    \item \textbf{INVITE}: Khởi tạo một phiên hoặc thiết lập cuộc gọi
+    \item \textbf{ACK}: Xác nhận phản hồi thành công cho yêu cầu INVITE
+    \item \textbf{BYE}: Kết thúc một phiên đã được thiết lập
+    \item \textbf{CANCEL}: Hủy các yêu cầu đang chờ xử lý trước khi hoàn thành
+    \item \textbf{REGISTER}: Đăng ký thông tin liên lạc của thiết bị với máy chủ SIP
+    \item \textbf{OPTIONS}: Truy vấn khả năng của máy chủ hoặc thiết bị
+\end{itemize}
+
+SIP hoạt động kết hợp với các giao thức bổ sung để quản lý các phiên truyền thông hoàn chỉnh. Session Description Protocol (SDP) định nghĩa các tham số phiên đa phương tiện, bao gồm đặc tả codec (ví dụ: G.711 cho thoại), giao thức vận chuyển, và số cổng cho trao đổi phương tiện. Sau khi các tham số được thương lượng qua SDP, việc truyền dữ liệu thoại hoặc video thực tế xảy ra bằng Real-time Transport Protocol (RTP). Sự tách biệt kiến trúc này giữa báo hiệu (SIP) và vận chuyển phương tiện (RTP) cho phép các chiến lược định tuyến linh hoạt và tối ưu hóa mạng.
+
+\subsubsection{SIP trong Hệ Thống Cảnh Báo Dựa Trên Asterisk}
+\label{subsubsec:sip_asterisk_integration}
+
+Trong một hệ thống cảnh báo viễn thông dựa trên Asterisk, SIP đóng vai trò là giao thức chính để kết nối các thiết bị đầu cuối bao gồm điện thoại IP, softphone, và các hệ thống PBX bên ngoài qua SIP trunk. Việc tích hợp này mang lại một số lợi ích:
+
+\begin{enumerate}
+    \item \textbf{Quản Lý Tập Trung}: Quản lý thống nhất các thiết bị đầu cuối truyền thông
+    \item \textbf{Khả Năng Tương Tác Nâng Cao}: Tương thích rộng rãi với các thiết bị và nền tảng phần mềm đa dạng
+    \item \textbf{Tuân Thủ Tiêu Chuẩn Mở}: Hỗ trợ tích hợp với hạ tầng viễn thông hiện có
+\end{enumerate}
+
+\subsubsection{Luồng Cuộc Gọi Phân Phối Cảnh Báo}
+\label{subsubsec:sip_alert_flows}
+
+Luồng cuộc gọi SIP điển hình cho phân phối cảnh báo tự động bao gồm nhiều giai đoạn riêng biệt:
+
+\paragraph{Giai Đoạn Đăng Ký}
+Các thiết bị SIP phải đăng ký tính khả dụng của chúng với máy chủ Asterisk đóng vai trò là Registrar Server. User Agent Client (UAC) truyền yêu cầu REGISTER tới Asterisk, máy chủ xác thực người dùng và duy trì thông tin liên lạc của họ, liên kết SIP URI với các tham số vị trí mạng hiện tại.
+
+\paragraph{Thiết Lập Phiên}
+Khi ứng dụng máy chủ Linux xác định điều kiện nghiêm trọng yêu cầu thông báo cảnh báo, nó hướng dẫn Asterisk khởi tạo cuộc gọi đi thông qua Asterisk Manager Interface (AMI) sử dụng lệnh Originate. Asterisk, hoạt động như một UAC, gửi yêu cầu INVITE tới thiết bị đầu cuối SIP đích. Thiết bị nhận phản hồi với các thông điệp thông tin (ví dụ: 180 Ringing) theo sau là phản hồi 200 OK khi chấp nhận cuộc gọi. Asterisk xác nhận việc thiết lập phiên bằng thông điệp ACK.
+
+Đối với cảnh báo khẩn cấp tự động, lệnh Originate có thể bao gồm header \texttt{Alert-Info: ;info=alert-autoanswer} để buộc các điện thoại tương thích tự động trả lời, đảm bảo phân phối thông điệp ngay lập tức.
+
+\paragraph{Trao Đổi Phương Tiện}
+Sau khi thiết lập phiên, việc truyền thông điệp cảnh báo xảy ra qua Real-time Transport Protocol (RTP). Đối với cảnh báo thoại sử dụng tích hợp Text-to-Speech (TTS), Asterisk tự động tạo âm thanh từ văn bản cảnh báo và phát trực tuyến tới người nhận. SIP phối hợp với SDP để định nghĩa các tham số phương tiện trong quá trình khởi tạo phiên.
+
+\paragraph{Kết Thúc Phiên}
+Sau khi hoàn thành phân phối thông điệp cảnh báo, bất kỳ bên nào có thể truyền yêu cầu BYE để kết thúc phiên, với người nhận xác nhận kết thúc qua phản hồi 200 OK.
+
+\subsubsection{Tích Hợp SMS Dựa Trên SIP}
+\label{subsubsec:sip_sms}
+
+Ngoài truyền thông thoại, SIP có thể hỗ trợ phân phối cảnh báo SMS trong môi trường Asterisk. Chức năng này yêu cầu cấu hình cụ thể trong \texttt{sip.conf} bao gồm \texttt{textsupport=yes} và logic dialplan phù hợp trong \texttt{extensions.conf} để xử lý thông điệp. Khả năng này cho phép phân phối cảnh báo văn bản mạnh mẽ thông qua các nhà cung cấp SIP hỗ trợ phương pháp SIP MESSAGE hoặc tích hợp gateway GSM.
+
+\subsection{Giao Thức Message Queuing Telemetry Transport (MQTT)}
+\label{subsec:mqtt_protocol}
+
+Message Queuing Telemetry Transport (MQTT) đại diện cho một giao thức nhắn tin nhẹ được thiết kế đặc biệt cho truyền thông máy-với-máy (M2M) trong các ứng dụng Internet of Things (IoT)~\cite{mqtt_oasis_standard}. Hiệu quả và độ tin cậy của nó làm cho nó đặc biệt phù hợp để kết nối các thiết bị nhúng hạn chế tài nguyên với các dịch vụ viễn thông tập trung.
+
+\subsubsection{Kiến Trúc Publish/Subscribe}
+\label{subsubsec:mqtt_pubsub}
+
+MQTT sử dụng kiến trúc publish/subscribe khác biệt cơ bản với các mô hình truyền thông client-server truyền thống. Trong mô hình này, các client (publisher) truyền thông điệp tới một broker trung tâm, broker sau đó chuyển tiếp các thông điệp này tới các client quan tâm (subscriber). Cách tiếp cận kiến trúc này cung cấp một số lợi ích quan trọng:
+
+\begin{itemize}
+    \item \textbf{Tách Rời Không Gian}: Publisher và subscriber hoạt động độc lập với kiến thức vị trí mạng
+    \item \textbf{Tách Rời Thời Gian}: Các thành phần tham gia không cần duy trì kết nối đồng thời
+    \item \textbf{Tách Rời Đồng Bộ}: Truyền và nhận thông điệp độc lập mà không gây gián đoạn lẫn nhau
+\end{itemize}
+
+\subsubsection{Các Mức Quality of Service}
+\label{subsubsec:mqtt_qos}
+
+MQTT định nghĩa ba mức Quality of Service (QoS) xác định đảm bảo phân phối thông điệp giữa người gửi và người nhận, cho phép các nhà phát triển cân bằng yêu cầu độ tin cậy với việc sử dụng tài nguyên:
+
+\paragraph{QoS 0: Tối Đa Một Lần}
+Mức này cung cấp đảm bảo phân phối tối thiểu mà không có yêu cầu xác nhận. Thông điệp được truyền mà không có cơ chế lưu trữ hoặc truyền lại, cung cấp overhead và độ trễ thấp nhất. Mức này phù hợp với các tình huống truyền dữ liệu thường xuyên, không quan trọng với kết nối ổn định.
+
+\paragraph{QoS 1: Ít Nhất Một Lần}
+Mức này đảm bảo phân phối thông điệp ít nhất một lần thông qua cơ chế xác nhận. Người gửi giữ lại bản sao thông điệp cho đến khi nhận được xác nhận PUBACK, với việc truyền lại khi hết thời gian chờ. Mặc dù đảm bảo phân phối, điều này có thể dẫn đến thông điệp trùng lặp yêu cầu xử lý ở cấp ứng dụng.
+
+\paragraph{QoS 2: Chính Xác Một Lần}
+Mức đảm bảo cao nhất đảm bảo phân phối thông điệp chính xác một lần thông qua quy trình bắt tay bốn bước (PUBLISH, PUBREC, PUBREL, PUBCOMP). Mức này cung cấp độ tin cậy tối đa với overhead tài nguyên tương ứng, phù hợp cho truyền thông quan trọng yêu cầu thứ tự nghiêm ngặt và không trùng lặp.
+
+\subsubsection{MQTT cho Tích Hợp IoT-Viễn Thông}
+\label{subsubsec:mqtt_iot_integration}
+
+Các đặc tính thiết kế của MQTT làm cho nó đặc biệt hiệu quả để liên kết các thiết bị nhúng hạn chế tài nguyên với các dịch vụ viễn thông:
+
+\paragraph{Hiệu Quả Tài Nguyên}
+Việc triển khai nhẹ của MQTT yêu cầu tài nguyên thiết bị tối thiểu, với các thông điệp điều khiển nhỏ đến hai byte và header thông điệp compact tối ưu hóa việc sử dụng băng thông mạng. Hiệu quả này chứng tỏ quan trọng đối với các thiết bị có bộ nhớ, sức mạnh xử lý và ràng buộc pin hạn chế.
+
+\paragraph{Khả Năng Phục Hồi Mạng}
+Khả năng hoạt động hiệu quả của giao thức trên các mạng băng thông thấp, độ trễ cao hoặc không đáng tin cậy giải quyết các thách thức triển khai IoT thông thường. Các mức QoS của MQTT và tính năng phiên bền vững giảm thời gian kết nối lại và đảm bảo phân phối thông điệp bất chấp biến động mạng.
+
+\paragraph{Luồng Dữ Liệu Thời Gian Thực}
+Mô hình publish/subscribe vốn dĩ hỗ trợ truyền dữ liệu thời gian thực từ cảm biến ESP32 tới máy chủ Linux tập trung. Các thiết bị có thể publish các số đọc cảm biến tới các topic MQTT cụ thể, cho phép các ứng dụng phía máy chủ nhận cập nhật ngay lập tức để phát hiện điều kiện cảnh báo nhanh chóng.
+
+\paragraph{Truyền Thông Hai Chiều}
+MQTT hỗ trợ cả việc truyền dữ liệu từ thiết bị và phân phối lệnh điều khiển tới chúng. Các thiết bị ESP32 có thể subscribe các topic lệnh để nhận cập nhật cấu hình hoặc kích hoạt hành động cục bộ từ máy chủ trung tâm, thiết yếu cho chức năng hệ thống cảnh báo toàn diện.
+
+\subsection{JavaScript Object Notation (JSON)}
+\label{subsec:json_format}
+
+JavaScript Object Notation (JSON) đóng vai trò là định dạng trao đổi dữ liệu nhẹ, có thể đọc được của con người, đóng vai trò quan trọng trong các hệ thống phân tán hiện đại, bao gồm kiến trúc IoT và viễn thông~\cite{json_rfc7159}. Tính đơn giản và bản chất tự mô tả của nó làm cho nó rất hiệu quả cho các mục đích tích hợp hệ thống khác nhau.
+
+\subsubsection{Ứng Dụng JSON trong Hệ Thống Cảnh Báo IoT}
+\label{subsubsec:json_applications}
+
+\paragraph{Quản Lý Cấu Hình}
+JSON hỗ trợ rộng rãi việc lưu trữ tham số cấu hình cho cả thiết bị nhúng và ứng dụng phía máy chủ:
+
+\begin{itemize}
+    \item \textbf{Cấu Hình ESP32}: Các tệp JSON lưu trữ thông tin đăng nhập mạng, địa chỉ broker MQTT, giá trị hiệu chỉnh cảm biến, và ngưỡng cảnh báo trên hệ thống tệp thiết bị
+    \item \textbf{Cấu Hình Máy Chủ}: Các ứng dụng máy chủ Linux sử dụng tệp JSON cho kết nối cơ sở dữ liệu, khóa API, mức độ ghi log, và quản lý điểm cuối dịch vụ
+\end{itemize}
+
+\paragraph{Trao Đổi Dữ Liệu}
+JSON đóng vai trò là định dạng ưa thích cho trao đổi dữ liệu có cấu trúc giữa các thành phần hệ thống:
+
+\begin{itemize}
+    \item \textbf{Truyền Thông ESP32 tới Linux}: Các node cảm biến đóng gói số đọc và cập nhật trạng thái thành các đối tượng JSON trước khi xuất bản MQTT
+    \item \textbf{Tích Hợp Linux tới Asterisk}: Các điều kiện cảnh báo kích hoạt xây dựng payload JSON chứa chi tiết cảnh báo toàn diện để khởi tạo hành động viễn thông
+\end{itemize}
+
+\paragraph{Khả Năng Tương Tác}
+Khả năng phân tích cú pháp phổ quát của JSON và tính độc lập ngôn ngữ cho phép tích hợp liền mạch trên các hệ thống và ngôn ngữ lập trình không đồng nhất, cho phép các thành phần phần mềm đa dạng phân tích, tạo ra và hiểu dữ liệu được trao đổi một cách nhất quán.
+
+\subsubsection{Ví Dụ Triển Khai JSON Thực Tế}
+\label{subsubsec:json_examples}
+
+\paragraph{Ví Dụ Cấu Hình ESP32}
+\begin{lstlisting}[language=json, caption=Cấu Hình Thiết Bị ESP32, label=lst:esp32_config]
+{
+  "network": {
+    "ssid": "IoT_Network",
+    "password": "MatKhauBaoMat123",
+    "mqtt_broker": "192.168.1.100",
+    "mqtt_port": 1883
+  },
+  "device": {
+    "id": "ESP32_CamBienNhietDo_01",
+    "location": "Tang_May_A",
+    "sensors": {
+      "temperature": {
+        "pin": 34,
+        "threshold_critical": 85.0,
+        "threshold_warning": 75.0
+      }
+    }
+  }
+}
+\end{lstlisting}
+
+\paragraph{Ví Dụ Payload Dữ Liệu Cảm Biến}
+\begin{lstlisting}[language=json, caption=Payload Dữ Liệu Cảm Biến MQTT, label=lst:sensor_payload]
+{
+  "device_id": "ESP32_CamBienNhietDo_01",
+  "location": "Tang_May_A",
+  "timestamp": "2024-03-15T10:30:00Z",
+  "readings": {
+    "temperature": {
+      "value": 87.5,
+      "unit": "celsius",
+      "status": "critical"
+    },
+    "humidity": {
+      "value": 65.2,
+      "unit": "percent", 
+      "status": "normal"
+    }
+  }
+}
+\end{lstlisting}
+
+\paragraph{Ví Dụ Payload Sự Kiện Cảnh Báo}
+\begin{lstlisting}[language=json, caption=Payload Sự Kiện Cảnh Báo cho Hành Động Viễn Thông, label=lst:alert_payload]
+{
+  "alert_id": "ALT_20240315_103001_001",
+  "source_device": "ESP32_CamBienNhietDo_01",
+  "alert_type": "nhiet_do_nguy_hiem",
+  "severity": "nghiem_trong",
+  "timestamp": "2024-03-15T10:30:01Z",
+  "location": "Tang_May_A",
+  "details": {
+    "parameter": "temperature",
+    "current_value": 87.5,
+    "threshold_exceeded": 85.0,
+    "deviation_percentage": 2.94
+  },
+  "telecom_actions": {
+    "voice_call": {
+      "recipients": ["doi_bao_tri", "giam_sat_tang"],
+      "auto_answer": true,
+      "tts_message": "Cảnh báo nhiệt độ nghiêm trọng: phát hiện 87.5 độ C tại Tầng Máy A"
+    },
+    "sms": {
+      "recipients": ["quan_ly_co_so"],
+      "message": "KHẨN CẤP: Cảnh báo nhiệt độ - Tầng A - 87.5°C"
+    }
+  }
+}
+\end{lstlisting}
+\subsection{Kiến Trúc Tích Hợp Giao Thức}
+\label{subsec:protocol_integration}
+
+Việc tích hợp liền mạch các giao thức SIP, MQTT và JSON tạo ra một framework truyền thông mạnh mẽ cho các hệ thống cảnh báo viễn thông nhúng IoT. Hình~\ref{fig:protocol_integration} minh họa luồng dữ liệu và mẫu tương tác giữa các giao thức này trong kiến trúc hệ thống.
+
+% Lưu ý: Bạn cần tạo hình này
+% \begin{figure}[htbp]
+%     \centering
+%     \includegraphics[width=0.8\textwidth]{figures/protocol_integration.pdf}
+%     \caption{Tích hợp các giao thức SIP, MQTT và JSON trong hệ thống cảnh báo IoT}
+%     \label{fig:protocol_integration}
+% \end{figure}
+
+\subsubsection{Luồng Truyền Thông Đầu Cuối tới Đầu Cuối}
+\label{subsubsec:e2e_communication}
+
+Luồng truyền thông tích hợp bao gồm các giai đoạn sau:
+
+\begin{enumerate}
+    \item \textbf{Thu Thập Dữ Liệu}: Các thiết bị ESP32 thu thập số đọc cảm biến và định dạng chúng thành payload JSON
+    \item \textbf{Xuất Bản MQTT}: Thiết bị xuất bản dữ liệu JSON tới các topic MQTT cụ thể với mức QoS phù hợp
+    \item \textbf{Xử Lý Máy Chủ}: Các ứng dụng máy chủ Linux subscribe các topic MQTT, phân tích payload JSON và đánh giá điều kiện cảnh báo
+    \item \textbf{Tạo Cảnh Báo}: Khi phát hiện điều kiện nghiêm trọng, máy chủ tạo ra payload cảnh báo JSON toàn diện
+    \item \textbf{Kích Hoạt Viễn Thông}: Các ứng dụng máy chủ sử dụng API Asterisk để khởi tạo cuộc gọi thoại và cảnh báo SMS dựa trên SIP
+    \item \textbf{Lưu Trữ Dữ Liệu}: Tất cả số đọc cảm biến và sự kiện cảnh báo được ghi log trong định dạng có cấu trúc cho mục đích kiểm toán và phân tích
+\end{enumerate}
+
+Việc tích hợp đa giao thức này đảm bảo hạ tầng truyền thông đáng tin cậy, có thể mở rộng và bảo trì được, có khả năng hỗ trợ các yêu cầu hệ thống cảnh báo IoT đa dạng trong khi duy trì khả năng tương tác với hạ tầng viễn thông hiện có.
+
+\subsection{Các Cân Nhắc Bảo Mật}
+\label{subsec:protocol_security}
+
+Mỗi giao thức truyền thông kết hợp các cơ chế bảo mật cụ thể thiết yếu cho việc triển khai hệ thống cảnh báo IoT sản xuất:
+
+\subsubsection{Bảo Mật SIP}
+Mã hóa Transport Layer Security (TLS) cho báo hiệu SIP (SIPS) và Secure Real-time Transport Protocol (SRTP) cho luồng phương tiện cung cấp bảo vệ truyền thông toàn diện. Các cơ chế xác thực ngăn chặn truy cập trái phép vào tài nguyên viễn thông.
+
+\subsubsection{Bảo Mật MQTT}
+MQTT hỗ trợ mã hóa TLS/SSL cho truyền dữ liệu bảo mật giữa client và broker. Xác thực tên người dùng/mật khẩu, chứng chỉ client, và Access Control Lists (ACLs) cung cấp bảo mật đa lớp cho truyền thông thiết bị IoT.
+
+\subsubsection{Bảo Mật JSON}
+Mặc dù JSON bản thân thiếu các tính năng bảo mật vốn có, bảo mật triển khai bao gồm xác thực đầu vào, làm sạch dữ liệu được phân tích và các kênh truyền tải bảo mật. Dữ liệu cấu hình nhạy cảm nên được mã hóa khi nghỉ và truyền qua các giao thức bảo mật.
+
+\subsection{Tóm Tắt}
+\label{subsec:protocol_summary}
+
+Việc tích hợp các giao thức SIP, MQTT và JSON cung cấp một framework truyền thông toàn diện cho các hệ thống cảnh báo viễn thông nhúng IoT. SIP cho phép báo hiệu viễn thông mạnh mẽ và phân phối phương tiện, MQTT hỗ trợ truyền thông thiết bị IoT hiệu quả với đảm bảo độ tin cậy phù hợp, và JSON đảm bảo trao đổi dữ liệu có cấu trúc, có thể tương tác trên các thành phần hệ thống không đồng nhất. Cùng nhau, các giao thức này tạo ra một nền tảng có thể mở rộng, bảo trì được và bảo mật cho các hệ thống phân phối cảnh báo tự động, bắc cầu khoảng cách giữa cảm biến thế giới vật lý và yêu cầu thông báo con người.

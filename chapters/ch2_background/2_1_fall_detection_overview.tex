@@ -1,0 +1,76 @@
+
+\section{Tổng quan về các phương pháp phát hiện té ngã}
+
+Phát hiện té ngã là một lĩnh vực nghiên cứu trọng yếu, đặc biệt trong bối cảnh dân số già hóa đang gia tăng trên toàn cầu. Theo Tổ chức Y tế Thế giới (WHO), té ngã là nguyên nhân đứng thứ hai gây tử vong do thương tích không cố ý trên toàn thế giới. Do đó, việc phát triển các hệ thống giám sát hiệu quả không chỉ giúp cảnh báo kịp thời mà còn có thể cứu sống nhiều người. Các công trình nghiên cứu hiện nay đã phát triển một loạt các phương pháp, có thể được phân loại thành ba nhóm chính, mỗi nhóm đều có những ưu và nhược điểm rõ rệt.
+
+\subsection{Phương pháp dựa trên cảm biến đeo được}
+
+Đây là phương pháp truyền thống và phổ biến nhất, sử dụng các thiết bị gắn trên cơ thể để thu thập dữ liệu chuyển động.
+\begin{itemize}
+    \item \textbf{Cơ chế hoạt động:} Các thiết bị đeo (wearable devices) tích hợp cảm biến quán tính như \textbf{gia tốc kế} (đo gia tốc tuyến tính) và \textbf{con quay hồi chuyển} (đo tốc độ góc). Hệ thống sẽ phân tích dữ liệu này trong thời gian thực. Một sự kiện té ngã được xác định khi một số tiêu chí nhất định được thỏa mãn, ví dụ như gia tốc của cơ thể đột ngột thay đổi mạnh, theo sau là một trạng thái bất động trong một khoảng thời gian ngắn. Các thuật toán phổ biến bao gồm ngưỡng tĩnh (static thresholding) và các mô hình học máy đơn giản như SVM (Support Vector Machine) để phân loại dữ liệu chuyển động.
+    \item \textbf{Ưu điểm:} 
+    \begin{itemize}
+        \item Độ chính xác cao trong việc thu thập dữ liệu chuyển động của cơ thể.
+        \item Cung cấp phản hồi gần như tức thời về các thay đổi động học.
+        \item Hoạt động độc lập với điều kiện môi trường như ánh sáng.
+    \end{itemize}
+    \item \textbf{Nhược điểm:}
+    \begin{itemize}
+        \item Yêu cầu người dùng phải tuân thủ việc đeo thiết bị liên tục, điều này có thể gây khó chịu và dễ bị quên.
+        \item Dễ gây ra cảnh báo sai (false positive) trong các hoạt động hàng ngày có chuyển động đột ngột như chạy, nhảy, hoặc nằm xuống ghế một cách nhanh chóng. Điều này có thể dẫn đến sự phiền toái và làm giảm niềm tin vào hệ thống.
+    \end{itemize}
+\end{itemize}
+
+\subsection{Phương pháp dựa trên cảm biến môi trường}
+
+Phương pháp này sử dụng các cảm biến được lắp đặt cố định trong không gian sống để giám sát mà không yêu cầu người dùng đeo bất kỳ thiết bị nào.
+\begin{itemize}
+    \item \textbf{Cơ chế hoạt động:} Các loại cảm biến phổ biến bao gồm cảm biến áp suất sàn, cảm biến hồng ngoại thụ động (PIR) và cảm biến âm thanh. Hệ thống sử dụng cảm biến áp suất để phát hiện sự thay đổi bất thường về trọng lượng trên sàn nhà, cảm biến PIR để phát hiện sự bất động của người trong một khu vực, hoặc cảm biến âm thanh để nhận diện tiếng va chạm đặc trưng của một cú té ngã.
+    \item \textbf{Ưu điểm:} 
+    \begin{itemize}
+        \item Không xâm phạm và không gây khó chịu cho người dùng.
+        \item Có thể giám sát nhiều người trong một khu vực nhất định.
+    \end{itemize}
+    \item \textbf{Nhược điểm:}
+    \begin{itemize}
+        \item Chi phí lắp đặt ban đầu cao, phức tạp, và thường đòi hỏi sửa đổi cấu trúc nhà ở (đối với cảm biến sàn).
+        \item Hiệu suất bị giới hạn bởi phạm vi phủ sóng của từng cảm biến, có thể tạo ra các "điểm mù" (blind spots).
+        \item Khó phân biệt giữa người và các đối tượng khác, dễ gây cảnh báo sai.
+    \end{itemize}
+\end{itemize}
+
+\subsection{Phương pháp dựa trên thị giác máy tính}
+
+Phương pháp này tận dụng các camera và thuật toán xử lý ảnh để phân tích tư thế và chuyển động của con người một cách không tiếp xúc.
+\begin{itemize}
+    \item \textbf{Cơ chế hoạt động:} Camera thu thập luồng video. Hệ thống sẽ thực hiện một chuỗi các bước xử lý ảnh, bắt đầu bằng việc phát hiện và theo dõi con người trong khung hình (sử dụng các mô hình như YOLO). Tiếp theo, các thuật toán ước tính tư thế (pose estimation), ví dụ như **MediaPipe Pose**, sẽ trích xuất các điểm chính trên cơ thể (keypoints). Cuối cùng, hệ thống phân tích sự thay đổi đột ngột của các keypoints (ví dụ: tư thế từ đứng thẳng chuyển sang nằm ngang) để xác định té ngã.
+    \item \textbf{Ưu điểm:} 
+    \begin{itemize}
+        \item Cung cấp thông tin bối cảnh trực quan và phong phú về sự cố, giúp việc xác nhận trở nên dễ dàng hơn.
+        \item Không yêu cầu người dùng phải đeo thiết bị.
+    \end{itemize}
+    \item \textbf{Nhược điểm:}
+    \begin{itemize}
+        \item Gây lo ngại nghiêm trọng về vấn đề riêng tư.
+        \item Hiệu suất phụ thuộc mạnh vào điều kiện môi trường như ánh sáng, góc quay và sự che khuất (occlusion).
+        \item Đòi hỏi năng lực tính toán lớn, đặc biệt đối với các mô hình học sâu.
+    \end{itemize}
+\end{itemize}
+
+\subsection{Phương pháp kết hợp đa phương thức}
+
+Phương pháp này là sự tiến hóa của các phương pháp trên, tích hợp nhiều nguồn dữ liệu để đạt được hiệu quả tối ưu.
+\begin{itemize}
+    \item \textbf{Cơ chế hoạt động:} Hệ thống thu thập đồng thời dữ liệu từ nhiều nguồn, ví dụ như cảm biến đeo được và camera. Các thuật toán \textbf{kết hợp dữ liệu (data fusion)} sẽ phân tích tất cả các nguồn thông tin để đưa ra quyết định cuối cùng. Ví dụ, một cú ngã chỉ được xác nhận khi cả cảm biến phát hiện sự thay đổi gia tốc đột ngột VÀ camera ghi nhận tư thế nằm.
+    \item \textbf{Ưu điểm:} 
+    \begin{itemize}
+        \item Tăng đáng kể độ chính xác và độ tin cậy, giảm tỷ lệ cảnh báo sai một cách hiệu quả.
+        \item Khả năng mở rộng phạm vi giám sát, vượt qua hạn chế của từng phương pháp riêng lẻ (ví dụ: camera trong nhà, cảm biến khi di chuyển ngoài tầm nhìn).
+        \item Tính linh hoạt cao, có thể điều chỉnh để phù hợp với nhiều môi trường khác nhau.
+    \end{itemize}
+    \item \textbf{Nhược điểm:}
+    \begin{itemize}
+        \item Độ phức tạp của hệ thống tăng lên, đòi hỏi các thuật toán kết hợp dữ liệu phức tạp.
+        \item Chi phí triển khai và tiêu thụ năng lượng cao hơn.
+    \end{itemize}
+\end{itemize}
