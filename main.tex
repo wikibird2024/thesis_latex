@@ -1,5 +1,5 @@
 % Set up the document class
-\documentclass[12pt, a4paper]{report}
+\documentclass[12pt, a4paper]{book}
 
 % Include packages and configurations from the preamble file
 \input{preamble.tex}
@@ -35,7 +35,7 @@
 \listoftables
 \clearpage
 
-\lstlistoflistings
+\listoflistings
 \clearpage
 
 % ---------------------------------------------------------------------
@@ -61,13 +61,13 @@
 % Add the appendix
 \clearpage
 \appendix
-\chapter{Appendix}
+\chapter{Phụ lục}
 \input{backmatter/appendix_A_code.tex}
 
 % Create the bibliography page
 \clearpage
-\addcontentsline{toc}{chapter}{Bibliography}
-\printbibliography[heading=none]
+\addcontentsline{toc}{chapter}{Tài liệu tham khảo}
+\printbibliography[heading=bibintoc]
 
 % End the document
 \end{document}

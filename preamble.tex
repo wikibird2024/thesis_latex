@@ -1,14 +1,19 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                        LANGUAGE & ENCODING
+%                        BASIC DOCUMENT SETUP
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% UTF-8 for special characters
-\usepackage[utf8]{inputenc}
-% T5 encoding for Vietnamese
-\usepackage[T5]{fontenc}
-% Vietnamese language support
+
+% Bắt buộc dùng XeLaTeX
+\usepackage{fontspec}
+
+% Hỗ trợ tiếng Việt và các dấu câu đặc biệt
 \usepackage[vietnamese]{babel}
-% Times font for Vietnamese compatibility
-\usepackage{newtxtext,newtxmath}
+
+% --- CẤU HÌNH FONT CHỮ ---
+% Sử dụng font Liberation Serif có sẵn trên hệ thống
+\setmainfont{Liberation Serif}
+\setsansfont{Liberation Sans}
+\setmonofont{Liberation Mono}
+% --- KẾT THÚC CẤU HÌNH FONT ---
 
 % Thesis name macros
 \newcommand{\TENLUANVAN}{Hệ thống phát hiện và cảnh báo té ngã thời gian thực tích hợp cảm biến, xử lý ảnh và định vị}
@@ -26,7 +31,7 @@
     right=2.5cm
 }
 
-% 1.5 line spacing
+% Line spacing
 \usepackage{setspace}
 \onehalfspacing
 
@@ -55,89 +60,90 @@
 %                       DOCUMENT CONTENT PACKAGES
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Math support
-\usepackage{amsmath,amssymb}
-% Images
+\usepackage{amsmath,amssymb,amsthm}
+% Images and figures
 \usepackage{graphicx}
-% Resize blocks
 \usepackage{adjustbox}
+% Gói lệnh để xác định đường dẫn hình ảnh cho toàn bộ tài liệu
+\graphicspath{{figures/}}
 % Tables
-\usepackage{array,booktabs,tabularx}
-% Lists, columns, figures
-\usepackage{enumitem,multicol,wrapfig,float}
+\usepackage{array,booktabs,tabularx,longtable}
+% Lists and figures
+\usepackage{enumitem,wrapfig,float}
 % Captions
 \usepackage[font=small,labelfont=bf]{caption}
 % Subfigures
 \usepackage{subcaption}
+% Drawing diagrams
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows.meta,positioning}
 
-% Code listings (important: loaded once)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                    CODE LISTINGS & PSEUDOCODE
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Gói `listings` để xử lý code block
 \usepackage{listings}
-% Colors
-\usepackage[table]{xcolor}
-\definecolor{darkblue}{RGB}{0,82,147}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                        CODE LISTINGS (JSON)
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% JSON language definition
 \lstdefinelanguage{json}{
-  keywords={true,false,null},
-  keywordstyle=\color{blue}\bfseries,
-  string=[s]{"}{"},
-  stringstyle=\color{red},
-  comment=[l]{//},
-  commentstyle=\color{gray},
-  basicstyle=\ttfamily\footnotesize,
-  showstringspaces=false,
-  % Vietnamese characters should be handled by the main document setup,
-  % not individually in the listings environment. Removing this makes it more robust.
-}
-
-% Listings style (example usage: \lstinputlisting[language=json]{file.json})
-\lstset{
-  backgroundcolor=\color{gray!10},
-  frame=single,
-  framesep=5pt,
-  aboveskip=10pt,
-  belowskip=10pt,
-  captionpos=b,
+  basicstyle=\normalfont\ttfamily,
   numbers=left,
-  numberstyle=\tiny\color{gray},
+  numberstyle=\tiny,
+  stepnumber=1,
+  showstringspaces=false,
   breaklines=true,
-  breakatwhitespace=true,
-  tabsize=2,
+  string=[b]",
+  stringstyle=\color{red}, % Sửa lỗi: thay thế stringsecond bằng stringstyle
+  comment=[l]{//},
+  commentstyle=\color{gray}\ttfamily,
+  keywords={true, false, null},
+  keywordstyle=\color{blue}\bfseries,
+}
+% Minted for syntax highlighting (yêu cầu --shell-escape và Pygments)
+% csquotes cần được load sau fvextra để tránh warning
+\usepackage{minted}
+\setminted{
+    fontsize=\footnotesize,
+    frame=single,
+    framesep=5pt,
+    bgcolor=gray!10,
+    breaklines=true,
+    numbers=left,
+    numbersep=5pt,
+    tabsize=2,
+    linenos=true,
+    breakindent=2em,
 }
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                    ALGORITHMS & PSEUDOCODE
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Algorithm support
+% Pseudocode and algorithms
 \usepackage{algorithm}
-\usepackage{algorithmicx}
-\usepackage{algpseudocode}
+\usepackage[noend]{algpseudocode}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                    BIBLIOGRAPHY & CITATIONS
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Numeric bibliography
-\usepackage[backend=biber,style=numeric]{biblatex}
+% Numeric bibliography with biber
+\usepackage[backend=biber,style=numeric,sorting=none]{biblatex}
 \addbibresource{bibliography.bib}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %               ADVANCED PACKAGES (LOAD LAST)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% TikZ for diagrams
-\usepackage{tikz}
-\usetikzlibrary{shapes,arrows.meta,positioning}
+% Colors
+\usepackage{xcolor}
+\definecolor{darkblue}{RGB}{0,82,147}
+\definecolor{gray}{RGB}{128,128,128}
 
-% Hyperlinks (unicode for Vietnamese bookmarks)
-\usepackage[unicode]{hyperref}
-\hypersetup{
-    colorlinks=true,
-    linkcolor=darkblue,
-    citecolor=darkblue,
-    urlcolor=darkblue
-}
+% Hyperlinks (load last, unicode for Vietnamese)
+% Tải csquotes ở đây để tránh warning
+\usepackage{csquotes}
+\usepackage[unicode,colorlinks=true,linkcolor=darkblue,citecolor=darkblue,urlcolor=darkblue]{hyperref}
+
+% cleveref must be loaded after hyperref!
+\usepackage{cleveref}
 
 % Hide title page number
 \usepackage{etoolbox}
 \AtBeginDocument{\thispagestyle{empty}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                        END OF PREAMBLE
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

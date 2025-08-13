@@ -10,7 +10,7 @@ Hệ thống nhúng là trái tim của thiết bị đeo trên người, đảm
 Trong các dự án IoT hiện nay, có nhiều lựa chọn vi điều khiển rất phổ biến như Arduino, STM32 hay ESP32. Mỗi loại đều có những thế mạnh riêng, nhưng đối với đề tài này, \textbf{ESP32} được chọn vì những lý do rất thực tế. Vi điều khiển này không chỉ có khả năng xử lý mạnh mẽ với cấu trúc hai nhân, mà còn tích hợp sẵn Wi-Fi và Bluetooth. Điều này giúp thiết bị nhúng có thể dễ dàng kết nối với mạng và các thiết bị khác, đáp ứng đúng yêu cầu của hệ thống: vừa xử lý dữ liệu cảm biến, vừa liên lạc với máy chủ mà vẫn tiết kiệm năng lượng.
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.8\textwidth]{path_to_your_esp32_image.png}
+    \includegraphics[width=0.8\textwidth]{esp32.jpg}
     \caption{Ví dụ về một module vi điều khiển ESP32.}
     \label{fig:esp32}
 \end{figure}
@@ -24,7 +24,7 @@ Trong các dự án IoT hiện nay, có nhiều lựa chọn vi điều khiển 
 Bằng cách kết hợp dữ liệu từ cả hai, hệ thống có thể phân biệt té ngã với các chuyển động đột ngột thông thường, từ đó tăng độ chính xác đáng kể.
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.8\textwidth]{path_to_your_imu_image.png}
+    \includegraphics[width=0.8\textwidth]{imu.png}
     \caption{Sơ đồ minh họa nguyên lý hoạt động của cảm biến IMU.}
     \label{fig:imu_working_principle}
 \end{figure}
@@ -40,7 +40,7 @@ Module GPS có nhiệm vụ xác định vị trí chính xác của thiết b�
 Camera nhúng có nhiệm vụ ghi lại luồng video trong thời gian thực. Đối với đề tài này, một module camera tích hợp sẵn vào vi điều khiển như ESP32-CAM được sử dụng. Ưu điểm của nó là chi phí thấp, dễ dàng tích hợp và có thể truyền dữ liệu qua Wi-Fi một cách thuận tiện.
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.8\textwidth]{path_to_your_camera_module_image.png}
+    \includegraphics[width=0.8\textwidth]{camera_module.jpg}
     \caption{Một ví dụ về module camera nhúng tích hợp ESP32-CAM.}
     \label{fig:esp32_cam}
 \end{figure}
