@@ -1,4 +1,9 @@
 \chapter*{TÓM TẮT}
 \addcontentsline{toc}{chapter}{TÓM TẮT}
 
-Luận văn này trình bày việc thiết kế và xây dựng một **hệ thống phát hiện té ngã đa phương thức** nhằm nâng cao chất lượng cuộc sống và sự an toàn cho người cao tuổi hoặc bệnh nhân cần được giám sát. Hệ thống kết hợp dữ liệu thu được từ **cảm biến chuyển động quán tính MPU6050** với phân tích luồng video thời gian thực thông qua các thuật toán **thị giác máy tính** để tăng độ chính xác trong việc nhận diện các sự kiện té ngã. Khi một sự kiện té ngã được phát hiện, hệ thống sẽ kích hoạt một **cơ chế cảnh báo tự động** được xây dựng trên nền tảng máy chủ Asterisk, thực hiện các hành động như gọi điện thoại, gửi tin nhắn SMS và chia sẻ hình ảnh sự kiện qua ứng dụng Telegram. Kết quả của nghiên cứu là một giải pháp hoàn chỉnh, có chi phí tối ưu, đáng tin cậy và có khả năng mở rộng, đáp ứng yêu cầu giám sát trong môi trường gia đình hoặc các cơ sở chăm sóc y tế.
+Luận văn này trình bày việc thiết kế và triển khai một hệ thống phát hiện té ngã đa phương thức dành cho người cao tuổi và bệnh nhân cần giám sát liên tục. Hệ thống sử dụng ESP32 kết hợp với cảm biến quán tính MPU6050 để thu thập dữ liệu chuyển động, đồng thời phân tích luồng video thời gian thực bằng các thuật toán thị giác máy tính, nâng cao độ chính xác trong việc nhận diện các sự kiện té ngã.
+
+Dữ liệu cảm biến và cảnh báo được mã hóa dưới định dạng JSON và truyền thông qua giao thức MQTT, cho phép trao đổi thông tin thời gian thực giữa thiết bị nhúng và máy chủ. Python trên máy chủ Linux xử lý dữ liệu, đánh giá mức độ cảnh báo và điều khiển Asterisk PBX để thực hiện các hành động viễn thông tự động như gọi điện thoại, gửi tin nhắn SMS và chia sẻ hình ảnh sự kiện qua ứng dụng Telegram.
+
+Hệ thống được thiết kế theo kiến trúc mô-đun, dễ mở rộng và tối ưu chi phí, đồng thời đảm bảo tính đáng tin cậy, bảo mật dữ liệu và khả năng hoạt động ổn định trong môi trường gia đình hoặc cơ sở chăm sóc y tế. Kết quả nghiên cứu cung cấp một giải pháp toàn diện, kết hợp nhúng IoT, viễn thông và xử lý dữ liệu thông minh, góp phần nâng cao chất lượng giám sát và phản ứng kịp thời với các sự kiện té ngã.
+
