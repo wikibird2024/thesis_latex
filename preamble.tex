@@ -27,16 +27,25 @@
 ]
 \setmonofont{Liberation Mono}[Scale=0.9]
 
-\usepackage{microtype}
+% Microtype for XeLaTeX (disable expansion)
+\usepackage[protrusion=true,expansion=false]{microtype}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                    ADDITIONAL PACKAGES
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{xcolor}
+\definecolor{darkblue}{RGB}{0,0,139}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{calc}
+\usepackage{url}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                    CUSTOM MACROS FOR THESIS
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Thesis title
 \newcommand{\TENLUANVAN}{Hệ thống phát hiện và cảnh báo té ngã thời gian thực tích hợp cảm biến, xử lý ảnh và định vị}
 \newcommand{\THESISNAME}{Real-time fall detection and alert system integrating sensors, image processing, and positioning}
 
-% Personal information macros (edit values accordingly)
 \newcommand{\TENTACGIA}{Nguyễn Văn A}
 \newcommand{\MASOSV}{20123456}
 \newcommand{\KHOA}{Điện - Điện tử}
@@ -44,7 +53,6 @@
 \newcommand{\TENNGUOIHUONGDAN}{TS. Trần Văn B}
 \newcommand{\NAMBAOVE}{2025}
 
-% Aliases for macros used in faculty.tex (ensuring compatibility)
 \newcommand{\DEPARTMENT}{\KHOA}
 \newcommand{\TENTACGIAFACULTY}{\TENTACGIA}
 \newcommand{\MSSV}{\MASOSV}
@@ -84,4 +92,16 @@
 \fancyfoot[C]{\thepage}
 \renewcommand{\headrulewidth}{0.4pt}
 \renewcommand{\footrulewidth}{0pt}
-\renewcommand{\chaptermark}[1]{\markboth{\chaptername\ \thechapt
+\renewcommand{\chaptermark}[1]{\markboth{\chaptername\ \thechapter.\ #1}{}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                     OTHER SETTINGS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\hypersetup{
+    colorlinks=true,
+    linkcolor=darkblue,
+    urlcolor=darkblue,
+    citecolor=darkblue,
+    pdfauthor={\TENTACGIA},
+    pdftitle={\TENLUANVAN}
+}
