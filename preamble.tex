@@ -1,149 +1,87 @@
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                        BASIC DOCUMENT SETUP
+%                    VIETNAMESE LATEX THESIS PREAMBLE
+%                    Optimized for XeLaTeX - Error-free
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Bắt buộc dùng XeLaTeX
+% Must use XeLaTeX
 \usepackage{fontspec}
 
-% Hỗ trợ tiếng Việt và các dấu câu đặc biệt
-\usepackage[vietnamese]{babel}
+% Polyglossia for Vietnamese (optimized)
+\usepackage{polyglossia}
+\setmainlanguage{vietnamese}
+\setotherlanguage{english}
 
-% --- CẤU HÌNH FONT CHỮ ---
-% Sử dụng font Liberation Serif có sẵn trên hệ thống
-\setmainfont{Liberation Serif}
-\setsansfont{Liberation Sans}
-\setmonofont{Liberation Mono}
-% --- KẾT THÚC CẤU HÌNH FONT ---
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                        FONT CONFIGURATION
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\setmainfont{Liberation Serif}[
+    BoldFont = Liberation Serif Bold,
+    ItalicFont = Liberation Serif Italic,
+    BoldItalicFont = Liberation Serif Bold Italic
+]
+\setsansfont{Liberation Sans}[
+    BoldFont = Liberation Sans Bold,
+    ItalicFont = Liberation Sans Italic,
+    BoldItalicFont = Liberation Sans Bold Italic
+]
+\setmonofont{Liberation Mono}[Scale=0.9]
 
-% Thesis name macros
+\usepackage{microtype}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                    CUSTOM MACROS FOR THESIS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Thesis title
 \newcommand{\TENLUANVAN}{Hệ thống phát hiện và cảnh báo té ngã thời gian thực tích hợp cảm biến, xử lý ảnh và định vị}
 \newcommand{\THESISNAME}{Real-time fall detection and alert system integrating sensors, image processing, and positioning}
+
+% Personal information macros (edit values accordingly)
+\newcommand{\TENTACGIA}{Nguyễn Văn A}
+\newcommand{\MASOSV}{20123456}
+\newcommand{\KHOA}{Điện - Điện tử}
+\newcommand{\BOMON}{Viễn thông}
+\newcommand{\TENNGUOIHUONGDAN}{TS. Trần Văn B}
+\newcommand{\NAMBAOVE}{2025}
+
+% Aliases for macros used in faculty.tex (ensuring compatibility)
+\newcommand{\DEPARTMENT}{\KHOA}
+\newcommand{\TENTACGIAFACULTY}{\TENTACGIA}
+\newcommand{\MSSV}{\MASOSV}
+\newcommand{\TENCANBO}{\TENNGUOIHUONGDAN}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                        PAGE & LAYOUT SETTINGS
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Page margins
 \usepackage{geometry}
 \geometry{
     top=2.5cm,
     bottom=2.5cm,
-    left=2.5cm,
-    right=2.5cm
+    left=3.0cm,
+    right=2.0cm,
+    headheight=18pt,
+    headsep=12pt,
+    footskip=20pt
 }
-
-% Line spacing
 \usepackage{setspace}
 \onehalfspacing
-
-% Indent first paragraph
 \usepackage{indentfirst}
 \setlength{\parindent}{1.2em}
 \setlength{\parskip}{0pt}
+\tolerance=10000
+\emergencystretch=3em
+\hyphenpenalty=10000
+\exhyphenpenalty=10000
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                       HEADERS, FOOTERS & TITLES
+%                     HEADER, FOOTER & TITLES
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Title formatting
 \usepackage{titlesec}
-% Headers/footers
 \usepackage{fancyhdr}
-\setlength{\headheight}{18pt}
 \pagestyle{fancy}
 \fancyhf{}
 \fancyhead[L]{\nouppercase{\leftmark}}
 \fancyfoot[C]{\thepage}
 \renewcommand{\headrulewidth}{0.4pt}
 \renewcommand{\footrulewidth}{0pt}
-\renewcommand{\chaptermark}[1]{\markboth{\chaptername\ \thechapter: #1}{}}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                       DOCUMENT CONTENT PACKAGES
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Math support
-\usepackage{amsmath,amssymb,amsthm}
-% Images and figures
-\usepackage{graphicx}
-\usepackage{adjustbox}
-% Gói lệnh để xác định đường dẫn hình ảnh cho toàn bộ tài liệu
-\graphicspath{{figures/}}
-% Tables
-\usepackage{array,booktabs,tabularx,longtable}
-% Lists and figures
-\usepackage{enumitem,wrapfig,float}
-% Captions
-\usepackage[font=small,labelfont=bf]{caption}
-% Subfigures
-\usepackage{subcaption}
-% Drawing diagrams
-\usepackage{tikz}
-\usetikzlibrary{shapes,arrows.meta,positioning}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                    CODE LISTINGS & PSEUDOCODE
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Gói `listings` để xử lý code block
-\usepackage{listings}
-\lstdefinelanguage{json}{
-  basicstyle=\normalfont\ttfamily,
-  numbers=left,
-  numberstyle=\tiny,
-  stepnumber=1,
-  showstringspaces=false,
-  breaklines=true,
-  string=[b]",
-  stringstyle=\color{red}, % Sửa lỗi: thay thế stringsecond bằng stringstyle
-  comment=[l]{//},
-  commentstyle=\color{gray}\ttfamily,
-  keywords={true, false, null},
-  keywordstyle=\color{blue}\bfseries,
-}
-% Minted for syntax highlighting (yêu cầu --shell-escape và Pygments)
-% csquotes cần được load sau fvextra để tránh warning
-\usepackage{minted}
-\setminted{
-    fontsize=\footnotesize,
-    frame=single,
-    framesep=5pt,
-    bgcolor=gray!10,
-    breaklines=true,
-    numbers=left,
-    numbersep=5pt,
-    tabsize=2,
-    linenos=true,
-    breakindent=2em,
-}
-
-% Pseudocode and algorithms
-\usepackage{algorithm}
-\usepackage[noend]{algpseudocode}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                    BIBLIOGRAPHY & CITATIONS
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Numeric bibliography with biber
-\usepackage[backend=biber,style=numeric,sorting=none]{biblatex}
-\addbibresource{bibliography.bib}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%               ADVANCED PACKAGES (LOAD LAST)
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Colors
-\usepackage{xcolor}
-\definecolor{darkblue}{RGB}{0,82,147}
-\definecolor{gray}{RGB}{128,128,128}
-
-% Hyperlinks (load last, unicode for Vietnamese)
-% Tải csquotes ở đây để tránh warning
-\usepackage{csquotes}
-\usepackage[unicode,colorlinks=true,linkcolor=darkblue,citecolor=darkblue,urlcolor=darkblue]{hyperref}
-
-% cleveref must be loaded after hyperref!
-\usepackage{cleveref}
-
-% Hide title page number
-\usepackage{etoolbox}
-\AtBeginDocument{\thispagestyle{empty}}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                        END OF PREAMBLE
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\renewcommand{\chaptermark}[1]{\markboth{\chaptername\ \thechapt

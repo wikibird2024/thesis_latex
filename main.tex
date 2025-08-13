@@ -1,73 +1,75 @@
-% Set up the document class
-\documentclass[12pt, a4paper]{book}
+%!TEX program = xelatex
+\documentclass[12pt,openany]{report}
 
-% Include packages and configurations from the preamble file
+% Load the unified preamble (all packages, fonts, macros)
 \input{preamble.tex}
 
-% Begin the document
 \begin{document}
 
-% ---------------------------------------------------------------------
-%                          FRONT MATTER
-% ---------------------------------------------------------------------
-% The title page must be the very first element of the document.
+% --- FRONTMATTER ---
+\pagenumbering{roman}
+\pagestyle{empty}
+
+% Title page
 \input{frontmatter/titlepage.tex}
-\input{frontmatter/_trang_nhiem_vu.tex}
+
+% Abstract
+\cleardoublepage
 \input{frontmatter/abstract.tex}
 
-% Set page numbering to Roman numerals (i, ii, iii, ...)
-% This should be done after the title pages and before the TOC.
-\pagestyle{plain}
-\pagenumbering{roman}
-\setcounter{page}{1}
-
-% The acknowledgements and table of contents should come after the title pages.
+% Acknowledgements
+\cleardoublepage
 \input{frontmatter/acknowledgements.tex}
 
-% Generate the table of contents and lists
-\clearpage
-\tableofcontents
-\clearpage
+% Faculty / Department info (thường sẽ được đặt ở đầu cùng)
+\cleardoublepage
+\input{frontmatter/faculty.tex}
 
-\listoffigures
-\clearpage
-
-\listoftables
-\clearpage
-
-\listoflistings
-\clearpage
-
-% ---------------------------------------------------------------------
-%                          MAIN MATTER
-% ---------------------------------------------------------------------
-% Start page numbering with Arabic numerals (1, 2, 3, ...) and reset to 1
-% This should be done right before the first chapter.
+% Set the page style for the rest of the frontmatter
 \pagestyle{fancy}
+
+% Table of contents
+\cleardoublepage
+\phantomsection
+\addcontentsline{toc}{chapter}{Mục lục}
+\tableofcontents
+
+% List of figures
+\cleardoublepage
+\phantomsection
+\addcontentsline{toc}{chapter}{Danh mục hình ảnh}
+\listoffigures
+
+% List of tables
+\cleardoublepage
+\phantomsection
+\addcontentsline{toc}{chapter}{Danh mục bảng biểu}
+\listoftables
+
+% --- MAINMATTER ---
+\cleardoublepage
 \pagenumbering{arabic}
-\setcounter{page}{1}
+\pagestyle{fancy}
 
-% Include the chapters from the "chapters" directory
-% Each chapter is in its own file for easy management
-\input{chapters/ch1_introduction/chapter1.tex}
-\input{chapters/ch2_background/chapter2.tex}
-\input{chapters/ch3_methodology/chapter3.tex}
-\input{chapters/ch4_results/chapter4.tex}
-\input{chapters/ch5_conclusion/chapter5.tex}
+% Chapters (ensure each file exists in chapters/ folder)
+\include{chapters/ch1_introduction}
+\include{chapters/ch2_background}
+\include{chapters/ch3_methodology}
+\include{chapters/ch4_results}
+\include{chapters/ch5_conclusion}
 
-% ---------------------------------------------------------------------
-%                          BACK MATTER
-% ---------------------------------------------------------------------
-% Add the appendix
-\clearpage
+% --- BACKMATTER ---
+\cleardoublepage
+\pagestyle{plain}
+
+% Appendices
 \appendix
-\chapter{Phụ lục}
-\input{backmatter/appendix_A_code.tex}
+\include{backmatter/appendix_A_code}
 
-% Create the bibliography page
-\clearpage
+% References
+\cleardoublepage
+\phantomsection
 \addcontentsline{toc}{chapter}{Tài liệu tham khảo}
-\printbibliography[heading=bibintoc]
+\printbibliography
 
-% End the document
 \end{document}
