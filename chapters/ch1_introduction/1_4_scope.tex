@@ -1,26 +1,39 @@
+
 \section{Phạm vi Nghiên cứu}
 
-Luận văn này tập trung vào việc thiết kế và xây dựng một hệ thống phát hiện té ngã đa phương thức với phạm vi nghiên cứu được xác định như sau:
+Luận văn này tập trung vào việc thiết kế và xây dựng một hệ thống phát hiện té ngã đa phương thức. Phạm vi nghiên cứu được xác định nhằm đảm bảo tính khả thi, tập trung vào các mục tiêu cốt lõi và hạn chế các yếu tố ngoài phạm vi. Cụ thể:
 
+\subsection{Mục tiêu và Giới hạn}
 \begin{enumerate}
-    \item \textbf{Về mặt kỹ thuật và công nghệ:} Đề tài tập trung khai thác và tích hợp các công nghệ chính bao gồm:
-    \begin{itemize}
-        \item Nền tảng nhúng ESP32, tích hợp cảm biến chuyển động MPU6050 và module định vị GPS EC800K.
-        \item Các thư viện xử lý ảnh mã nguồn mở như MediaPipe và OpenCV để phân tích tư thế người.
-        \item Giao thức truyền thông MQTT cho kết nối Internet và SIP Asterisk cho cảnh báo nội bộ qua mạng LAN.
-    \end{itemize}
-
-    \item \textbf{Về mặt chức năng và tính năng:} Hệ thống được phát triển với các tính năng chính sau:
-    \begin{itemize}
-        \item Phát hiện sự kiện té ngã dựa trên thuật toán kết hợp dữ liệu từ cảm biến và phân tích hình ảnh.
-        \item Gửi cảnh báo đa kênh (cuộc gọi SIP nội bộ, tin nhắn SMS, thông báo qua bot Telegram).
-        \item Luận văn không tập trung vào việc xây dựng ứng dụng di động chuyên biệt hay giao diện người dùng trên nền web để quản lý và giám sát từ xa.
-    \end{itemize}
-
-    \item \textbf{Về mặt dữ liệu và môi trường:}
-    \begin{itemize}
-        \item Dữ liệu thử nghiệm được thu thập từ một camera cố định trong môi trường trong nhà.
-        \item Đánh giá hiệu năng được thực hiện trong các điều kiện môi trường lý tưởng như ánh sáng đầy đủ và kết nối mạng ổn định.
-        \item Hệ thống chưa được tối ưu để hoạt động trong điều kiện thiếu sáng hoặc môi trường phức tạp ngoài trời.
-    \end{itemize}
+    \item \textbf{Mục tiêu chính:} Xây dựng một hệ thống \textbf{thời gian thực (real-time)} có khả năng phát hiện té ngã với độ chính xác cao, dựa trên việc kết hợp dữ liệu từ nhiều nguồn. Hệ thống hướng tới cung cấp giải pháp cảnh báo tức thì, đáng tin cậy.
+    
+    \item \textbf{Giới hạn nghiên cứu:} Đây là một \textbf{mô hình thử nghiệm (proof-of-concept)}, tập trung vào chứng minh hiệu quả thuật toán và tích hợp các công nghệ. Nghiên cứu không đi sâu vào tối ưu hóa chi phí sản xuất hay thiết kế sản phẩm thương mại.
 \end{enumerate}
+
+\subsection{Phạm vi Kỹ thuật và Công nghệ}
+Đề tài khai thác và tích hợp các công nghệ chính để xây dựng hệ thống đa phương thức:
+\begin{itemize}
+    \item \textbf{Phần cứng:} Sử dụng module \textbf{ESP32} làm bộ vi điều khiển trung tâm, tích hợp cảm biến chuyển động \textbf{MPU6050} và module \textbf{GPS EC800K} để thu thập dữ liệu và gửi cảnh báo qua \textbf{SMS}.
+    
+    \item \textbf{Phần mềm và thuật toán:} Ứng dụng thư viện mã nguồn mở \textbf{MediaPipe} và \textbf{OpenCV} để thực hiện ước lượng tư thế người (human pose estimation). Luận văn \textbf{không} phát triển các mô hình học sâu phức tạp từ đầu.
+    
+    \item \textbf{Giao thức truyền thông:} Sử dụng \textbf{MQTT} để kết nối Internet và \textbf{SIP Asterisk} để thiết lập các cuộc gọi nội bộ trong mạng LAN, cung cấp kênh cảnh báo độc lập và tức thì.
+\end{itemize}
+
+\subsection{Phạm vi Chức năng và Tính năng}
+Hệ thống được phát triển với các chức năng cốt lõi sau:
+\begin{itemize}
+    \item \textbf{Phát hiện té ngã:} Sử dụng thuật toán kết hợp dữ liệu từ cảm biến chuyển động và phân tích hình ảnh để xác định sự kiện té ngã.
+    
+    \item \textbf{Hệ thống cảnh báo đa kênh:} Gửi cảnh báo tức thì qua nhiều kênh, bao gồm \textbf{cuộc gọi SIP nội bộ}, \textbf{SMS} và \textbf{thông báo Telegram}.
+    
+    \item \textbf{Giới hạn chức năng:} Nghiên cứu \textbf{không} xây dựng giao diện người dùng trên web hay ứng dụng di động để quản lý và giám sát từ xa.
+\end{itemize}
+
+\subsection{Phạm vi Dữ liệu và Môi trường}
+Nghiên cứu giới hạn về điều kiện thử nghiệm để đảm bảo kết quả đánh giá đáng tin cậy:
+\begin{itemize}
+    \item \textbf{Dữ liệu thử nghiệm:} Thu thập từ \textbf{camera cố định} trong môi trường \textbf{trong nhà}, với các góc quay và vị trí camera xác định trước.
+    
+    \item \textbf{Điều kiện môi trường:} Đánh giá hiệu năng trong điều kiện \textbf{ánh sáng đầy đủ} và \textbf{kết nối mạng ổn định}. Hệ thống \textbf{chưa được tối ưu} cho các điều kiện khó khăn như thiếu sáng, môi trường ngoài trời phức tạp, hoặc khi đối tượng bị che khuất.
+\end{itemize}

@@ -1,76 +1,91 @@
-
 \section{Tổng quan về các phương pháp phát hiện té ngã}
 
-Phát hiện té ngã là một lĩnh vực nghiên cứu trọng yếu, đặc biệt trong bối cảnh dân số già hóa đang gia tăng trên toàn cầu. Theo Tổ chức Y tế Thế giới (WHO), té ngã là nguyên nhân đứng thứ hai gây tử vong do thương tích không cố ý trên toàn thế giới. Do đó, việc phát triển các hệ thống giám sát hiệu quả không chỉ giúp cảnh báo kịp thời mà còn có thể cứu sống nhiều người. Các công trình nghiên cứu hiện nay đã phát triển một loạt các phương pháp, có thể được phân loại thành ba nhóm chính, mỗi nhóm đều có những ưu và nhược điểm rõ rệt.
+% Introducing the importance of fall detection and its global context
+Phát hiện té ngã là một lĩnh vực nghiên cứu trọng yếu, đặc biệt trong bối cảnh dân số già hóa đang gia tăng trên toàn cầu. Theo Tổ chức Y tế Thế giới (WHO), té ngã là nguyên nhân đứng thứ hai gây tử vong do thương tích không cố ý trên toàn thế giới, với khoảng 684.000 ca tử vong và hàng triệu ca chấn thương mỗi năm~\cite{who2021}. Các hệ thống phát hiện té ngã tự động không chỉ giúp cảnh báo kịp thời mà còn hỗ trợ cứu sống, giảm thiểu thương tích và cải thiện chất lượng chăm sóc sức khỏe. Các phương pháp hiện nay được phân loại thành bốn nhóm chính: cảm biến đeo được, cảm biến môi trường, thị giác máy tính và kết hợp đa phương thức, mỗi nhóm đều có ưu và nhược điểm riêng biệt.
 
+% Subsection for wearable sensor-based methods
 \subsection{Phương pháp dựa trên cảm biến đeo được}
 
-Đây là phương pháp truyền thống và phổ biến nhất, sử dụng các thiết bị gắn trên cơ thể để thu thập dữ liệu chuyển động.
+Phương pháp này sử dụng các thiết bị đeo trên cơ thể để thu thập dữ liệu chuyển động, được ứng dụng rộng rãi nhờ tính linh hoạt và chi phí thấp.
+
 \begin{itemize}
-    \item \textbf{Cơ chế hoạt động:} Các thiết bị đeo (wearable devices) tích hợp cảm biến quán tính như \textbf{gia tốc kế} (đo gia tốc tuyến tính) và \textbf{con quay hồi chuyển} (đo tốc độ góc). Hệ thống sẽ phân tích dữ liệu này trong thời gian thực. Một sự kiện té ngã được xác định khi một số tiêu chí nhất định được thỏa mãn, ví dụ như gia tốc của cơ thể đột ngột thay đổi mạnh, theo sau là một trạng thái bất động trong một khoảng thời gian ngắn. Các thuật toán phổ biến bao gồm ngưỡng tĩnh (static thresholding) và các mô hình học máy đơn giản như SVM (Support Vector Machine) để phân loại dữ liệu chuyển động.
+    \item \textbf{Cơ chế hoạt động:} Các thiết bị đeo tích hợp cảm biến quán tính như \textbf{gia tốc kế} (đo gia tốc tuyến tính), \textbf{con quay hồi chuyển} (đo tốc độ góc) và đôi khi \textbf{từ kế} (đo định hướng). Dữ liệu được phân tích thời gian thực để phát hiện các mẫu chuyển động bất thường. Một sự kiện té ngã thường được xác định khi gia tốc vượt ngưỡng (ví dụ: 3g) hoặc khi chuyển động đột ngột dừng lại, theo sau là trạng thái bất động~\cite{xu2023}. Các thuật toán phổ biến bao gồm ngưỡng tĩnh (static thresholding), học máy (SVM, Decision Tree) và học sâu (LSTM, CNN). Ví dụ, Hussain và cộng sự~\cite{hussain2019} sử dụng MPU6050 với LSTM, đạt độ chính xác 94.1\% trên tập dữ liệu SisFall.
     \item \textbf{Ưu điểm:} 
     \begin{itemize}
-        \item Độ chính xác cao trong việc thu thập dữ liệu chuyển động của cơ thể.
-        \item Cung cấp phản hồi gần như tức thời về các thay đổi động học.
-        \item Hoạt động độc lập với điều kiện môi trường như ánh sáng.
+        \item Độ chính xác cao trong việc ghi nhận dữ liệu chuyển động cá nhân.
+        \item Phản hồi nhanh, phù hợp với giám sát thời gian thực.
+        \item Hoạt động độc lập với điều kiện môi trường như ánh sáng hay cấu trúc không gian.
+        \item Chi phí thấp với các thiết bị như đồng hồ thông minh hoặc vòng đeo tay~\cite{wearable20152024}.
     \end{itemize}
     \item \textbf{Nhược điểm:}
     \begin{itemize}
-        \item Yêu cầu người dùng phải tuân thủ việc đeo thiết bị liên tục, điều này có thể gây khó chịu và dễ bị quên.
-        \item Dễ gây ra cảnh báo sai (false positive) trong các hoạt động hàng ngày có chuyển động đột ngột như chạy, nhảy, hoặc nằm xuống ghế một cách nhanh chóng. Điều này có thể dẫn đến sự phiền toái và làm giảm niềm tin vào hệ thống.
+        \item Yêu cầu người dùng đeo thiết bị liên tục, gây bất tiện hoặc dễ bị quên, đặc biệt với người cao tuổi.
+        \item Dễ gây cảnh báo sai khi thực hiện các hoạt động mạnh như chạy, nhảy hoặc ngồi xuống nhanh, với tỷ lệ false positive có thể lên đến 20\%~\cite{alarifi2021}.
+        \item Pin và hiệu chuẩn định kỳ là vấn đề, đặc biệt với các cảm biến cần bảo trì thường xuyên.
     \end{itemize}
 \end{itemize}
 
+% Subsection for environment-based sensor methods
 \subsection{Phương pháp dựa trên cảm biến môi trường}
 
-Phương pháp này sử dụng các cảm biến được lắp đặt cố định trong không gian sống để giám sát mà không yêu cầu người dùng đeo bất kỳ thiết bị nào.
+Phương pháp này sử dụng các cảm biến cố định trong không gian sống, phù hợp cho giám sát tại nhà hoặc cơ sở y tế mà không cần người dùng đeo thiết bị.
+
 \begin{itemize}
-    \item \textbf{Cơ chế hoạt động:} Các loại cảm biến phổ biến bao gồm cảm biến áp suất sàn, cảm biến hồng ngoại thụ động (PIR) và cảm biến âm thanh. Hệ thống sử dụng cảm biến áp suất để phát hiện sự thay đổi bất thường về trọng lượng trên sàn nhà, cảm biến PIR để phát hiện sự bất động của người trong một khu vực, hoặc cảm biến âm thanh để nhận diện tiếng va chạm đặc trưng của một cú té ngã.
+    \item \textbf{Cơ chế hoạt động:} Các cảm biến phổ biến bao gồm \textbf{cảm biến áp suất sàn} (phát hiện thay đổi trọng lượng), \textbf{cảm biến hồng ngoại thụ động (PIR)} (phát hiện chuyển động hoặc bất động) và \textbf{cảm biến âm thanh} (nhận diện tiếng va chạm). Ví dụ, cảm biến áp suất sàn phát hiện sự thay đổi trọng lượng bất thường (ví dụ: từ 60 kg xuống 0 kg trong 0.5 giây), trong khi cảm biến PIR ghi nhận sự bất động kéo dài~\cite{smartfloor2024}. Các hệ thống hiện đại tích hợp AI để phân tích dữ liệu, như mô hình học sâu trên cảm biến âm thanh đạt độ chính xác 92\% trong môi trường thử nghiệm~\cite{chen2024}. 
     \item \textbf{Ưu điểm:} 
     \begin{itemize}
-        \item Không xâm phạm và không gây khó chịu cho người dùng.
-        \item Có thể giám sát nhiều người trong một khu vực nhất định.
+        \item Không xâm phạm, không yêu cầu người dùng đeo thiết bị, phù hợp với người cao tuổi không muốn sử dụng thiết bị cá nhân.
+        \item Có thể giám sát nhiều người trong một khu vực, lý tưởng cho nhà dưỡng lão hoặc bệnh viện.
+        \item Dễ tích hợp vào hệ thống nhà thông minh (smart home).
     \end{itemize}
     \item \textbf{Nhược điểm:}
     \begin{itemize}
-        \item Chi phí lắp đặt ban đầu cao, phức tạp, và thường đòi hỏi sửa đổi cấu trúc nhà ở (đối với cảm biến sàn).
-        \item Hiệu suất bị giới hạn bởi phạm vi phủ sóng của từng cảm biến, có thể tạo ra các "điểm mù" (blind spots).
-        \item Khó phân biệt giữa người và các đối tượng khác, dễ gây cảnh báo sai.
+        \item Chi phí lắp đặt cao, đặc biệt với cảm biến sàn, có thể lên đến hàng nghìn USD cho một căn hộ~\cite{smartfloor2024}.
+        \item Phạm vi giám sát giới hạn, dẫn đến "điểm mù" ở các khu vực không có cảm biến.
+        \item Khó phân biệt giữa người và vật thể (ví dụ: vật nuôi, đồ vật rơi), gây cảnh báo sai với tỷ lệ lên đến 15\% trong môi trường phức tạp~\cite{chen2024}.
     \end{itemize}
 \end{itemize}
 
+% Subsection for vision-based methods
 \subsection{Phương pháp dựa trên thị giác máy tính}
 
-Phương pháp này tận dụng các camera và thuật toán xử lý ảnh để phân tích tư thế và chuyển động của con người một cách không tiếp xúc.
+Phương pháp này sử dụng camera và thuật toán xử lý ảnh để phân tích tư thế và chuyển động, mang lại thông tin trực quan phong phú mà không cần tiếp xúc vật lý.
+
 \begin{itemize}
-    \item \textbf{Cơ chế hoạt động:} Camera thu thập luồng video. Hệ thống sẽ thực hiện một chuỗi các bước xử lý ảnh, bắt đầu bằng việc phát hiện và theo dõi con người trong khung hình (sử dụng các mô hình như YOLO). Tiếp theo, các thuật toán ước tính tư thế (pose estimation), ví dụ như **MediaPipe Pose**, sẽ trích xuất các điểm chính trên cơ thể (keypoints). Cuối cùng, hệ thống phân tích sự thay đổi đột ngột của các keypoints (ví dụ: tư thế từ đứng thẳng chuyển sang nằm ngang) để xác định té ngã.
+    \item \textbf{Cơ chế hoạt động:} Hệ thống sử dụng camera RGB, camera độ sâu (RGB-D) hoặc camera hồng ngoại để thu thập video. Các bước xử lý bao gồm: (1) phát hiện con người bằng mô hình như YOLOv5/v8, (2) ước tính tư thế với các framework như OpenPose, MediaPipe hoặc MoveNet, trích xuất các điểm khớp xương (keypoints), và (3) phân tích động học keypoints để xác định té ngã (ví dụ: chuyển từ tư thế đứng sang nằm trong dưới 1 giây). Ví dụ, Bugarin và cộng sự~\cite{bugarin2022} sử dụng MediaPipe đạt F1-score 91.4\% trên tập dữ liệu MCFD. Các mô hình học sâu như Transformer hoặc CNN-LSTM được áp dụng để cải thiện độ chính xác, đạt mAP 98.6\% trong một số nghiên cứu~\cite{han2024}.
     \item \textbf{Ưu điểm:} 
     \begin{itemize}
-        \item Cung cấp thông tin bối cảnh trực quan và phong phú về sự cố, giúp việc xác nhận trở nên dễ dàng hơn.
-        \item Không yêu cầu người dùng phải đeo thiết bị.
+        \item Cung cấp thông tin bối cảnh trực quan, hỗ trợ xác nhận sự cố dễ dàng hơn thông qua hình ảnh hoặc video.
+        \item Không yêu cầu người dùng đeo thiết bị, giảm bất tiện và tăng chấp nhận từ người dùng.
+        \item Có thể tích hợp với hệ thống giám sát an ninh hiện có.
     \end{itemize}
     \item \textbf{Nhược điểm:}
     \begin{itemize}
-        \item Gây lo ngại nghiêm trọng về vấn đề riêng tư.
-        \item Hiệu suất phụ thuộc mạnh vào điều kiện môi trường như ánh sáng, góc quay và sự che khuất (occlusion).
-        \item Đòi hỏi năng lực tính toán lớn, đặc biệt đối với các mô hình học sâu.
+        \item Lo ngại về quyền riêng tư, đặc biệt khi sử dụng camera trong không gian riêng như phòng ngủ hoặc phòng tắm.
+        \item Hiệu suất phụ thuộc vào ánh sáng, góc quay và sự che khuất, với độ chính xác giảm 10--20\% trong điều kiện ánh sáng yếu~\cite{saraswat2024}.
+        \item Yêu cầu phần cứng tính toán mạnh, đặc biệt với các mô hình học sâu như Transformer, gây khó khăn cho triển khai trên thiết bị biên~\cite{stylios2024}.
     \end{itemize}
 \end{itemize}
 
+% Subsection for multi-modal methods
 \subsection{Phương pháp kết hợp đa phương thức}
 
-Phương pháp này là sự tiến hóa của các phương pháp trên, tích hợp nhiều nguồn dữ liệu để đạt được hiệu quả tối ưu.
+Phương pháp này kết hợp nhiều nguồn dữ liệu để cải thiện độ chính xác và độ tin cậy, tận dụng ưu điểm của các phương pháp riêng lẻ.
+
 \begin{itemize}
-    \item \textbf{Cơ chế hoạt động:} Hệ thống thu thập đồng thời dữ liệu từ nhiều nguồn, ví dụ như cảm biến đeo được và camera. Các thuật toán \textbf{kết hợp dữ liệu (data fusion)} sẽ phân tích tất cả các nguồn thông tin để đưa ra quyết định cuối cùng. Ví dụ, một cú ngã chỉ được xác nhận khi cả cảm biến phát hiện sự thay đổi gia tốc đột ngột VÀ camera ghi nhận tư thế nằm.
+    \item \textbf{Cơ chế hoạt động:} Hệ thống tích hợp dữ liệu từ cảm biến đeo (IMU), camera (RGB hoặc RGB-D), và đôi khi cảm biến môi trường. Các thuật toán \textbf{sensor fusion} (như Kalman Filter hoặc học sâu) kết hợp dữ liệu để đưa ra quyết định. Ví dụ, một sự kiện té ngã được xác nhận khi cảm biến IMU ghi nhận gia tốc bất thường và camera phát hiện tư thế nằm ngang~\cite{rougier2011}. Keskes và Noumeir~\cite{keskes2021} sử dụng mạng ST-GCN để xử lý đồng thời dữ liệu skeleton từ OpenPose và tín hiệu IMU, đạt F1-score 93.2\%. Các nghiên cứu gần đây (2024) tích hợp thêm cảm biến mmWave (như MR60FDA2) để tăng độ chính xác lên 95\% trong môi trường phức tạp~\cite{mmwave2025}.
     \item \textbf{Ưu điểm:} 
     \begin{itemize}
-        \item Tăng đáng kể độ chính xác và độ tin cậy, giảm tỷ lệ cảnh báo sai một cách hiệu quả.
-        \item Khả năng mở rộng phạm vi giám sát, vượt qua hạn chế của từng phương pháp riêng lẻ (ví dụ: camera trong nhà, cảm biến khi di chuyển ngoài tầm nhìn).
-        \item Tính linh hoạt cao, có thể điều chỉnh để phù hợp với nhiều môi trường khác nhau.
+        \item Giảm đáng kể tỷ lệ cảnh báo sai (xuống dưới 5\% trong một số hệ thống) nhờ xác minh đa nguồn~\cite{multimodal2024}.
+        \item Mở rộng phạm vi giám sát, phù hợp cho cả trong nhà và ngoài trời.
+        \item Tăng tính linh hoạt, có thể tùy chỉnh theo môi trường và nhu cầu cụ thể.
     \end{itemize}
     \item \textbf{Nhược điểm:}
+    \item \textbf{Nhược điểm:}
     \begin{itemize}
-        \item Độ phức tạp của hệ thống tăng lên, đòi hỏi các thuật toán kết hợp dữ liệu phức tạp.
-        \item Chi phí triển khai và tiêu thụ năng lượng cao hơn.
+        \item Độ phức tạp cao, yêu cầu thuật toán và phần cứng xử lý mạnh, tăng chi phí triển khai.
+        \item Tiêu thụ năng lượng lớn, đặc biệt khi tích hợp nhiều cảm biến và camera.
+        \item Khó khăn trong việc đồng bộ dữ liệu từ các nguồn khác nhau, có thể gây độ trễ trong xử lý thời gian thực~\cite{liu2018}.
     \end{itemize}
 \end{itemize}
+

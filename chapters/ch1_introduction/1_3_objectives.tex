@@ -21,7 +21,6 @@ Phát triển hệ thống truyền thông song song bao gồm \textbf{mạng n�
 
 Asterisk SIP Server được cấu hình với tài khoản SIP, dialplan, softphone/IP phone, kết nối UART với ESP32 để nhận tín hiệu và thực hiện cuộc gọi cảnh báo nội bộ không phụ thuộc Internet. Hạ tầng MQTT Internet sử dụng MQTT Broker Mosquitto, kết nối ESP32 qua 4G/Wi-Fi để gửi dữ liệu ra cloud hoặc dashboard từ xa.
 
-Tầng ứng dụng được xây dựng với Backend API (Flask/FastAPI), dashboard (Grafana, HTML), và Node-RED để điều phối logic cảnh báo, tích hợp các hành động gửi email, push notification, SMS. Hệ thống hỗ trợ cảnh báo đa kênh: gọi SIP nội bộ, tin nhắn MQTT, email hoặc thông báo app, với khả năng tích hợp mở rộng mobile app hoặc hệ thống báo động khác.
 
 \subsection{Đánh giá hiệu năng và giới hạn hệ thống}
 
