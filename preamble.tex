@@ -1,7 +1,7 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%           VIETNAMESE LATEX THESIS PREAMBLE - FINAL VERSION
-%           Optimized for XeLaTeX - No compile errors
+%           VIETNAMESE LATEX THESIS PREAMBLE - CLEAN FINAL
+%           XeLaTeX optimized, compile ready
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % --- XeLaTeX required ---
@@ -44,7 +44,7 @@
 \usepackage{hyperref}
 \usepackage{calc}
 \usepackage{url}
-\usepackage{amsmath} % amssymb removed to avoid conflicts
+\usepackage{amsmath} % amssymb removed
 
 % Listings for code
 \usepackage{listings}
@@ -59,7 +59,7 @@
     stringstyle=\color{red!70!black}
 }
 
-% Define JSON language for listings
+% JSON language for listings
 \lstdefinelanguage{json}{
     basicstyle=\ttfamily\small,
     numbers=none,
@@ -86,7 +86,7 @@
 }
 
 % Bibliography
-\usepackage[backend=biber,style=ieee,langid=english]{biblatex}
+\usepackage[backend=biber,style=ieee,]{biblatex}
 \addbibresource{bibliography/references.bib}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
