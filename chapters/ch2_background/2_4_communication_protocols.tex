@@ -1,197 +1,148 @@
 \section{Các Giao Thức Truyền Thông}
 \label{sec:communication_protocols}
 
-Phần này trình bày các giao thức truyền thông cơ bản cho phép trao đổi dữ liệu và điều khiển trong hệ thống cảnh báo viễn thông nhúng IoT. Các giao thức bao gồm Giao thức Khởi tạo Phiên (SIP), Message Queuing Telemetry Transport (MQTT), và JavaScript Object Notation (JSON).
+Phần này trình bày các giao thức truyền thông cốt lõi cho phép trao đổi dữ liệu và điều khiển trong hệ thống cảnh báo viễn thông nhúng IoT, bao gồm: Giao thức Khởi tạo Phiên (SIP), Message Queuing Telemetry Transport (MQTT), và JavaScript Object Notation (JSON).
 
 \subsection{Giao Thức Khởi Tạo Phiên (SIP)}
 \label{subsec:sip_protocol}
 
-SIP là giao thức báo hiệu cốt lõi cho các hệ thống VoIP, dùng để khởi tạo, quản lý, và kết thúc các phiên đa phương tiện qua mạng IP~\cite{sip_rfc3261}. Nó hỗ trợ các tính năng như gọi thoại, hội nghị video, nhắn tin tức thời, và thông tin hiện diện.
+SIP là giao thức báo hiệu nền tảng của VoIP, dùng để khởi tạo, quản lý và kết thúc các phiên đa phương tiện qua mạng IP~\cite{sip_rfc3261}. SIP hỗ trợ gọi thoại, hội nghị video, nhắn tin tức thời và thông tin hiện diện. Nó hoạt động ở lớp ứng dụng của mô hình TCP/IP, sử dụng các phương thức dựa trên văn bản tương tự HTTP để đảm bảo tính linh hoạt và dễ mở rộng.
 
 \subsubsection{Kiến Trúc và Luồng Thông Điệp}
 \label{subsubsec:sip_architecture}
 
-SIP hoạt động bằng cách trao đổi thông điệp giữa User Agent Clients (UACs) và User Agent Servers (UASs), với sự hỗ trợ của máy chủ proxy và đăng ký. Các thông điệp chính bao gồm:
+SIP hoạt động thông qua trao đổi thông điệp giữa \textit{User Agent Clients} (UACs) và \textit{User Agent Servers} (UASs), với sự hỗ trợ của máy chủ proxy, registrar và redirect server. Các thông điệp chính gồm:
 
 \begin{itemize}
-    \item \textbf{INVITE}: Khởi tạo phiên hoặc cuộc gọi.
-    \item \textbf{ACK}: Xác nhận phản hồi thành công cho INVITE.
-    \item \textbf{BYE}: Kết thúc phiên.
-    \item \textbf{CANCEL}: Hủy yêu cầu đang chờ.
-    \item \textbf{REGISTER}: Đăng ký thông tin thiết bị.
-    \item \textbf{OPTIONS}: Truy vấn khả năng của máy chủ.
+\item \textbf{INVITE}: Khởi tạo phiên hoặc cuộc gọi.
+\item \textbf{ACK}: Xác nhận phản hồi thành công cho INVITE.
+\item \textbf{BYE}: Kết thúc phiên.
+\item \textbf{CANCEL}: Hủy yêu cầu đang xử lý.
+\item \textbf{REGISTER}: Đăng ký thông tin thiết bị.
+\item \textbf{OPTIONS}: Truy vấn khả năng của máy chủ.
 \end{itemize}
 
-SIP kết hợp với Session Description Protocol (SDP) để định nghĩa tham số phiên (codec, cổng) và Real-time Transport Protocol (RTP) để truyền dữ liệu thoại/video, đảm bảo định tuyến linh hoạt và tối ưu hóa mạng.
+SIP kết hợp với \textit{Session Description Protocol} (SDP) để định nghĩa tham số phiên (như codec, cổng) và \textit{Real-time Transport Protocol} (RTP) để truyền dữ liệu thoại/video thời gian thực. Ngoài ra, RTCP (RTP Control Protocol) được sử dụng để giám sát chất lượng truyền dẫn.
 
 \subsubsection{SIP trong Hệ Thống Cảnh Báo Asterisk}
 \label{subsubsec:sip_asterisk_integration}
 
-Trong hệ thống cảnh báo dựa trên Asterisk, SIP kết nối các thiết bị như điện thoại IP, softphone, và PBX qua SIP trunk, mang lại các lợi ích:
+Trong hệ thống cảnh báo dựa trên Asterisk, SIP kết nối điện thoại IP, softphone và PBX qua SIP trunk, mang lại lợi ích:
 
 \begin{itemize}
-    \item \textbf{Quản lý tập trung}: Quản lý thống nhất thiết bị đầu cuối.
-    \item \textbf{Tương thích cao}: Hỗ trợ đa dạng thiết bị và nền tảng.
-    \item \textbf{Tuân thủ tiêu chuẩn}: Tích hợp dễ dàng với hạ tầng viễn thông.
+\item \textbf{Quản lý tập trung}: Đồng nhất cấu hình và quản lý thiết bị.
+\item \textbf{Tương thích cao}: Hỗ trợ đa dạng nền tảng và thiết bị.
+\item \textbf{Chuẩn mở}: Tích hợp dễ dàng với hạ tầng viễn thông hiện có.
+\item \textbf{Bảo mật}: Hỗ trợ mã hóa qua TLS và SRTP để bảo vệ dữ liệu.
 \end{itemize}
+
+Asterisk đóng vai trò như một SIP server, xử lý đăng ký và định tuyến cuộc gọi.
 
 \subsubsection{Luồng Phân Phối Cảnh Báo}
 \label{subsubsec:sip_alert_flows}
 
-Luồng cuộc gọi SIP cho cảnh báo tự động bao gồm các bước:
+\paragraph{Đăng ký}
+Thiết bị SIP gửi REGISTER tới Asterisk để xác thực và lưu thông tin liên lạc, thường kèm theo thông tin xác thực (username, password) trong header Authorization.
 
-\paragraph{Đăng Ký}
-Thiết bị SIP gửi yêu cầu REGISTER tới Asterisk (Registrar Server) để xác thực và lưu thông tin liên lạc.
+\paragraph{Thiết lập phiên}
+Ứng dụng Linux ra lệnh cho Asterisk khởi tạo cuộc gọi qua AMI (lệnh \texttt{Originate}). Asterisk gửi INVITE, nhận phản hồi (180 Ringing, 200 OK) và xác nhận bằng ACK. Có thể dùng header \texttt{Alert-Info: ;info=alert-autoanswer} để tự động trả lời, giúp phân phối cảnh báo nhanh chóng mà không cần tương tác thủ công.
 
-\paragraph{Thiết Lập Phiên}
-Khi phát hiện điều kiện nghiêm trọng, ứng dụng Linux ra lệnh cho Asterisk khởi tạo cuộc gọi qua Asterisk Manager Interface (AMI) bằng lệnh Originate. Asterisk gửi INVITE tới thiết bị đích, nhận phản hồi (180 Ringing, 200 OK), và xác nhận bằng ACK. Header \texttt{Alert-Info: ;info=alert-autoanswer} có thể được dùng để tự động trả lời.
+\paragraph{Trao đổi dữ liệu}
+Dữ liệu cảnh báo truyền qua RTP. Nếu dùng TTS (Text-to-Speech), Asterisk tạo âm thanh từ văn bản và phát tới người nhận qua các codec như G.711 hoặc G.729.
 
-\paragraph{Trao Đổi Dữ Liệu}
-Sau khi thiết lập, thông điệp cảnh báo được truyền qua RTP. Với Text-to-Speech (TTS), Asterisk tạo âm thanh từ văn bản và phát tới người nhận.
-
-\paragraph{Kết Thúc Phiên}
-Yêu cầu BYE từ một bên kết thúc phiên, được xác nhận bằng 200 OK.
+\paragraph{Kết thúc phiên}
+Một bên gửi BYE, bên kia phản hồi 200 OK để đóng phiên an toàn.
 
 \subsubsection{Tích Hợp SMS qua SIP}
 \label{subsubsec:sip_sms}
 
-SIP hỗ trợ gửi SMS trong Asterisk bằng cấu hình \texttt{textsupport=yes} trong \texttt{sip.conf} và logic trong \texttt{extensions.conf}, cho phép gửi cảnh báo văn bản qua nhà cung cấp SIP hoặc gateway GSM.
+Có thể gửi SMS trong Asterisk bằng cách kích hoạt \texttt{textsupport=yes} trong \texttt{sip.conf} và định nghĩa logic xử lý trong \texttt{extensions.conf}. Ví dụ, sử dụng lệnh \texttt{MessageSend} để gửi tin nhắn SIP MESSAGE, tích hợp với các nhà cung cấp SMS gateway để chuyển tiếp sang mạng di động.
 
 \subsection{Giao Thức Message Queuing Telemetry Transport (MQTT)}
 \label{subsec:mqtt_protocol}
 
-MQTT là giao thức nhẹ, tối ưu cho truyền thông máy-với-máy (M2M) trong IoT~\cite{mqtt_oasis_standard}, phù hợp với thiết bị hạn chế tài nguyên.
+MQTT là giao thức nhẹ, tối ưu cho truyền thông M2M trong IoT, hoạt động trên TCP/IP với cơ chế kết nối lâu dài~\cite{mqtt_oasis_standard}. Nó được thiết kế cho các thiết bị có tài nguyên hạn chế, băng thông thấp và kết nối không ổn định.
 
 \subsubsection{Kiến Trúc Publish/Subscribe}
 \label{subsubsec:mqtt_pubsub}
 
-MQTT sử dụng mô hình publish/subscribe, trong đó client gửi (publisher) và nhận (subscriber) thông điệp qua broker trung tâm, mang lại lợi ích:
-
+MQTT dùng mô hình publish/subscribe qua broker trung tâm (như Mosquitto hoặc HiveMQ), mang lại:
 \begin{itemize}
-    \item \textbf{Tách rời không gian}: Không cần biết vị trí mạng.
-    \item \textbf{Tách rời thời gian}: Không yêu cầu kết nối đồng thời.
-    \item \textbf{Tách rời đồng bộ}: Truyền và nhận độc lập.
+\item \textbf{Tách rời không gian}: Không cần biết địa chỉ IP của nhau.
+\item \textbf{Tách rời thời gian}: Không yêu cầu kết nối đồng thời, hỗ trợ retained messages.
+\item \textbf{Tách rời đồng bộ}: Truyền và nhận độc lập, giảm độ trễ.
+\item \textbf{Bảo mật}: Hỗ trợ TLS, xác thực username/password, và ACL để kiểm soát truy cập topic.
 \end{itemize}
 
-\subsubsection{Mức Quality of Service (QoS)}
+Các lệnh chính: CONNECT, PUBLISH, SUBSCRIBE, UNSUBSCRIBE, DISCONNECT. Topic sử dụng cấu trúc phân cấp như \texttt{sensor/room/temperature}.
+
+\subsubsection{Mức QoS}
 \label{subsubsec:mqtt_qos}
 
-MQTT cung cấp ba mức QoS:
-
 \begin{itemize}
-    \item \textbf{QoS 0}: Gửi một lần, không xác nhận, độ trễ thấp.
-    \item \textbf{QoS 1}: Gửi ít nhất một lần, có xác nhận, có thể trùng lặp.
-    \item \textbf{QoS 2}: Gửi chính xác một lần qua bắt tay bốn bước, độ tin cậy cao.
+\item \textbf{QoS 0 (At most once)}: Gửi một lần, không xác nhận, phù hợp cho dữ liệu không quan trọng.
+\item \textbf{QoS 1 (At least once)}: Gửi ít nhất một lần, có xác nhận (PUBACK), có thể trùng lặp.
+\item \textbf{QoS 2 (Exactly once)}: Gửi đúng một lần qua bắt tay bốn bước (PUBREC, PUBREL, PUBCOMP), đảm bảo tin cậy cao.
 \end{itemize}
 
-\subsubsection{MQTT trong IoT-Viễn Thông}
-\label{subsubsec:mqtt_iot_integration}
-
-MQTT hiệu quả cho IoT nhờ:
-
-\begin{itemize}
-    \item \textbf{Tiết kiệm tài nguyên}: Header nhỏ, yêu cầu thấp về bộ nhớ và băng thông.
-    \item \textbf{Phục hồi mạng}: Hoạt động tốt trên mạng không ổn định.
-    \item \textbf{Dữ liệu thời gian thực}: Hỗ trợ truyền cảm biến nhanh.
-    \item \textbf{Giao tiếp hai chiều}: Cho phép gửi lệnh từ máy chủ tới thiết bị.
-\end{itemize}
+Trong hệ thống IoT, QoS được chọn dựa trên mức độ quan trọng của dữ liệu cảnh báo.
 
 \subsection{JavaScript Object Notation (JSON)}
 \label{subsec:json_format}
 
-JSON là định dạng trao đổi dữ liệu nhẹ, dễ đọc, được dùng rộng rãi trong IoT và viễn thông~\cite{json_rfc7159}.
+JSON là định dạng dữ liệu nhẹ, dễ đọc, dùng rộng rãi trong IoT và viễn thông để trao đổi dữ liệu có cấu trúc~\cite{json_rfc8259}. Nó dựa trên cú pháp JavaScript nhưng độc lập ngôn ngữ.
 
 \subsubsection{Ứng Dụng JSON}
 \label{subsubsec:json_applications}
 
 \begin{itemize}
-    \item \textbf{Cấu hình}: Lưu thông tin cho ESP32 (mạng, cảm biến) và máy chủ Linux (cơ sở dữ liệu, API).
-    \item \textbf{Trao đổi dữ liệu}: Đóng gói số đọc cảm biến và cảnh báo giữa ESP32, máy chủ, và Asterisk.
-    \item \textbf{Tương thích}: Hỗ trợ tích hợp đa nền tảng, dễ phân tích.
+\item Lưu cấu hình thiết bị và máy chủ.
+\item Trao đổi dữ liệu cảm biến, cảnh báo giữa các thành phần hệ thống.
+\item Tương thích đa nền tảng, dễ phân tích bằng các thư viện như json-c cho C, hoặc ArduinoJson cho ESP32.
+\item Hỗ trợ tích hợp với MQTT payload hoặc SIP message body.
 \end{itemize}
 
 \subsubsection{Ví Dụ JSON}
 \label{subsubsec:json_examples}
 
-\paragraph{Cấu Hình ESP32}
-\begin{figure}[htbp]
-  \centering
-  \begin{lstlisting}[language=json, caption=Cấu hình ESP32, label=lst:esp32_config]
+
+% --- JSON Example 1 ---
+\begin{figure}[H]
+\centering
+\begin{minted}[frame=single, breaklines, bgcolor=lightgray, xleftmargin=10pt, linenos]{json}
 {
-    "network": {
-        "ssid": "IoT_Network",          
-        "password": "MatKhauBaoMat123",
-        "mqtt_broker": "192.168.1.100", 
-        "mqtt_port": 1883              
-    },
-    "device": {
-        "id": "ESP32_Sensor_01",      
-        "location": "Tang_May_A"     
-    }
+  "network": {
+    "ssid": "IoT_Network",
+    "password": "MatKhauBaoMat123",
+    "mqtt_broker": "192.168.1.100",
+    "mqtt_port": 1883
+  },
+  "device": {
+    "id": "ESP32_Sensor_01",
+    "location": "Tang_May_A"
+  }
 }
-  \end{lstlisting}
+\end{minted}
+\caption{Cấu hình ESP32}
+\label{fig:json_esp32_config}
 \end{figure}
 
-\begin{figure}[htbp]
-  \centering
-  \begin{lstlisting}[language=json, caption=Dữ liệu Cảm Biến, label=lst:sensor_payload]
+% --- JSON Example 2 ---
+\begin{figure}[H]
+\centering
+\begin{minted}[frame=single, breaklines, bgcolor=lightgray, xleftmargin=10pt, linenos]{json}
 {
-    "device_id": "ESP32_Sensor_01", 
-    "timestamp": "2024-03-15T10:30:00Z",
-    "readings": {
-        "temperature": {
-            "value": 87.5,         
-            "unit": "celsius",
-            "status": "critical"
-        }
+  "device_id": "ESP32_Sensor_01",
+  "timestamp": "2024-03-15T10:30:00Z",
+  "readings": {
+    "temperature": {
+      "value": 87.5,
+      "unit": "celsius",
+      "status": "critical"
     }
+  }
 }
-  \end{lstlisting}
+\end{minted}
+\caption{Dữ liệu Cảm Biến}
+\label{fig:json_sensor_data}
 \end{figure}
-
-\begin{figure}[htbp]
-  \centering
-  \begin{lstlisting}[language=json, caption=Cảnh báo, label=lst:alert_payload]
-{
-    "alert_id": "ALT_20240315_001", 
-    "timestamp": "2024-03-15T10:30:01Z",
-    "details": {
-        "parameter": "temperature",
-        "current_value": 87.5,
-        "threshold_exceeded": 85.0
-    },
-    "telecom_actions": {
-        "voice_call": {
-            "recipients": ["doi_bao_tri"],
-            "tts_message": "Cảnh báo: Nhiệt độ 87.5°C tại Tầng Máy A"
-        }
-    }
-}
-  \end{lstlisting}
-\end{figure}
-\subsection{Tích Hợp Giao Thức}
-\label{subsec:protocol_integration}
-
-SIP, MQTT, và JSON tạo thành framework truyền thông mạnh mẽ cho hệ thống cảnh báo IoT. Luồng dữ liệu bao gồm:
-
-\begin{enumerate}
-    \item \textbf{Thu thập dữ liệu}: ESP32 định dạng số đọc cảm biến thành JSON.
-    \item \textbf{Xuất bản MQTT}: Gửi JSON qua topic MQTT với QoS phù hợp.
-    \item \textbf{Xử lý máy chủ}: Máy chủ Linux phân tích JSON, đánh giá cảnh báo.
-    \item \textbf{Kích hoạt viễn thông}: Dùng API Asterisk để gửi cảnh báo qua SIP.
-    \item \textbf{Lưu trữ}: Ghi log dữ liệu và cảnh báo để kiểm toán.
-\end{enumerate}
-
-\subsection{Bảo Mật}
-\label{subsec:protocol_security}
-
-\begin{itemize}
-    \item \textbf{SIP}: Sử dụng TLS (SIPS) và SRTP để mã hóa, xác thực ngăn truy cập trái phép.
-    \item \textbf{MQTT}: Hỗ trợ TLS/SSL, xác thực tên người dùng/mật khẩu, và ACLs.
-    \item \textbf{JSON}: Xác thực đầu vào, mã hóa dữ liệu nhạy cảm khi truyền và lưu trữ.
-\end{itemize}
-
-\subsection{Tóm Tắt}
-\label{subsec:protocol_summary}
-
-SIP, MQTT, và JSON tạo nên hệ thống truyền thông đáng tin cậy cho cảnh báo IoT. SIP hỗ trợ báo hiệu, MQTT truyền dữ liệu thời gian thực, và JSON đảm bảo trao đổi dữ liệu linh hoạt, tạo nền tảng an toàn và có thể mở rộng.

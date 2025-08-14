@@ -5,8 +5,7 @@
 
 % --- XeLaTeX required ---
 \usepackage{fontspec}
-
-% --- Polyglossia for Vietnamese and English ---
+% --- Polyglossia for Vietnamese and English --
 \usepackage{polyglossia}
 \setmainlanguage{vietnamese}
 \setotherlanguage{english}
@@ -32,15 +31,16 @@
 \usepackage{unicode-math}
 \setmathfont{Latin Modern Math}
 
-% Microtype
-\usepackage{microtype}
-\microtypesetup{protrusion=true, expansion=false, kerning=false, spacing=true}
+% Microtype (XeLaTeX compatible)
+\usepackage[protrusion=true, expansion=false]{microtype}
+\microtypesetup{kerning=false, spacing=true}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                    ADDITIONAL PACKAGES
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \usepackage{xcolor}
-\definecolor{darkblue}{RGB}{0,0,139}
+\usepackage{minted} % minted với cache để tránh cần shell-escape mỗi lần
 \usepackage{graphicx}
 \graphicspath{{figures/}{chapters/ch2_background/}{chapters/ch3_methodology/}}
 \usepackage{calc}
@@ -49,53 +49,25 @@
 \usepackage{caption}
 \usepackage{subcaption}
 \captionsetup{justification=centering, labelfont=bf}
-\usepackage{listings}
-\lstset{
-    basicstyle=\ttfamily\small,
-    breaklines=true,
+\captionsetup[subfigure]{justification=centering}
+
+% Màu cho minted
+\definecolor{darkblue}{RGB}{0,0,139}
+\definecolor{lightgray}{gray}{0.95}
+
+% Cấu hình minted
+\setminted{
     frame=single,
-    numbers=left,
-    numberstyle=\tiny,
-    keywordstyle=\color{blue},
-    commentstyle=\color{gray},
-    stringstyle=\color{red!70!black},
-    showstringspaces=false
+    linenos=true,
+    numbersep=10pt,
+    bgcolor=lightgray,
+    fontsize=\small,
+    breaklines=true,
+    tabsize=4,
+    xleftmargin=10pt,
+    escapeinside=||
 }
 
-% Định nghĩa ngôn ngữ JSON
-\lstdefinelanguage{json}{
-    basicstyle=\ttfamily\small,
-    numbers=left,
-    numberstyle=\tiny,
-    stepnumber=1,
-    numbersep=5pt,
-    showstringspaces=false,
-    breaklines=true,
-    frame=single,
-    backgroundcolor=\color{white},
-    literate=
-     *{0}{{{\color{numb}0}}}{1}
-      {1}{{{\color{numb}1}}}{1}
-      {2}{{{\color{numb}2}}}{1}
-      {3}{{{\color{numb}3}}}{1}
-      {4}{{{\color{numb}4}}}{1}
-      {5}{{{\color{numb}5}}}{1}
-      {6}{{{\color{numb}6}}}{1}
-      {7}{{{\color{numb}7}}}{1}
-      {8}{{{\color{numb}8}}}{1}
-      {9}{{{\color{numb}9}}}{1}
-      {:}{{{\color{punct}{:}}}}{1}
-      {,}{{{\color{punct}{,}}}}{1}
-      {\{}{{{\color{delim}{\{}}}}{1}
-      {\}}{{{\color{delim}{\}}}}}{1}
-      {[}{{{\color{delim}{[}}}}{1}
-      {]}{{{\color{delim}{]}}}}{1},
-}
-
-% Màu sắc JSON
-\definecolor{numb}{rgb}{0.63,0.0,0.0}
-\definecolor{punct}{rgb}{0.5,0.5,0.5}
-\definecolor{delim}{rgb}{0.1,0.1,0.1}
 % Bibliography
 \usepackage[backend=biber,style=ieee]{biblatex}
 \addbibresource{references.bib}
