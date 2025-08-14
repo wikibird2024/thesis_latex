@@ -1,8 +1,7 @@
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%           VIETNAMESE LATEX THESIS PREAMBLE - CLEAN FINAL
-%           XeLaTeX optimized, compile ready
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%           VIETNAMESE LATEX THESIS PREAMBLE - XELATEX OPTIMIZED
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % --- XeLaTeX required ---
 \usepackage{fontspec}
@@ -27,12 +26,15 @@
 ]
 \setmonofont{Liberation Mono}[Scale=0.9]
 
-% Unicode math (replace amssymb)
+\newfontfamily{\vietfont}{Liberation Serif}[Scale=MatchLowercase]
+
+% Unicode math
 \usepackage{unicode-math}
 \setmathfont{Latin Modern Math}
 
-% Microtype (disable expansion for XeLaTeX)
-\usepackage[protrusion=true,expansion=false]{microtype}
+% Microtype
+\usepackage{microtype}
+\microtypesetup{protrusion=true, expansion=false, kerning=false, spacing=true}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                    ADDITIONAL PACKAGES
@@ -41,12 +43,12 @@
 \definecolor{darkblue}{RGB}{0,0,139}
 \usepackage{graphicx}
 \graphicspath{{figures/}{chapters/ch2_background/}{chapters/ch3_methodology/}}
-\usepackage{hyperref}
 \usepackage{calc}
 \usepackage{url}
-\usepackage{amsmath} % amssymb removed
-
-% Listings for code
+\usepackage{amsmath}
+\usepackage{caption}
+\usepackage{subcaption}
+\captionsetup{justification=centering, labelfont=bf}
 \usepackage{listings}
 \lstset{
     basicstyle=\ttfamily\small,
@@ -56,52 +58,59 @@
     numberstyle=\tiny,
     keywordstyle=\color{blue},
     commentstyle=\color{gray},
-    stringstyle=\color{red!70!black}
+    stringstyle=\color{red!70!black},
+    showstringspaces=false
 }
 
-% JSON language for listings
+% Định nghĩa ngôn ngữ JSON
 \lstdefinelanguage{json}{
     basicstyle=\ttfamily\small,
-    numbers=none,
+    numbers=left,
+    numberstyle=\tiny,
+    stepnumber=1,
+    numbersep=5pt,
+    showstringspaces=false,
     breaklines=true,
     frame=single,
+    backgroundcolor=\color{white},
     literate=
-     *{0}{{{\color{blue}0}}}{1}
-      {1}{{{\color{blue}1}}}{1}
-      {2}{{{\color{blue}2}}}{1}
-      {3}{{{\color{blue}3}}}{1}
-      {4}{{{\color{blue}4}}}{1}
-      {5}{{{\color{blue}5}}}{1}
-      {6}{{{\color{blue}6}}}{1}
-      {7}{{{\color{blue}7}}}{1}
-      {8}{{{\color{blue}8}}}{1}
-      {9}{{{\color{blue}9}}}{1}
-      {:}{{{\color{red}:}}}{1}
-      {,}{{{\color{red},}}}{1}
-      {\{}{{{\color{orange}\{}}}{1}
-      {\}}{{{\color{orange}\}}}}{1}
-      {[}{{{\color{orange}[}}}{1}
-      {]}{{{\color{orange}]}}}{1}
-      {"}{{{\color{green}"}}}{1}
+     *{0}{{{\color{numb}0}}}{1}
+      {1}{{{\color{numb}1}}}{1}
+      {2}{{{\color{numb}2}}}{1}
+      {3}{{{\color{numb}3}}}{1}
+      {4}{{{\color{numb}4}}}{1}
+      {5}{{{\color{numb}5}}}{1}
+      {6}{{{\color{numb}6}}}{1}
+      {7}{{{\color{numb}7}}}{1}
+      {8}{{{\color{numb}8}}}{1}
+      {9}{{{\color{numb}9}}}{1}
+      {:}{{{\color{punct}{:}}}}{1}
+      {,}{{{\color{punct}{,}}}}{1}
+      {\{}{{{\color{delim}{\{}}}}{1}
+      {\}}{{{\color{delim}{\}}}}}{1}
+      {[}{{{\color{delim}{[}}}}{1}
+      {]}{{{\color{delim}{]}}}}{1},
 }
 
+% Màu sắc JSON
+\definecolor{numb}{rgb}{0.63,0.0,0.0}
+\definecolor{punct}{rgb}{0.5,0.5,0.5}
+\definecolor{delim}{rgb}{0.1,0.1,0.1}
 % Bibliography
-\usepackage[backend=biber,style=ieee,]{biblatex}
-\addbibresource{bibliography/references.bib}
+\usepackage[backend=biber,style=ieee]{biblatex}
+\addbibresource{references.bib}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                    CUSTOM MACROS FOR THESIS
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newcommand{\TENLUANVAN}{Hệ thống phát hiện và cảnh báo té ngã thời gian thực tích hợp cảm biến, xử lý ảnh và định vị}
 \newcommand{\THESISNAME}{Real-time fall detection and alert system integrating sensors, image processing, and positioning}
-
 \newcommand{\TENTACGIA}{Tran Hao}
 \newcommand{\MASOSV}{173401}
 \newcommand{\KHOA}{Điện - Điện tử}
 \newcommand{\BOMON}{Viễn thông}
 \newcommand{\TENNGUOIHUONGDAN}{PSG.TS Ha Hoang Kha}
 \newcommand{\NAMBAOVE}{2025}
-
 \newcommand{\DEPARTMENT}{\KHOA}
 \newcommand{\TENTACGIAFACULTY}{\TENTACGIA}
 \newcommand{\MSSV}{\MASOSV}
@@ -126,10 +135,10 @@
 \usepackage{indentfirst}
 \setlength{\parindent}{1.2em}
 \setlength{\parskip}{0pt}
-\tolerance=10000
-\emergencystretch=3em
-\hyphenpenalty=10000
-\exhyphenpenalty=10000
+\tolerance=2000
+\emergencystretch=0.5em
+\hyphenpenalty=5000
+\exhyphenpenalty=5000
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                     HEADER, FOOTER & TITLES
@@ -144,9 +153,8 @@
 \renewcommand{\footrulewidth}{0pt}
 \renewcommand{\chaptermark}[1]{\markboth{\chaptername\ \thechapter.\ #1}{}}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                     OTHER SETTINGS
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Hyperref (load last)
+\usepackage{hyperref}
 \hypersetup{
     colorlinks=true,
     linkcolor=darkblue,

@@ -114,7 +114,9 @@ JSON là định dạng trao đổi dữ liệu nhẹ, dễ đọc, được dù
 \label{subsubsec:json_examples}
 
 \paragraph{Cấu Hình ESP32}
-\begin{lstlisting}[language=json, caption=Cấu hình ESP32, label=lst:esp32_config]
+\begin{figure}[htbp]
+  \centering
+  \begin{lstlisting}[language=json, caption=Cấu hình ESP32, label=lst:esp32_config]
 {
     "network": {
         "ssid": "IoT_Network",          
@@ -127,10 +129,12 @@ JSON là định dạng trao đổi dữ liệu nhẹ, dễ đọc, được dù
         "location": "Tang_May_A"     
     }
 }
-\end{lstlisting}
+  \end{lstlisting}
+\end{figure}
 
-\paragraph{Dữ Liệu Cảm Biến}
-\begin{lstlisting}[language=json, caption=Payload cảm biến MQTT, label=lst:sensor_payload]
+\begin{figure}[htbp]
+  \centering
+  \begin{lstlisting}[language=json, caption=Dữ liệu Cảm Biến, label=lst:sensor_payload]
 {
     "device_id": "ESP32_Sensor_01", 
     "timestamp": "2024-03-15T10:30:00Z",
@@ -142,10 +146,12 @@ JSON là định dạng trao đổi dữ liệu nhẹ, dễ đọc, được dù
         }
     }
 }
-\end{lstlisting}
+  \end{lstlisting}
+\end{figure}
 
-\paragraph{Cảnh Báo}
-\begin{lstlisting}[language=json, caption=Payload cảnh báo, label=lst:alert_payload]
+\begin{figure}[htbp]
+  \centering
+  \begin{lstlisting}[language=json, caption=Cảnh báo, label=lst:alert_payload]
 {
     "alert_id": "ALT_20240315_001", 
     "timestamp": "2024-03-15T10:30:01Z",
@@ -161,8 +167,8 @@ JSON là định dạng trao đổi dữ liệu nhẹ, dễ đọc, được dù
         }
     }
 }
-\end{lstlisting}
-
+  \end{lstlisting}
+\end{figure}
 \subsection{Tích Hợp Giao Thức}
 \label{subsec:protocol_integration}
 
