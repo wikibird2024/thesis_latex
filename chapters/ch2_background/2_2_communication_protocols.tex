@@ -11,7 +11,7 @@ SIP là giao thức báo hiệu nền tảng của VoIP, dùng để khởi tạ
 \subsubsection{Kiến Trúc và Luồng Thông Điệp}
 \label{subsubsec:sip_architecture}
 
-SIP hoạt động thông qua trao đổi thông điệp giữa \textit{User Agent Clients} (UACs) và \textit{User Agent Servers} (UASs), với sự hỗ trợ của máy chủ proxy, registrar và redirect server. Các thông điệp chính gồm:
+SIP hoạt động thông qua trao đổi thông điệp giữa \textit{User Agent Clients} (UACs) và \textit{User Agent Servers} (UASs), với sự hỗ trợ của các máy chủ trung gian: \textbf{Proxy Server} (chuyển tiếp tin nhắn), \textbf{Registrar Server} (lưu trữ thông tin đăng ký) và \textbf{Redirect Server} (hướng UAC tới địa chỉ khác). Các thông điệp chính gồm:
 
 \begin{itemize}
 \item \textbf{INVITE}: Khởi tạo phiên hoặc cuộc gọi.
@@ -33,7 +33,7 @@ Trong hệ thống cảnh báo dựa trên Asterisk, SIP kết nối điện tho
 \item \textbf{Quản lý tập trung}: Đồng nhất cấu hình và quản lý thiết bị.
 \item \textbf{Tương thích cao}: Hỗ trợ đa dạng nền tảng và thiết bị.
 \item \textbf{Chuẩn mở}: Tích hợp dễ dàng với hạ tầng viễn thông hiện có.
-\item \textbf{Bảo mật}: Hỗ trợ mã hóa qua TLS và SRTP để bảo vệ dữ liệu.
+\item \textbf{Bảo mật}: Hỗ trợ mã hóa qua \textbf{TLS} (cho kênh SIP) và \textbf{SRTP} (cho luồng RTP) để bảo vệ dữ liệu.
 \end{itemize}
 
 Asterisk đóng vai trò như một SIP server, xử lý đăng ký và định tuyến cuộc gọi.
@@ -58,6 +58,8 @@ Một bên gửi BYE, bên kia phản hồi 200 OK để đóng phiên an toàn.
 
 Có thể gửi SMS trong Asterisk bằng cách kích hoạt \texttt{textsupport=yes} trong \texttt{sip.conf} và định nghĩa logic xử lý trong \texttt{extensions.conf}. Ví dụ, sử dụng lệnh \texttt{MessageSend} để gửi tin nhắn SIP MESSAGE, tích hợp với các nhà cung cấp SMS gateway để chuyển tiếp sang mạng di động.
 
+---
+
 \subsection{Giao Thức Message Queuing Telemetry Transport (MQTT)}
 \label{subsec:mqtt_protocol}
 
@@ -69,7 +71,7 @@ MQTT là giao thức nhẹ, tối ưu cho truyền thông M2M trong IoT, hoạt 
 MQTT dùng mô hình publish/subscribe qua broker trung tâm (như Mosquitto hoặc HiveMQ), mang lại:
 \begin{itemize}
 \item \textbf{Tách rời không gian}: Không cần biết địa chỉ IP của nhau.
-\item \textbf{Tách rời thời gian}: Không yêu cầu kết nối đồng thời, hỗ trợ retained messages.
+\item \textbf{Tách rời thời gian}: Không yêu cầu kết nối đồng thời, hỗ trợ \textbf{retained messages} (tin nhắn được lưu lại để gửi cho subscriber mới) và \textbf{clean session} (quản lý trạng thái phiên của client).
 \item \textbf{Tách rời đồng bộ}: Truyền và nhận độc lập, giảm độ trễ.
 \item \textbf{Bảo mật}: Hỗ trợ TLS, xác thực username/password, và ACL để kiểm soát truy cập topic.
 \end{itemize}
@@ -79,6 +81,8 @@ Các lệnh chính: CONNECT, PUBLISH, SUBSCRIBE, UNSUBSCRIBE, DISCONNECT. Topic 
 \subsubsection{Mức QoS}
 \label{subsubsec:mqtt_qos}
 
+MQTT cung cấp 3 mức QoS để đảm bảo độ tin cậy.
+
 \begin{itemize}
 \item \textbf{QoS 0 (At most once)}: Gửi một lần, không xác nhận, phù hợp cho dữ liệu không quan trọng.
 \item \textbf{QoS 1 (At least once)}: Gửi ít nhất một lần, có xác nhận (PUBACK), có thể trùng lặp.
@@ -86,6 +90,8 @@ Các lệnh chính: CONNECT, PUBLISH, SUBSCRIBE, UNSUBSCRIBE, DISCONNECT. Topic 
 \end{itemize}
 
 Trong hệ thống IoT, QoS được chọn dựa trên mức độ quan trọng của dữ liệu cảnh báo.
+
+---
 
 \subsection{JavaScript Object Notation (JSON)}
 \label{subsec:json_format}
@@ -98,15 +104,13 @@ JSON là định dạng dữ liệu nhẹ, dễ đọc, dùng rộng rãi trong 
 \begin{itemize}
 \item Lưu cấu hình thiết bị và máy chủ.
 \item Trao đổi dữ liệu cảm biến, cảnh báo giữa các thành phần hệ thống.
-\item Tương thích đa nền tảng, dễ phân tích bằng các thư viện như json-c cho C, hoặc ArduinoJson cho ESP32.
-\item Hỗ trợ tích hợp với MQTT payload hoặc SIP message body.
+\item Tương thích đa nền tảng, dễ phân tích bằng các thư viện như \textit{json-c} cho C, hoặc \textit{ArduinoJson} cho ESP32.
+\item Tối ưu hóa payload cho MQTT và SIP bằng cách giảm độ dài tên khóa và loại bỏ khoảng trắng.
 \end{itemize}
 
 \subsubsection{Ví Dụ JSON}
 \label{subsubsec:json_examples}
 
-
-% --- JSON Example 1 ---
 \begin{figure}[H]
 \centering
 \begin{minted}[frame=single, breaklines, bgcolor=lightgray, xleftmargin=10pt, linenos]{json}
@@ -127,7 +131,6 @@ JSON là định dạng dữ liệu nhẹ, dễ đọc, dùng rộng rãi trong 
 \label{fig:json_esp32_config}
 \end{figure}
 
-% --- JSON Example 2 ---
 \begin{figure}[H]
 \centering
 \begin{minted}[frame=single, breaklines, bgcolor=lightgray, xleftmargin=10pt, linenos]{json}
@@ -146,3 +149,58 @@ JSON là định dạng dữ liệu nhẹ, dễ đọc, dùng rộng rãi trong 
 \caption{Dữ liệu Cảm Biến}
 \label{fig:json_sensor_data}
 \end{figure}
+
+---
+
+\section{Tổng Hợp Luồng Dữ Liệu và Tích Hợp Hệ Thống}
+\label{sec:system_integration}
+
+Phần này mô tả cách các giao thức SIP, MQTT và định dạng JSON phối hợp trong một hệ thống cảnh báo IoT/VoIP toàn diện.
+
+\subsubsection{Cấu hình Asterisk và MQTT để xử lý cảnh báo}
+\label{subsubsec:config_asterisk}
+
+\paragraph{Cấu hình MQTT Broker (Mosquitto ACL)}
+Để đảm bảo an toàn, cần thiết lập quyền truy cập (ACL) cho các thiết bị IoT.
+\begin{minted}[frame=single, breaklines, bgcolor=lightgray, xleftmargin=10pt, linenos]{text}
+# file: /etc/mosquitto/acl.conf
+user esp32_sensor
+topic write home/sensor/data
+topic read home/alerts/#
+\end{minted}
+Với cấu hình này, thiết bị \texttt{esp32\_sensor} chỉ có thể gửi dữ liệu lên topic \texttt{home/sensor/data} và nhận cảnh báo từ các topic dưới \texttt{home/alerts}.
+
+\paragraph{Cấu hình Asterisk (extensions.conf)}
+Một ứng dụng bên ngoài (ví dụ, một script Python) sẽ theo dõi tin nhắn MQTT và sử dụng Asterisk Manager Interface (AMI) để khởi tạo cuộc gọi. Dưới đây là logic xử lý cuộc gọi trong \texttt{extensions.conf}.
+\begin{minted}[frame=single, breaklines, bgcolor=lightgray, xleftmargin=10pt, linenos]{text}
+[mqtt-alert]
+exten => s,1,NoOp(Received MQTT Alert)
+exten => s,n,Set(ALERT_MSG=${ALERT_INFO})
+exten => s,n,Verbose(1, Alert received: ${ALERT_MSG})
+exten => s,n,System(/usr/bin/php /var/www/alert_processor.php "${ALERT_MSG}")
+exten => s,n,Hangup()
+\end{minted}
+Trong đó, script \texttt{alert\_processor.php} sẽ nhận thông tin từ AMI và thực hiện các hành động tiếp theo, chẳng hạn như gửi lệnh \texttt{Originate} để gọi tới một số điện thoại.
+
+\subsubsection{Sơ đồ Luồng Dữ liệu}
+Luồng dữ liệu được minh họa theo các bước sau:
+\begin{enumerate}
+    \item \textbf{Thiết bị (ESP32)}: Thiết bị nhúng thu thập dữ liệu cảm biến. Khi một sự kiện cảnh báo (ví dụ: nhiệt độ vượt ngưỡng) xảy ra, nó tạo một payload \textbf{JSON} nhỏ gọn chứa thông tin chi tiết về cảnh báo.
+    \item \textbf{MQTT Publish}: Thiết bị sử dụng giao thức \textbf{MQTT} để gửi payload JSON này tới một topic cụ thể trên \textbf{MQTT Broker} (ví dụ: \texttt{alert/sensor/temperature}).
+    \item \textbf{MQTT Subscribe}: Một ứng dụng trung gian trên \textbf{Asterisk Server} theo dõi (subscribe) topic này. Khi nhận được tin nhắn, ứng dụng sẽ phân tích payload \textbf{JSON} để trích xuất loại và giá trị cảnh báo.
+    \item \textbf{SIP Origination}: Dựa trên thông tin từ payload JSON, ứng dụng này sử dụng \textbf{AMI (Asterisk Manager Interface)} để kích hoạt một cuộc gọi SIP (\texttt{Originate}) tới một số điện thoại đã được cấu hình.
+    \item \textbf{SIP Session}: Asterisk gửi \texttt{INVITE} và thiết lập phiên thoại với người nhận. Dữ liệu âm thanh cảnh báo (được tạo từ TTS) được truyền qua \textbf{RTP/SRTP}.
+    \item \textbf{Kết thúc}: Sau khi bản tin cảnh báo được phát, phiên SIP kết thúc bằng tin nhắn \texttt{BYE}.
+\end{enumerate}
+
+---
+
+\subsubsection{Tối ưu hóa Hiệu suất và Độ tin cậy}
+\label{subsec:optimization}
+
+\begin{itemize}
+    \item \textbf{Tối ưu hóa Payload}: Giảm kích thước của payload \textbf{JSON} để giảm băng thông và năng lượng tiêu thụ trên thiết bị nhúng.
+    \item \textbf{QoS}: Sử dụng QoS 1 hoặc 2 cho các tin nhắn cảnh báo quan trọng trên MQTT để đảm bảo chúng không bị mất. Sử dụng QoS 0 cho các tin nhắn dữ liệu cảm biến thường xuyên để tối ưu hiệu suất.
+    \item \textbf{Quản lý kết nối}: Triển khai cơ chế tự động kết nối lại (\textit{reconnect}) cho cả MQTT và SIP trên thiết bị nhúng để xử lý mất kết nối tạm thời.
+    \item \textbf{Bảo mật}: Luôn sử dụng \textbf{TLS} cho cả MQTT và SIP để mã hóa dữ liệu. Cấu hình \textbf{ACL} trên MQTT Broker và xác thực người dùng trên SIP Server để ngăn chặn truy cập trái phép.
+\end{itemize}
