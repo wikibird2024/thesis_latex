@@ -1,0 +1,17 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8\relax}]
+\PYG{k+kn}{import} \PYG{n+nn}{cv2}
+
+\PYG{c+c1}{\PYGZsh{} Đọc một hình ảnh ở định dạng BGR}
+\PYG{n}{image} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{imread}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{path/to/image.jpg}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{)}
+
+\PYG{c+c1}{\PYGZsh{} Kiểm tra xem hình ảnh đã được tải đúng cách chưa}
+\PYG{k}{if} \PYG{n}{image} \PYG{o+ow}{is} \PYG{k+kc}{None}\PYG{p}{:}
+    \PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{Lỗi: Không thể đọc hình ảnh.}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}
+\PYG{k}{else}\PYG{p}{:}
+    \PYG{c+c1}{\PYGZsh{} Hiển thị hình ảnh trong một cửa sổ}
+    \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{imshow}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{Hình ảnh của tôi}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{,} \PYG{n}{image}\PYG{p}{)}
+    \PYG{c+c1}{\PYGZsh{} Chờ một phím được nhấn}
+    \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{waitKey}\PYG{p}{(}\PYG{l+m+mi}{0}\PYG{p}{)}
+    \PYG{c+c1}{\PYGZsh{} Đóng tất cả các cửa sổ}
+    \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{destroyAllWindows}\PYG{p}{(}\PYG{p}{)}
+\end{Verbatim}

@@ -1,0 +1,20 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8\relax}]
+\PYG{k+kn}{import} \PYG{n+nn}{skimage}\PYG{n+nn}{.}\PYG{n+nn}{io}
+\PYG{k+kn}{from} \PYG{n+nn}{skimage} \PYG{k+kn}{import} \PYG{n}{filters}\PYG{p}{,} \PYG{n}{color}
+\PYG{k+kn}{import} \PYG{n+nn}{matplotlib}\PYG{n+nn}{.}\PYG{n+nn}{pyplot} \PYG{k}{as} \PYG{n+nn}{plt}
+
+\PYG{c+c1}{\PYGZsh{} Đọc một hình ảnh ở định dạng RGB (mặc định cho skimage)}
+\PYG{n}{image} \PYG{o}{=} \PYG{n}{skimage}\PYG{o}{.}\PYG{n}{io}\PYG{o}{.}\PYG{n}{imread}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{path/to/image.jpg}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{)}
+
+\PYG{c+c1}{\PYGZsh{} Chuyển đổi sang thang độ xám}
+\PYG{n}{gray\PYGZus{}image} \PYG{o}{=} \PYG{n}{color}\PYG{o}{.}\PYG{n}{rgb2gray}\PYG{p}{(}\PYG{n}{image}\PYG{p}{)}
+
+\PYG{c+c1}{\PYGZsh{} Áp dụng bộ lọc Gaussian}
+\PYG{n}{filtered\PYGZus{}image} \PYG{o}{=} \PYG{n}{filters}\PYG{o}{.}\PYG{n}{gaussian}\PYG{p}{(}\PYG{n}{gray\PYGZus{}image}\PYG{p}{,} \PYG{n}{sigma}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{)}
+
+\PYG{c+c1}{\PYGZsh{} Hiển thị hình ảnh bằng Matplotlib}
+\PYG{n}{fig}\PYG{p}{,} \PYG{n}{axes} \PYG{o}{=} \PYG{n}{plt}\PYG{o}{.}\PYG{n}{subplots}\PYG{p}{(}\PYG{l+m+mi}{1}\PYG{p}{,} \PYG{l+m+mi}{2}\PYG{p}{)}
+\PYG{n}{axes}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]}\PYG{o}{.}\PYG{n}{imshow}\PYG{p}{(}\PYG{n}{gray\PYGZus{}image}\PYG{p}{,} \PYG{n}{cmap}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{gray}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{)}
+\PYG{n}{axes}\PYG{p}{[}\PYG{l+m+mi}{1}\PYG{p}{]}\PYG{o}{.}\PYG{n}{imshow}\PYG{p}{(}\PYG{n}{filtered\PYGZus{}image}\PYG{p}{,} \PYG{n}{cmap}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{gray}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{)}
+\PYG{n}{plt}\PYG{o}{.}\PYG{n}{show}\PYG{p}{(}\PYG{p}{)}
+\end{Verbatim}

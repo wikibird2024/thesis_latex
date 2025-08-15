@@ -1,0 +1,42 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8\relax}]
+\PYG{k+kn}{import} \PYG{n+nn}{cv2}
+
+\PYG{c+c1}{\PYGZsh{} Mở một tệp video}
+\PYG{n}{cap} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{VideoCapture}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{path/to/video.mp4}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{)}
+
+\PYG{c+c1}{\PYGZsh{} Kiểm tra xem video đã được mở đúng cách chưa}
+\PYG{k}{if} \PYG{o+ow}{not} \PYG{n}{cap}\PYG{o}{.}\PYG{n}{isOpened}\PYG{p}{(}\PYG{p}{)}\PYG{p}{:}
+    \PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{Lỗi: Không thể mở tệp video.}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}
+    \PYG{n}{exit}\PYG{p}{(}\PYG{p}{)}
+
+\PYG{c+c1}{\PYGZsh{} Lấy các thuộc tính video}
+\PYG{n}{width} \PYG{o}{=} \PYG{n+nb}{int}\PYG{p}{(}\PYG{n}{cap}\PYG{o}{.}\PYG{n}{get}\PYG{p}{(}\PYG{n}{cv2}\PYG{o}{.}\PYG{n}{CAP\PYGZus{}PROP\PYGZus{}FRAME\PYGZus{}WIDTH}\PYG{p}{)}\PYG{p}{)}
+\PYG{n}{height} \PYG{o}{=} \PYG{n+nb}{int}\PYG{p}{(}\PYG{n}{cap}\PYG{o}{.}\PYG{n}{get}\PYG{p}{(}\PYG{n}{cv2}\PYG{o}{.}\PYG{n}{CAP\PYGZus{}PROP\PYGZus{}FRAME\PYGZus{}HEIGHT}\PYG{p}{)}\PYG{p}{)}
+\PYG{n}{fps} \PYG{o}{=} \PYG{n+nb}{int}\PYG{p}{(}\PYG{n}{cap}\PYG{o}{.}\PYG{n}{get}\PYG{p}{(}\PYG{n}{cv2}\PYG{o}{.}\PYG{n}{CAP\PYGZus{}PROP\PYGZus{}FPS}\PYG{p}{)}\PYG{p}{)}
+
+\PYG{c+c1}{\PYGZsh{} Tạo một đối tượng VideoWriter để lưu video đầu ra}
+\PYG{n}{fourcc} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{VideoWriter\PYGZus{}fourcc}\PYG{p}{(}\PYG{o}{*}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{mp4v}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{)}  \PYG{c+c1}{\PYGZsh{} Codec}
+\PYG{n}{out} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{VideoWriter}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{output.mp4}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{,} \PYG{n}{fourcc}\PYG{p}{,} \PYG{n}{fps}\PYG{p}{,} \PYG{p}{(}\PYG{n}{width}\PYG{p}{,} \PYG{n}{height}\PYG{p}{)}\PYG{p}{)}
+
+\PYG{k}{while} \PYG{n}{cap}\PYG{o}{.}\PYG{n}{isOpened}\PYG{p}{(}\PYG{p}{)}\PYG{p}{:}
+    \PYG{n}{ret}\PYG{p}{,} \PYG{n}{frame} \PYG{o}{=} \PYG{n}{cap}\PYG{o}{.}\PYG{n}{read}\PYG{p}{(}\PYG{p}{)}
+    \PYG{k}{if} \PYG{o+ow}{not} \PYG{n}{ret}\PYG{p}{:}
+        \PYG{k}{break}
+
+    \PYG{c+c1}{\PYGZsh{} Xử lý khung hình}
+    \PYG{n}{gray\PYGZus{}frame} \PYG{o}{=} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{cvtColor}\PYG{p}{(}\PYG{n}{frame}\PYG{p}{,} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{COLOR\PYGZus{}BGR2GRAY}\PYG{p}{)}
+
+    \PYG{c+c1}{\PYGZsh{} Ghi khung hình đã xử lý vào tệp đầu ra}
+    \PYG{n}{out}\PYG{o}{.}\PYG{n}{write}\PYG{p}{(}\PYG{n}{cv2}\PYG{o}{.}\PYG{n}{cvtColor}\PYG{p}{(}\PYG{n}{gray\PYGZus{}frame}\PYG{p}{,} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{COLOR\PYGZus{}GRAY2BGR}\PYG{p}{)}\PYG{p}{)}
+
+    \PYG{c+c1}{\PYGZsh{} Hiển thị khung hình}
+    \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{imshow}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{Khung hình}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{,} \PYG{n}{gray\PYGZus{}frame}\PYG{p}{)}
+
+    \PYG{k}{if} \PYG{n}{cv2}\PYG{o}{.}\PYG{n}{waitKey}\PYG{p}{(}\PYG{l+m+mi}{1}\PYG{p}{)} \PYG{o}{\PYGZam{}} \PYG{l+m+mh}{0xFF} \PYG{o}{==} \PYG{n+nb}{ord}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{q}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{)}\PYG{p}{:}
+        \PYG{k}{break}
+
+\PYG{c+c1}{\PYGZsh{} Giải phóng tài nguyên}
+\PYG{n}{cap}\PYG{o}{.}\PYG{n}{release}\PYG{p}{(}\PYG{p}{)}
+\PYG{n}{out}\PYG{o}{.}\PYG{n}{release}\PYG{p}{(}\PYG{p}{)}
+\PYG{n}{cv2}\PYG{o}{.}\PYG{n}{destroyAllWindows}\PYG{p}{(}\PYG{p}{)}
+\end{Verbatim}

@@ -1,0 +1,8 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8\relax}]
+[mqtt\PYGZhy{}alert]
+exten =\PYGZgt{} s,1,NoOp(Received MQTT Alert)
+exten =\PYGZgt{} s,n,Set(ALERT\PYGZus{}MSG=\PYGZdl{}\PYGZob{}ALERT\PYGZus{}INFO\PYGZcb{})
+exten =\PYGZgt{} s,n,Verbose(1, Alert received: \PYGZdl{}\PYGZob{}ALERT\PYGZus{}MSG\PYGZcb{})
+exten =\PYGZgt{} s,n,System(/usr/bin/php /var/www/alert\PYGZus{}processor.php \PYGZdq{}\PYGZdl{}\PYGZob{}ALERT\PYGZus{}MSG\PYGZcb{}\PYGZdq{})
+exten =\PYGZgt{} s,n,Hangup()
+\end{Verbatim}
