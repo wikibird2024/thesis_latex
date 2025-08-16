@@ -1,11 +1,12 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%           VIETNAMESE LATEX THESIS PREAMBLE - XELATEX OPTIMIZED
+%       VIETNAMESE LATEX THESIS PREAMBLE - XeLaTeX + TeX Gyre Termes
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % --- XeLaTeX required ---
 \usepackage{fontspec}
-% --- Polyglossia for Vietnamese and English --
+
+% --- Polyglossia for Vietnamese and English ---
 \usepackage{polyglossia}
 \setmainlanguage{vietnamese}
 \setotherlanguage{english}
@@ -13,32 +14,37 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                        FONT CONFIGURATION
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\setmainfont{Liberation Serif}[
-    BoldFont = Liberation Serif Bold,
-    ItalicFont = Liberation Serif Italic,
-    BoldItalicFont = Liberation Serif Bold Italic
+% Main serif font: TeX Gyre Termes (Times-like, đẹp cho luận văn)
+\setmainfont{TeX Gyre Termes}[
+    BoldFont = TeX Gyre Termes Bold,
+    ItalicFont = TeX Gyre Termes Italic,
+    BoldItalicFont = TeX Gyre Termes Bold Italic
 ]
-\setsansfont{Liberation Sans}[
-    BoldFont = Liberation Sans Bold,
-    ItalicFont = Liberation Sans Italic,
-    BoldItalicFont = Liberation Sans Bold Italic
-]
-\setmonofont{Liberation Mono}[Scale=0.9]
 
-\newfontfamily{\vietfont}{Liberation Serif}[Scale=MatchLowercase]
+% Sans-serif
+\setsansfont{TeX Gyre Heros}[
+    BoldFont = TeX Gyre Heros Bold,
+    ItalicFont = TeX Gyre Heros Italic,
+    BoldItalicFont = TeX Gyre Heros Bold Italic
+]
+
+% Monospaced / code font
+\setmonofont{Fira Code}[Scale=0.9]
+
+% Font riêng cho văn bản tiếng Việt nếu cần
+\newfontfamily{\vietfont}{TeX Gyre Termes}[Scale=MatchLowercase]
 
 % Unicode math
 \usepackage{unicode-math}
 \setmathfont{Latin Modern Math}
 
-% Microtype (XeLaTeX compatible)
-\usepackage[protrusion=true, expansion=false]{microtype}
-\microtypesetup{kerning=false, spacing=true}
+% Microtype tối ưu: spacing và kerning đẹp
+\usepackage[protrusion=true, expansion=true]{microtype}
+\microtypesetup{spacing=true, kerning=true}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                    ADDITIONAL PACKAGES
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 \usepackage{xcolor}
 \usepackage{minted} % minted với cache để tránh cần shell-escape mỗi lần
 \usepackage{graphicx}
