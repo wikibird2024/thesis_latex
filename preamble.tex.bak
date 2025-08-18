@@ -1,4 +1,5 @@
 
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %       VIETNAMESE LATEX THESIS PREAMBLE - XeLaTeX + Cormorant Garamond
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -14,13 +15,25 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                        FONT CONFIGURATION
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Main serif font: Cormorant Garamond (đẹp & thanh thoát)
-\setmainfont{Cormorant Garamond}[Ligatures=TeX, Scale=1.05]
+% Main serif font: Cormorant Garamond (đẹp và thanh thoát)
 
-% Sans-serif: TeX Gyre Heros (heading, caption – hiện đại & học thuật)
-\setsansfont{TeX Gyre Heros}[Ligatures=TeX]
 
-% Monospaced / code font: Fira Code
+\setmainfont[
+    Path = ~/.fonts/Cormorant_Garamond/,
+    UprightFont = CormorantGaramond-VariableFont_wght.ttf,
+    ItalicFont = CormorantGaramond-Italic-VariableFont_wght.ttf,
+    Ligatures=TeX
+]{CormorantGaramond-VariableFont_wght.ttf}
+
+% Sans-serif: Roboto (hiện đại, dễ đọc)
+\setsansfont{Roboto}[
+    BoldFont = Roboto Bold,
+    ItalicFont = Roboto Italic,
+    BoldItalicFont = Roboto Bold Italic,
+    Ligatures=TeX
+]
+
+% Monospaced / code font
 \setmonofont{Fira Code}[Scale=0.9, Ligatures=TeX]
 
 % Font riêng cho văn bản tiếng Việt nếu cần
@@ -34,18 +47,11 @@
 \usepackage[protrusion=true, expansion=true]{microtype}
 \microtypesetup{spacing=true, kerning=true}
 
-% Line spacing và paragraph
-\usepackage{setspace}
-\onehalfspacing
-\usepackage{indentfirst}
-\setlength{\parindent}{1.2em}
-\setlength{\parskip}{0pt}
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                    ADDITIONAL PACKAGES
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \usepackage{xcolor}
-\usepackage{minted}
+\usepackage{minted} % Cache để tránh shell-escape mỗi lần
 \usepackage{graphicx}
 \graphicspath{{figures/}{chapters/ch2_background/}{chapters/ch3_methodology/}}
 \usepackage{calc}
@@ -53,9 +59,7 @@
 \usepackage{amsmath}
 \usepackage{caption}
 \usepackage{subcaption}
-
-% Caption style: centered, nhỏ hơn body text, bold label
-\captionsetup{justification=centering, labelfont=bf, font=small}
+\captionsetup{justification=centering, labelfont=bf}
 \captionsetup[subfigure]{justification=centering}
 
 % Màu cho minted
@@ -109,7 +113,11 @@
     footskip=20pt
 }
 
-% Hyphenation & paragraph settings
+\usepackage{setspace}
+\onehalfspacing
+\usepackage{indentfirst}
+\setlength{\parindent}{1.2em}
+\setlength{\parskip}{0pt}
 \tolerance=2000
 \emergencystretch=0.5em
 \hyphenpenalty=5000
@@ -127,19 +135,6 @@
 \renewcommand{\headrulewidth}{0.4pt}
 \renewcommand{\footrulewidth}{0pt}
 \renewcommand{\chaptermark}[1]{\markboth{\chaptername\ \thechapter.\ #1}{}}
-
-% --- Heading font sans-serif bằng titlesec ---
-\titleformat{\chapter}[display]
-  {\normalfont\sffamily\huge\bfseries}
-  {\chaptername\ \thechapter}{20pt}{\Huge}
-
-\titleformat{\section}
-  {\normalfont\sffamily\Large\bfseries}
-  {\thesection}{1em}{}
-
-\titleformat{\subsection}
-  {\normalfont\sffamily\large\bfseries}
-  {\thesubsection}{1em}{}
 
 % Hyperref (load last)
 \usepackage{hyperref}

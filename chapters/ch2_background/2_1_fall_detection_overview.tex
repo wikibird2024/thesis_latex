@@ -89,3 +89,57 @@ Phương pháp này kết hợp nhiều nguồn dữ liệu để cải thiện 
     \end{itemize}
 \end{itemize}
 
+\subsection{Lợi thế của phương pháp tiếp cận đa phương thức}
+Các phương pháp phát hiện té ngã dựa trên một nguồn dữ liệu duy nhất (chẳng hạn như chỉ cảm biến quán tính hoặc chỉ thị giác máy tính) thường đối mặt với những hạn chế về độ chính xác và khả năng ứng dụng trong các bối cảnh đa dạng \cite{researchgate_hybrid}. Để khắc phục những điểm yếu này, hệ thống của đề tài đã phát triển một phương pháp tiếp cận đa phương thức (multi-modal) độc đáo, tích hợp và tận dụng thế mạnh của cả hai công nghệ, mang lại nhiều lợi ích vượt trội.
+
+\subsubsection{Cải thiện độ chính xác và giảm cảnh báo sai thông qua kết hợp dữ liệu}
+Một trong những thách thức lớn nhất của các hệ thống phát hiện té ngã là tỷ lệ cảnh báo sai (false positive rate) cao. Phương pháp tiếp cận đa phương thức giải quyết vấn đề này bằng cách sử dụng cơ chế \textbf{kết hợp dữ liệu (data fusion)} ở cấp độ quyết định, một kỹ thuật đã được chứng minh là tăng cường độ tin cậy của hệ thống \cite{mdpi_data_fusion}. Cụ thể, một sự kiện chỉ được xác nhận là té ngã khi cả hai hệ thống con đưa ra kết luận độc lập và khớp với nhau:
+
+\begin{itemize}
+    \item \textbf{Phát hiện từ cảm biến quán tính (IMU):} Thiết bị đeo trên người, tích hợp cảm biến gia tốc và con quay hồi chuyển, phân tích các thay đổi đột ngột về gia tốc tuyến tính và tốc độ góc \cite{resna_imu}. Thuật toán sẽ kích hoạt khi gia tốc vượt ngưỡng xác định, theo sau là một trạng thái bất động kéo dài (post-fall inactivity).
+    \item \textbf{Phát hiện từ thị giác máy tính:} Máy chủ cục bộ xử lý luồng video từ camera, sử dụng các thuật toán ước tính tư thế (pose estimation) tiên tiến để xác định vị trí các khớp xương. Một mô hình logic sẽ nhận diện sự thay đổi tư thế đột ngột từ đứng thẳng sang nằm ngang, được biểu thị bằng tỷ lệ giữa chiều cao và chiều rộng cơ thể giảm xuống dưới một ngưỡng nhất định.
+\end{itemize}
+
+Bảng \ref{tab:so_sanh_phuong_phap} dưới đây minh họa rõ ràng ưu điểm của cơ chế kết hợp dữ liệu so với các phương pháp đơn lẻ.
+
+\begin{table}[h!]
+    \centering
+    \caption{So sánh các phương pháp phát hiện té ngã}
+    \label{tab:so_sanh_phuong_phap}
+    \begin{tabular}{|p{0.25\linewidth}|p{0.3\linewidth}|p{0.3\linewidth}|}
+        \hline
+        \textbf{Kịch bản} & \textbf{Hệ thống đơn lẻ} & \textbf{Hệ thống đa phương thức} \\
+        \hline
+        Người dùng ngồi nhanh xuống ghế & Có khả năng cảnh báo sai do thay đổi gia tốc và tư thế đột ngột. & Không cảnh báo vì tư thế "nằm" trên sàn không được xác nhận. \\
+        \hline
+        Người dùng té ngã thật sự & Cả hai hệ thống đều có thể đưa ra cảnh báo chính xác. & Cảnh báo chỉ được kích hoạt khi cả hai tín hiệu xác nhận (thay đổi gia tốc/tư thế và trạng thái nằm ngang). \\
+        \hline
+        Người dùng té ngã ngoài tầm camera & Không thể phát hiện té ngã. & Vẫn phát hiện nhờ cảm biến IMU trên thiết bị đeo. \\
+        \hline
+    \end{tabular}
+\end{table}
+
+\subsubsection{Mở rộng phạm vi giám sát và tính linh hoạt}
+Một trong những ưu điểm cốt lõi của phương pháp đa phương thức là khả năng mở rộng phạm vi giám sát, vượt qua các hạn chế vật lý của các giải pháp truyền thống. Hệ thống có khả năng chuyển đổi linh hoạt giữa hai chế độ hoạt động:
+
+\begin{itemize}
+    \item \textbf{Chế độ giám sát tại chỗ (In-situ Monitoring):} Khi người dùng ở trong tầm phủ sóng của camera, hệ thống hoạt động ở chế độ này. Dữ liệu video được xử lý cục bộ trên máy chủ (on-premise processing), đảm bảo quyền riêng tư và tận dụng được sức mạnh tính toán của các mô hình học sâu.
+    \item \textbf{Chế độ giám sát di động (Mobile Monitoring):} Khi người dùng di chuyển ra khỏi tầm nhìn của camera, hệ thống tự động chuyển sang chế độ di động. Thiết bị đeo sử dụng \textbf{xử lý tại thiết bị (edge computing)} để phân tích dữ liệu cảm biến và gửi cảnh báo cùng tọa độ vị trí qua mạng di động, đảm bảo an toàn không bị gián đoạn và giải quyết triệt để bài toán "điểm mù" của camera \cite{researchgate_edge_computing}.
+\end{itemize}
+
+\subsubsection{Tính ổn định, kinh tế và hiệu quả triển khai}
+Việc tích hợp các công nghệ mã nguồn mở và kiến trúc module mang lại một giải pháp ổn định, kinh tế và dễ dàng triển khai.
+
+\begin{itemize}
+    \item \textbf{Tính dự phòng trong truyền thông:} Hệ thống được thiết kế với hai kênh truyền thông độc lập. Kênh mạng nội bộ (LAN) sử dụng giao thức \textbf{SIP} để gọi điện khẩn cấp, hoạt động độc lập với Internet. Kênh Internet sử dụng giao thức \textbf{MQTT} nhẹ và hiệu quả, lý tưởng cho việc giám sát từ xa trong môi trường IoT \cite{parangat_mqtt}. Sự kết hợp này đảm bảo cảnh báo luôn được gửi đi ngay cả khi một trong hai kênh gặp sự cố.
+    \item \textbf{Hiệu quả kinh tế:} Bằng cách sử dụng các linh kiện nhúng giá thành thấp và các nền tảng phần mềm mã nguồn mở, tổng chi phí đầu tư ban đầu thấp hơn đáng kể so với các giải pháp thương mại, làm tăng tính khả thi của dự án.
+    \item \textbf{Khả năng mở rộng (Scalability):} Kiến trúc module cho phép dễ dàng mở rộng hệ thống bằng cách thêm các thiết bị camera và cảm biến mới, phù hợp cho việc triển khai tại các cơ sở y tế hoặc viện dưỡng lão.
+\end{itemize}
+
+\subsection{Bảo mật và quyền riêng tư}
+Vấn đề bảo mật và quyền riêng tư là ưu tiên hàng đầu, đặc biệt với các hệ thống sử dụng camera. Hệ thống đã giải quyết vấn đề này thông qua các cơ chế sau:
+\begin{itemize}
+    \item \textbf{Xử lý cục bộ (On-premise Processing):} Dữ liệu video thô được xử lý trên máy chủ cục bộ và không bao giờ được truyền ra Internet, giảm thiểu tối đa nguy cơ bị lộ lọt.
+    \item \textbf{Dữ liệu tối thiểu:} Chỉ các thông tin đã được xử lý (như sự kiện té ngã và tọa độ) được gửi đi.
+    \item \textbf{Tùy chọn linh hoạt:} Hệ thống có thể được cấu hình để chỉ sử dụng cảm biến ở những khu vực nhạy cảm về quyền riêng tư như phòng tắm.
+\end{itemize}
