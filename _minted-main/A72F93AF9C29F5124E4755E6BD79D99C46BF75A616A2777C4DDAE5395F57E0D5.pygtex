@@ -1,6 +1,0 @@
-\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8\relax}]
-\PYGZsh{} file: /etc/mosquitto/acl.conf
-user esp32\PYGZus{}sensor
-topic write home/sensor/data
-topic read home/alerts/\PYGZsh{}
-\end{Verbatim}

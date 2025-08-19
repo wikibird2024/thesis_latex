@@ -1,85 +1,77 @@
 
-\section{Cơ sở lý thuyết về phần cứng và cảm biến}
+\section{Cơ sở lý thuyết về phần cứng và cảm biến trong hệ thống phát hiện té ngã}
 
-% Introducing the role of hardware in the system
-Phần cứng là nền tảng vật lý của hệ thống phát hiện té ngã, chịu trách nhiệm thu thập, xử lý sơ bộ và truyền dữ liệu. Việc lựa chọn phần cứng phù hợp đảm bảo hiệu suất, độ tin cậy, tối ưu hóa chi phí và năng lượng. Các thành phần chính bao gồm hệ thống nhúng, cảm biến, thiết bị giám sát hình ảnh và hệ thống truyền thông, tích hợp để tạo thành hệ thống giám sát toàn diện.
+\subsection{Giới thiệu tổng quan}
+Hệ thống phát hiện té ngã là một giải pháp toàn diện để giám sát và cảnh báo sự cố, tích hợp các thành phần cốt lõi bao gồm \textbf{thiết bị đeo người} hoặc \textbf{thiết bị gắn trong nhà} (chứa cảm biến và vi điều khiển), \textbf{module truyền thông}, và \textbf{máy chủ xử lý}. Các thiết bị này phối hợp để thu thập dữ liệu thời gian thực, xử lý và đưa ra cảnh báo kịp thời, tăng độ chính xác và độ tin cậy.
 
-% Subsection for embedded systems and sensors
 \subsection{Hệ thống nhúng và cảm biến}
 
-Hệ thống nhúng đóng vai trò trung tâm trong việc thu thập và xử lý dữ liệu tại biên, đặc biệt với các thiết bị đeo được hoặc cảm biến cố định.
+\subsubsection{Vi điều khiển}
+\textbf{ESP32} là trung tâm điều khiển của thiết bị nhúng. Với kiến trúc \textbf{lõi kép Xtensa LX6}, ESP32 có thể thực hiện đa nhiệm hiệu quả: một lõi xử lý dữ liệu cảm biến, lõi còn lại quản lý giao tiếp không dây như Wi-Fi và Bluetooth, giúp giảm độ trễ hệ thống. ESP32 hỗ trợ nhiều giao thức kết nối như \textbf{I2C} và \textbf{SPI}, tạo khả năng kết nối linh hoạt với các cảm biến.
 
-\subsubsection{Vi điều khiển (Microcontroller)}
-Vi điều khiển là bộ phận xử lý chính, đảm bảo khả năng tính toán và kết nối. Trong các dự án IoT, các vi điều khiển như Arduino, STM32 và ESP32 được sử dụng rộng rãi. Đối với hệ thống phát hiện té ngã, \textbf{ESP32} được ưu tiên nhờ kiến trúc hai nhân (Tensilica Xtensa LX6, 240 MHz), tích hợp Wi-Fi (802.11 b/g/n) và Bluetooth (v4.2/BLE), bộ nhớ flash 4--16 MB và hỗ trợ giao tiếp I2C/SPI \cite{esp32datasheet2023}. ESP32 xử lý dữ liệu cảm biến thời gian thực, truyền dữ liệu không dây và duy trì hiệu suất với mức tiêu thụ năng lượng thấp (5 mA ở chế độ chờ) \cite{iotproject2024}. So với Arduino Uno (16 MHz, không có Wi-Fi tích hợp), ESP32 vượt trội về hiệu năng và kết nối, phù hợp với giám sát liên tục và truyền thông từ xa.
-
-\begin{figure}[ht]
-    \centering
-    \includegraphics[width=0.8\textwidth]{esp32.jpg}
-    \caption{Module vi điều khiển ESP32-WROOM-32.}
-    \label{fig:esp32}
-\end{figure}
-
-\subsubsection{Cảm biến chuyển động quán tính (IMU)}
-Cảm biến IMU (Inertial Measurement Unit) là thành phần cốt lõi, tích hợp các cảm biến đo chuyển động và tư thế. Một IMU như MPU6050 hoặc BNO055 bao gồm:
-
+\subsubsection{Cảm biến IMU}
+IMU (Inertial Measurement Unit) là bộ phận quan trọng nhất để phát hiện chuyển động, bao gồm:
 \begin{itemize}
-    \item \textbf{Gia tốc kế:} Đo gia tốc tuyến tính trên ba trục (x, y, z), độ nhạy từ ±2g đến ±16g. Trong trường hợp té ngã, gia tốc kế ghi nhận đỉnh gia tốc bất thường (>3g trong 0.1--0.3 giây) \cite{xu2023}.
-    \item \textbf{Con quay hồi chuyển:} Đo tốc độ góc trên ba trục (±250 đến ±2000 độ/giây), xác định sự thay đổi tư thế (ví dụ: từ đứng sang nằm ngang trong <1 giây) \cite{hussain2019}.
-    \item \textbf{Từ kế (tùy chọn):} Cung cấp dữ liệu định hướng, tăng độ chính xác khi kết hợp với thuật toán Kalman Filter \cite{alarifi2021}.
+    \item \textbf{Gia tốc kế}: Đo gia tốc tuyến tính $(a_x, a_y, a_z)$ dựa trên công nghệ MEMS để phát hiện sự thay đổi điện dung.
+    \item \textbf{Con quay hồi chuyển}: Đo tốc độ góc $(\omega_x, \omega_y, \omega_z)$ dựa trên hiệu ứng Coriolis.
+    \item \textbf{Từ kế}: Đo hướng từ trường để hiệu chỉnh sai số cho con quay hồi chuyển.
 \end{itemize}
 
-Kết hợp dữ liệu từ gia tốc kế và con quay hồi chuyển qua thuật toán ngưỡng động hoặc học sâu (LSTM, CNN) đạt độ chính xác trên 94\% trên tập dữ liệu SisFall \cite{hussain2019}. MPU6050 (6 trục, I2C, 3.6 mA) là lựa chọn phổ biến nhờ chi phí thấp và hiệu năng ổn định \cite{iotproject2024}.
+Dữ liệu thô từ IMU thường là giá trị số nguyên (ví dụ: từ -32768 đến 32767 với cảm biến 16-bit). Sau khi hiệu chuẩn và chuyển đổi, dữ liệu được biểu diễn dưới dạng vector 3D:
+\[
+\mathbf{a} = [a_x, a_y, a_z], \quad
+\boldsymbol{\omega} = [\omega_x, \omega_y, \omega_z]
+\]
 
-\begin{figure}[ht]
-    \centering
-    \includegraphics[width=0.8\textwidth]{imu.png}
-    \caption{Sơ đồ minh họa nguyên lý hoạt động của cảm biến IMU (MPU6050).}
-    \label{fig:imu_working_principle}
-\end{figure}
+\paragraph{Phát hiện té ngã dựa trên ngưỡng} 
+Một sự kiện té ngã được xác định khi gia tốc tổng vượt ngưỡng $a_{th}$ và giảm mạnh xuống gần 1g (gia tốc trọng trường), đồng thời tốc độ góc thay đổi đột ngột:
+\[
+\|\mathbf{a}\| = \sqrt{a_x^2 + a_y^2 + a_z^2}
+\]
 
-\subsubsection{Module định vị toàn cầu (GPS)}
-Module GPS (như NEO-6M hoặc NEO-7M) cung cấp thông tin vị trí địa lý qua tín hiệu vệ tinh, hữu ích khi người dùng di chuyển ngoài phạm vi camera. Với độ chính xác 2.5--5 m, thời gian khóa vệ tinh <30 giây và giao tiếp UART/I2C, GPS hỗ trợ gửi tọa độ chính xác khi xảy ra sự cố, giảm thời gian phản ứng cứu hộ xuống dưới 5 phút \cite{ublox2023, xu2023}. Tuy nhiên, GPS tiêu tốn 20--40 mA và hiệu suất giảm trong môi trường đô thị hoặc trong nhà.
+\subsubsection{Module GPS}
+Module GPS (ví dụ: u-blox NEO-6M) sử dụng nguyên lý \textbf{trilateration} để xác định vị trí bằng cách tính khoảng cách đến nhiều vệ tinh.  
 
-% Subsection for imaging and processing systems
-\subsection{Hệ thống giám sát hình ảnh và máy chủ xử lý}
+Dữ liệu GPS được xuất ra dưới dạng chuỗi NMEA, ví dụ:
+\begin{verbatim}
+$GPRMC,081600.00,A,3404.7041778,N,104.25010901,W,0.20,1.26,190425,,,A*5B
+\end{verbatim}
+Các trường dữ liệu bao gồm thời gian, trạng thái, kinh độ, và vĩ độ. Dữ liệu này giúp xác định vị trí chính xác của người dùng để hỗ trợ dịch vụ cứu hộ.
 
-Hệ thống này thu thập và phân tích dữ liệu hình ảnh, cung cấp bối cảnh trực quan và xử lý thuật toán phức tạp.
+\subsection{Hệ thống camera và máy chủ xử lý}
 
-\subsubsection{Thiết bị camera nhúng}
-Camera nhúng ghi lại video thời gian thực để phân tích tư thế và chuyển động. Module \textbf{ESP32-CAM} (tích hợp ESP32-S và camera OV2640, độ phân giải 1600x1200) được chọn nhờ chi phí thấp (5--10 USD), hỗ trợ RTSP/HTTP streaming và xử lý sơ bộ hình ảnh (nén JPEG) \cite{esp32cam2023}. Hạn chế là chất lượng hình ảnh giảm trong điều kiện ánh sáng yếu (độ nhạy 1 lux) \cite{saraswat2024}. Camera RGB-D (như Kinect) cũng được sử dụng để tăng độ chính xác trong môi trường phức tạp \cite{liu2018}.
+\subsubsection{Hệ thống camera}
+Camera nhúng sử dụng \textbf{ESP32-S3} kết hợp cảm biến \textbf{OV5640} (5MP), cung cấp hình ảnh chất lượng cao. Dữ liệu hình ảnh được nén dưới định dạng \textbf{JPEG} và truyền qua Wi-Fi bằng các giao thức \textbf{HTTP} hoặc \textbf{RTSP}.
 
-\begin{figure}[ht]
-    \centering
-    \includegraphics[width=0.8\textwidth]{camera_module.jpg}
-    \caption{Module camera nhúng ESP32-CAM.}
-    \label{fig:esp32_cam}
-\end{figure}
+Luồng dữ liệu JPEG là một mảng byte liên tục, quan trọng để xác thực sự kiện té ngã dựa trên hình ảnh.
 
-\subsubsection{Máy chủ xử lý trung tâm}
-Máy chủ trung tâm xử lý dữ liệu chuyên sâu, chạy trên Linux (Ubuntu 20.04) với GPU (NVIDIA RTX 3060, 12 GB VRAM) để triển khai các mô hình như YOLOv5, MediaPipe hoặc Transformer \cite{han2024, stylios2024}. Các thư viện bao gồm:
-
+\subsubsection{Máy chủ xử lý}
+Máy chủ chịu trách nhiệm xử lý dữ liệu phức tạp và đưa ra quyết định cuối cùng:
 \begin{itemize}
-    \item \textbf{OpenCV}: Xử lý hình ảnh, hỗ trợ phát hiện đối tượng và ước lượng tư thế.
-    \item \textbf{TensorFlow/PyTorch}: Triển khai học sâu cho phân tích dữ liệu cảm biến và hình ảnh.
-    \item \textbf{Numpy/Scipy}: Xử lý số liệu và sensor fusion.
+    \item \textbf{Phần cứng}: Máy tính nhúng (ví dụ Raspberry Pi 4, NVIDIA Jetson Nano) hoặc máy chủ đám mây (AWS, Google Cloud) với CPU đa lõi, RAM lớn, và có thể có GPU để tăng tốc xử lý học sâu.
+    \item \textbf{Phần mềm}: Hệ điều hành Linux với các nền tảng học máy như \textbf{TensorFlow} hoặc \textbf{PyTorch}.
+    \begin{itemize}
+        \item \textbf{Xử lý hình ảnh}: Thư viện \textbf{OpenCV} kết hợp mô hình học sâu (YOLO, MediaPipe) để phân tích video, phát hiện đối tượng và ước lượng tư thế.
+        \item \textbf{Hệ thống liên lạc}: Công cụ như \textbf{Asterisk} để thực hiện cuộc gọi khẩn cấp tự động dựa trên dữ liệu cảnh báo từ thiết bị nhúng.
+    \end{itemize}
 \end{itemize}
 
-Hệ thống sử dụng YOLOv5 và MediaPipe đạt mAP 98.6\% trong phát hiện té ngã, với độ trễ xử lý dưới 100 ms \cite{han2024, multimodal2024}. Máy chủ cung cấp API (RESTful/WebSocket) cho giám sát từ xa.
+Dữ liệu thô bao gồm luồng byte JPEG từ camera và chuỗi JSON hoặc gói MQTT từ ESP32. Máy chủ xử lý tổng hợp để xác minh té ngã và kích hoạt cảnh báo.
 
-% Subsection for communication systems
-\subsection{Hệ thống truyền thông di động và cố định}
+\subsection{Hệ thống truyền thông và liên kết tổng thể}
 
-Hệ thống truyền thông đảm bảo dữ liệu và cảnh báo được truyền tải nhanh chóng, đáng tin cậy trong các điều kiện mạng khác nhau.
-
-\subsubsection{Module truyền thông di động (4G/LTE)}
-Module 4G/LTE (như SIM800L hoặc SIM7600) cung cấp kết nối internet qua mạng di động, với tốc độ tải xuống 10--150 Mbps và độ trễ 20--50 ms \cite{simcom2023}. Điều này cho phép thiết bị hoạt động ở khu vực không có Wi-Fi, đảm bảo giám sát liên tục khi người dùng di chuyển ngoài trời. Ví dụ, tích hợp SIM800L vào hệ thống IMU cho phép gửi cảnh báo SMS và tọa độ GPS trong 2 giây sau khi phát hiện té ngã \cite{xu2023}. Hạn chế bao gồm chi phí thuê bao mạng và tiêu thụ năng lượng cao (100--500 mA).
-
-\subsubsection{Nền tảng máy chủ truyền thông}
-Máy chủ truyền thông điều phối các kênh liên lạc, đảm bảo cảnh báo kịp thời:
-
+\subsubsection{Hệ thống truyền thông}
+Module truyền thông kết nối thiết bị với dịch vụ bên ngoài:
 \begin{itemize}
-    \item \textbf{Tổng đài SIP (Asterisk)}: Hỗ trợ gọi điện nội bộ qua mạng LAN, gửi cảnh báo thoại tự động với độ trễ dưới 1 giây trong môi trường cục bộ \cite{asterisk2023}.
-    \item \textbf{Giao thức MQTT}: Giao thức nhẹ, phù hợp cho IoT, truyền dữ liệu cảm biến và cảnh báo với băng thông thấp (<10 KB/s) và độ tin cậy cao (QoS 2) \cite{iotproject2024}.
+    \item \textbf{Module 4G/GPS/SMS (EC800K)}: Hỗ trợ kết nối 4G, GPS định vị và gửi/nhận SMS. Vi điều khiển giao tiếp bằng \textbf{AT commands}.
+    \item \textbf{Wi-Fi (ESP32)}: Kết nối máy chủ hoặc thiết bị di động qua giao thức \textbf{MQTT} nhẹ, phù hợp cho IoT.
 \end{itemize}
 
-Sự kết hợp này tạo ra hệ thống truyền thông đa phương thức, với tính dự phòng cao (chuyển đổi giữa Wi-Fi, 4G và SIP khi một kênh thất bại) và độ trễ thấp, đáp ứng yêu cầu giám sát thời gian thực và cứu hộ nhanh chóng \cite{multimodal2024}.
+\subsubsection{Liên kết tổng thể}
+\begin{enumerate}
+    \item \textbf{Thu thập}: ESP32 thu thập dữ liệu từ IMU, GPS, và hình ảnh từ ESP32-S3.
+    \item \textbf{Xử lý cục bộ}: ESP32 xử lý dữ liệu IMU bằng Kalman Filter để ước tính hướng và trạng thái, phát hiện té ngã ban đầu dựa trên ngưỡng.
+    \item \textbf{Truyền dữ liệu}: ESP32 gửi dữ liệu JSON/MQTT và luồng JPEG đến máy chủ qua Wi-Fi hoặc EC800K.
+    \item \textbf{Xử lý trên máy chủ}: Máy chủ Linux phân tích hình ảnh, xác minh té ngã và chuẩn bị cuộc gọi tự động.
+    \item \textbf{Cảnh báo}: Sau khi xác nhận, máy chủ ra lệnh ESP32 kích hoạt EC800K gửi SMS, gọi điện hoặc thông báo đến điện thoại giám sát. Hệ thống đảm bảo dự phòng, chuyển sang mạng di động nếu Wi-Fi mất kết nối.
+\end{enumerate}
