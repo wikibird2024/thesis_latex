@@ -24,6 +24,47 @@ SIP hoạt động thông qua trao đổi thông điệp giữa \textit{User Age
 
 SIP kết hợp với \textit{Session Description Protocol} (SDP) để định nghĩa tham số phiên (như codec, cổng) và \textit{Real-time Transport Protocol} (RTP) để truyền dữ liệu thoại/video thời gian thực. Ngoài ra, RTCP (RTP Control Protocol) được sử dụng để giám sát chất lượng truyền dẫn.
 
+\subsubsection{Phân biệt Đường tín hiệu và Đường truyền phương tiện}
+\label{subsubsec:sip_paths}
+
+Đây là một sự khác biệt quan trọng trong VoIP:
+
+\begin{itemize}
+\item \textbf{Đường tín hiệu (Signaling Path):} Mang các tin nhắn SIP (INVITE, BYE, 200 OK, v.v.) để thiết lập, quản lý và kết thúc cuộc gọi. Đường này thường sử dụng TCP (để truyền tải đáng tin cậy, đặc biệt cho các tin nhắn lớn hơn hoặc các kết nối kéo dài) hoặc UDP (để có độ trễ thấp hơn, đặc biệt cho các tin nhắn nhỏ hơn như REGISTER).
+\item \textbf{Đường truyền phương tiện (Media Path):} Mang dữ liệu thoại/video thực tế bằng RTP qua UDP. Sau khi cuộc gọi được thiết lập thông qua tín hiệu, phương tiện truyền trực tiếp giữa các điểm cuối (hoặc thông qua một bộ chuyển tiếp phương tiện trung gian như máy chủ TURN hoặc SBC).
+\end{itemize}
+
+Dưới đây là sơ đồ minh họa sự khác biệt giữa đường tín hiệu và đường truyền phương tiện:
+
+%-------- figure--------
+\begin{figure}[htb!] 
+\centering
+\begin{tikzpicture}[
+    box/.style={rectangle, draw, rounded corners, minimum height=1em, minimum width=3em, align=center, fill=blue!10}, 
+    signal_arrow/.style={-Stealth, thick, blue!70!white, shorten >=1pt, shorten <=1pt}, 
+    media_arrow/.style={-Stealth, thick, red!70!white, shorten >=1pt, shorten <=1pt}, 
+    label_style/.style={font=\small, align=center, text=black},
+    node distance=2.5cm and 3.5cm 
+]
+    % Định nghĩa các Node
+    \node[box] (A) {SIP Endpoint A};
+    \node[box, right=of A] (Proxy) {SIP Proxy/PBX \\ (Asterisk)}; 
+    \node[box, right=of Proxy] (B) {SIP Endpoint B};
+    
+    % Node cho Media Proxy (nằm dưới Asterisk PBX)
+    \node[box, below=2.5cm of Proxy] (MediaProxy) {Asterisk Media Proxy}; 
+    
+    % Vẽ đường tín hiệu
+    \draw[signal_arrow] (A) -- node[above=2pt, label_style] {SIP Signaling \\ (TCP/UDP)} (Proxy);
+    \draw[signal_arrow] (Proxy) -- node[above=2pt, label_style] {SIP Signaling \\ (TCP/UDP)} (B);
+    
+    % Vẽ đường truyền phương tiện
+    \draw[media_arrow] (A) -- node[midway, left=2pt, label_style] {RTP Media Path \\ (UDP)} (MediaProxy); 
+    \draw[media_arrow] (MediaProxy) -- node[midway, right=2pt, label_style] {RTP Media Path \\ (UDP)} (B); 
+\end{tikzpicture}
+\caption{Minh họa sự khác biệt giữa đường tín hiệu và đường truyền phương tiện trong VoIP}
+\label{fig:sip-media-path-distinction} 
+\end{figure}
 \subsubsection{SIP trong Hệ Thống Cảnh Báo Asterisk}
 \label{subsubsec:sip_asterisk_integration}
 
