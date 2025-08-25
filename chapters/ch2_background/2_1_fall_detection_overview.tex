@@ -123,7 +123,7 @@ Bảng \ref{tab:so_sanh_phuong_phap} dưới đây minh họa rõ ràng ưu đi�
 Một trong những ưu điểm cốt lõi của phương pháp đa phương thức là khả năng mở rộng phạm vi giám sát, vượt qua các hạn chế vật lý của các giải pháp truyền thống. Hệ thống có khả năng chuyển đổi linh hoạt giữa hai chế độ hoạt động:
 
 \begin{itemize}
-    \item \textbf{Chế độ giám sát tại chỗ (In-situ Monitoring):} Khi người dùng ở trong tầm phủ sóng của camera, hệ thống hoạt động ở chế độ này. Dữ liệu video được xử lý cục bộ trên máy chủ (on-premise processing), đảm bảo quyền riêng tư và tận dụng được sức mạnh tính toán của các mô hình học sâu.
+    \item \textbf{Chế độ giám sát tại chỗ (In-situ Monitoring):} Khi người dùng ở trong tầm bao phủ của camera, hệ thống hoạt động ở chế độ này. Dữ liệu video được xử lý cục bộ trên máy chủ (on-premise processing), đảm bảo quyền riêng tư và tận dụng được sức mạnh tính toán của các mô hình học sâu.
     \item \textbf{Chế độ giám sát di động (Mobile Monitoring):} Khi người dùng di chuyển ra khỏi tầm nhìn của camera, hệ thống tự động chuyển sang chế độ di động. Thiết bị đeo sử dụng \textbf{xử lý tại thiết bị (edge computing)} để phân tích dữ liệu cảm biến và gửi cảnh báo cùng tọa độ vị trí qua mạng di động, đảm bảo an toàn không bị gián đoạn và giải quyết triệt để bài toán "điểm mù" của camera \cite{researchgate_edge_computing}.
 \end{itemize}
 
@@ -141,5 +141,5 @@ Vấn đề bảo mật và quyền riêng tư là ưu tiên hàng đầu, đặ
 \begin{itemize}
     \item \textbf{Xử lý cục bộ (On-premise Processing):} Dữ liệu video thô được xử lý trên máy chủ cục bộ và không bao giờ được truyền ra Internet, giảm thiểu tối đa nguy cơ bị lộ lọt.
     \item \textbf{Dữ liệu tối thiểu:} Chỉ các thông tin đã được xử lý (như sự kiện té ngã và tọa độ) được gửi đi.
-    \item \textbf{Tùy chọn linh hoạt:} Hệ thống có thể được cấu hình để chỉ sử dụng cảm biến ở những khu vực nhạy cảm về quyền riêng tư như phòng tắm.
+    \item \textbf{Tùy chọn linh hoạt:} Hệ thống có thể được cấu hình để chỉ sử dụng cảm biến ở những khu vực nhạy cảm về quyền riêng tư như khu vực vệ sinh và sinh hoạt cá nhân.
 \end{itemize}

@@ -1,77 +1,74 @@
+\section{Cơ sở Lý thuyết về Phần cứng và Kiến trúc Hệ thống Phát hiện Té ngã}
+\label{sec:hardware_theory}
 
-\section{Cơ sở lý thuyết về phần cứng và cảm biến trong hệ thống phát hiện té ngã}
+Mục này cung cấp kiến thức nền tảng về kiến trúc phần cứng, các công nghệ cảm biến và module truyền thông được sử dụng trong hệ thống phát hiện té ngã (Fall Detection System - FDS).
 
-\subsection{Giới thiệu tổng quan}
-Hệ thống phát hiện té ngã là một giải pháp toàn diện để giám sát và cảnh báo sự cố, tích hợp các thành phần cốt lõi bao gồm \textbf{thiết bị đeo người} hoặc \textbf{thiết bị gắn trong nhà} (chứa cảm biến và vi điều khiển), \textbf{module truyền thông}, và \textbf{máy chủ xử lý}. Các thiết bị này phối hợp để thu thập dữ liệu thời gian thực, xử lý và đưa ra cảnh báo kịp thời, tăng độ chính xác và độ tin cậy.
+\subsection{Tổng quan Kiến trúc Hệ thống Phát hiện Té ngã}
+Hệ thống phát hiện té ngã hiện đại thường được phân loại thành hai nhóm chính: \textbf{Hệ thống dựa trên Camera (Vision-based)} và \textbf{Hệ thống dựa trên Thiết bị đeo (Wearable/Sensor-based)}. Báo cáo này tích hợp cả hai, bao gồm các thành phần cốt lõi:
+\begin{enumerate}
+    \item \textbf{Thiết bị Thu thập Dữ liệu (Sensor/Edge Device)}: Thu thập dữ liệu chuyển động (IMU) và/hoặc hình ảnh (Camera).
+    \item \textbf{Máy chủ Xử lý (Processing Server)}: Thực hiện các thuật toán học sâu và logic ra quyết định phức tạp.
+    \item \textbf{Hệ thống Truyền thông (Communication Module)}: Đảm bảo luồng dữ liệu hai chiều và kích hoạt cảnh báo.
+\end{enumerate}
 
-\subsection{Hệ thống nhúng và cảm biến}
+\subsection{Cảm biến và Xử lý Dữ liệu Sơ cấp (Edge Processing)}
 
-\subsubsection{Vi điều khiển}
-\textbf{ESP32} là trung tâm điều khiển của thiết bị nhúng. Với kiến trúc \textbf{lõi kép Xtensa LX6}, ESP32 có thể thực hiện đa nhiệm hiệu quả: một lõi xử lý dữ liệu cảm biến, lõi còn lại quản lý giao tiếp không dây như Wi-Fi và Bluetooth, giúp giảm độ trễ hệ thống. ESP32 hỗ trợ nhiều giao thức kết nối như \textbf{I2C} và \textbf{SPI}, tạo khả năng kết nối linh hoạt với các cảm biến.
+\subsubsection{Vi điều khiển và Xử lý Cục bộ}
+\textbf{ESP32 (hoặc ESP32-S3)} được chọn làm bộ điều khiển trung tâm nhờ kiến trúc \textbf{lõi kép Xtensa LX6} (hoặc S3), cho phép xử lý song song. Một lõi được dành riêng cho các tác vụ thời gian thực như đọc và tiền xử lý dữ liệu cảm biến (ví dụ: \textbf{Kalman Filter} để ước tính hướng và trạng thái), trong khi lõi còn lại quản lý các giao tiếp không dây (Wi-Fi, Bluetooth) và giao thức \textbf{MQTT} hoặc \textbf{HTTP}, giảm thiểu độ trễ.
 
-\subsubsection{Cảm biến IMU}
-IMU (Inertial Measurement Unit) là bộ phận quan trọng nhất để phát hiện chuyển động, bao gồm:
+\subsubsection{Cảm biến Đo lường Quán tính (IMU)}
+\textbf{IMU (Inertial Measurement Unit)} là thành phần chính trong hệ thống đeo người (wearable system), cung cấp dữ liệu về động học của cơ thể. IMU tích hợp:
 \begin{itemize}
-    \item \textbf{Gia tốc kế}: Đo gia tốc tuyến tính $(a_x, a_y, a_z)$ dựa trên công nghệ MEMS để phát hiện sự thay đổi điện dung.
-    \item \textbf{Con quay hồi chuyển}: Đo tốc độ góc $(\omega_x, \omega_y, \omega_z)$ dựa trên hiệu ứng Coriolis.
-    \item \textbf{Từ kế}: Đo hướng từ trường để hiệu chỉnh sai số cho con quay hồi chuyển.
+    \item \textbf{Gia tốc kế (Accelerometer)}: Đo gia tốc tuyến tính. Gia tốc thô được hiệu chuẩn (calibrated) để chuyển từ giá trị số nguyên sang đơn vị thực tế ($g$).
+    \item \textbf{Con quay hồi chuyển (Gyroscope)}: Đo tốc độ góc (angular velocity), dựa trên \textbf{hiệu ứng Coriolis}.
+    \item \textbf{Từ kế (Magnetometer)}: Cung cấp tham chiếu hướng từ trường để hiệu chỉnh sai số trôi (drift) của con quay hồi chuyển (thường thông qua thuật toán \textbf{Sensor Fusion} như Bộ lọc Madgwick hoặc Kalman).
 \end{itemize}
 
-Dữ liệu thô từ IMU thường là giá trị số nguyên (ví dụ: từ -32768 đến 32767 với cảm biến 16-bit). Sau khi hiệu chuẩn và chuyển đổi, dữ liệu được biểu diễn dưới dạng vector 3D:
+Dữ liệu thô sau khi xử lý (ví dụ: trung bình hóa) được biểu diễn dưới dạng vector 3D:
 \[
 \mathbf{a} = [a_x, a_y, a_z], \quad
 \boldsymbol{\omega} = [\omega_x, \omega_y, \omega_z]
 \]
 
-\paragraph{Phát hiện té ngã dựa trên ngưỡng} 
-Một sự kiện té ngã được xác định khi gia tốc tổng vượt ngưỡng $a_{th}$ và giảm mạnh xuống gần 1g (gia tốc trọng trường), đồng thời tốc độ góc thay đổi đột ngột:
+\paragraph{Phát hiện Té ngã dựa trên Ngưỡng IMU}
+Tại tầng vi điều khiển (Edge), té ngã được phát hiện sơ bộ bằng cách phân tích sự thay đổi đột ngột của \textbf{Gia tốc Tổng (Magnitude of Acceleration)} và tốc độ góc:
+\begin{itemize}
+    \item \textbf{Shock Event}: Gia tốc tổng vượt ngưỡng cao ($a_{\text{shock}}$): $\|\mathbf{a}\| > a_{\text{shock}}$.
+    \item \textbf{Post-fall State}: Gia tốc tổng sau đó giảm về gần 1g (biểu thị trạng thái nằm ngang) trong khi tốc độ góc có thay đổi lớn.
+\end{itemize}
 \[
 \|\mathbf{a}\| = \sqrt{a_x^2 + a_y^2 + a_z^2}
 \]
 
-\subsubsection{Module GPS}
-Module GPS (ví dụ: u-blox NEO-6M) sử dụng nguyên lý \textbf{trilateration} để xác định vị trí bằng cách tính khoảng cách đến nhiều vệ tinh.  
+\subsubsection{Cảm biến Định vị Vị trí (GPS)}
+Module GPS (ví dụ: u-blox NEO-6M) sử dụng nguyên lý \textbf{Đo tam giác (Trilateration)} để xác định vị trí địa lý của thiết bị dựa trên tín hiệu từ ít nhất bốn vệ tinh. Dữ liệu đầu ra là chuỗi \textbf{NMEA}, cung cấp tọa độ Kinh độ/Vĩ độ và độ cao, là thông tin quan trọng cho dịch vụ cứu hộ khẩn cấp.
 
-Dữ liệu GPS được xuất ra dưới dạng chuỗi NMEA, ví dụ:
-\begin{verbatim}
-$GPRMC,081600.00,A,3404.7041778,N,104.25010901,W,0.20,1.26,190425,,,A*5B
-\end{verbatim}
-Các trường dữ liệu bao gồm thời gian, trạng thái, kinh độ, và vĩ độ. Dữ liệu này giúp xác định vị trí chính xác của người dùng để hỗ trợ dịch vụ cứu hộ.
+\subsection{Hệ thống Camera và Xử lý Máy chủ (Cloud/Host Processing)}
 
-\subsection{Hệ thống camera và máy chủ xử lý}
+\subsubsection{Hệ thống Camera (Vision Input)}
+Camera nhúng (\textbf{ESP32-S3 + OV5640 5MP}) cung cấp dữ liệu hình ảnh được nén theo chuẩn \textbf{JPEG}. Dữ liệu này là luồng byte được truyền tải qua Wi-Fi bằng các giao thức như \textbf{RTSP} hoặc \textbf{HTTP/MJPEG stream}, phục vụ cho việc \textbf{Xác minh Hình ảnh (Visual Verification)} trên máy chủ.
 
-\subsubsection{Hệ thống camera}
-Camera nhúng sử dụng \textbf{ESP32-S3} kết hợp cảm biến \textbf{OV5640} (5MP), cung cấp hình ảnh chất lượng cao. Dữ liệu hình ảnh được nén dưới định dạng \textbf{JPEG} và truyền qua Wi-Fi bằng các giao thức \textbf{HTTP} hoặc \textbf{RTSP}.
-
-Luồng dữ liệu JPEG là một mảng byte liên tục, quan trọng để xác thực sự kiện té ngã dựa trên hình ảnh.
-
-\subsubsection{Máy chủ xử lý}
-Máy chủ chịu trách nhiệm xử lý dữ liệu phức tạp và đưa ra quyết định cuối cùng:
+\subsubsection{Kiến trúc Máy chủ Xử lý}
+Máy chủ là nơi thực hiện các thuật toán phức tạp như Ước lượng tư thế người (HPE) và Học sâu, đảm bảo độ chính xác cao.
 \begin{itemize}
-    \item \textbf{Phần cứng}: Máy tính nhúng (ví dụ Raspberry Pi 4, NVIDIA Jetson Nano) hoặc máy chủ đám mây (AWS, Google Cloud) với CPU đa lõi, RAM lớn, và có thể có GPU để tăng tốc xử lý học sâu.
-    \item \textbf{Phần mềm}: Hệ điều hành Linux với các nền tảng học máy như \textbf{TensorFlow} hoặc \textbf{PyTorch}.
-    \begin{itemize}
-        \item \textbf{Xử lý hình ảnh}: Thư viện \textbf{OpenCV} kết hợp mô hình học sâu (YOLO, MediaPipe) để phân tích video, phát hiện đối tượng và ước lượng tư thế.
-        \item \textbf{Hệ thống liên lạc}: Công cụ như \textbf{Asterisk} để thực hiện cuộc gọi khẩn cấp tự động dựa trên dữ liệu cảnh báo từ thiết bị nhúng.
-    \end{itemize}
+    \item \textbf{Phần cứng}: Sử dụng máy chủ đám mây (AWS, Google Cloud) hoặc máy tính nhúng mạnh mẽ (NVIDIA Jetson Nano) có \textbf{GPU} để tăng tốc tính toán Tensor.
+    \item \textbf{Phần mềm Học sâu}: Nền tảng \textbf{TensorFlow/PyTorch} kết hợp với thư viện \textbf{OpenCV}.
+    \item \textbf{Xử lý Dữ liệu Lớn}: Máy chủ tiếp nhận luồng dữ liệu \textbf{JSON/MQTT} (từ IMU) và luồng \textbf{JPEG} (từ Camera). Việc tổng hợp và đồng bộ hóa hai luồng dữ liệu này là chìa khóa để xác minh té ngã và giảm thiểu báo động giả (False Positives).
 \end{itemize}
 
-Dữ liệu thô bao gồm luồng byte JPEG từ camera và chuỗi JSON hoặc gói MQTT từ ESP32. Máy chủ xử lý tổng hợp để xác minh té ngã và kích hoạt cảnh báo.
+\subsection{Hệ thống Truyền thông và Cơ chế Dự phòng}
 
-\subsection{Hệ thống truyền thông và liên kết tổng thể}
-
-\subsubsection{Hệ thống truyền thông}
-Module truyền thông kết nối thiết bị với dịch vụ bên ngoài:
+\subsubsection{Module Truyền thông Đa dạng}
 \begin{itemize}
-    \item \textbf{Module 4G/GPS/SMS (EC800K)}: Hỗ trợ kết nối 4G, GPS định vị và gửi/nhận SMS. Vi điều khiển giao tiếp bằng \textbf{AT commands}.
-    \item \textbf{Wi-Fi (ESP32)}: Kết nối máy chủ hoặc thiết bị di động qua giao thức \textbf{MQTT} nhẹ, phù hợp cho IoT.
+    \item \textbf{Wi-Fi (ESP32)}: Kênh chính để truyền tải dữ liệu dung lượng lớn (video/hình ảnh) và giao tiếp \textbf{MQTT} với máy chủ.
+    \item \textbf{Module Di động (4G/LTE - EC800K)}: Đóng vai trò là \textbf{Kênh Dự phòng (Fallback Channel)}. Nó hỗ trợ định vị GPS và quan trọng nhất là kích hoạt \textbf{cuộc gọi khẩn cấp tự động} hoặc gửi \textbf{SMS cảnh báo} bằng \textbf{AT commands}, đảm bảo cảnh báo được gửi đi ngay cả khi mạng Wi-Fi không khả dụng.
 \end{itemize}
 
-\subsubsection{Liên kết tổng thể}
+\subsubsection{Liên kết Tổng thể và Logic Dự phòng}
+Hệ thống vận hành theo nguyên lý tích hợp và dự phòng:
 \begin{enumerate}
-    \item \textbf{Thu thập}: ESP32 thu thập dữ liệu từ IMU, GPS, và hình ảnh từ ESP32-S3.
-    \item \textbf{Xử lý cục bộ}: ESP32 xử lý dữ liệu IMU bằng Kalman Filter để ước tính hướng và trạng thái, phát hiện té ngã ban đầu dựa trên ngưỡng.
-    \item \textbf{Truyền dữ liệu}: ESP32 gửi dữ liệu JSON/MQTT và luồng JPEG đến máy chủ qua Wi-Fi hoặc EC800K.
-    \item \textbf{Xử lý trên máy chủ}: Máy chủ Linux phân tích hình ảnh, xác minh té ngã và chuẩn bị cuộc gọi tự động.
-    \item \textbf{Cảnh báo}: Sau khi xác nhận, máy chủ ra lệnh ESP32 kích hoạt EC800K gửi SMS, gọi điện hoặc thông báo đến điện thoại giám sát. Hệ thống đảm bảo dự phòng, chuyển sang mạng di động nếu Wi-Fi mất kết nối.
+    \item \textbf{Thu thập/Xử lý Sơ cấp}: ESP32 thu thập IMU/Camera và thực hiện phát hiện té ngã dựa trên ngưỡng IMU.
+    \item \textbf{Quyết định Truyền thông}: Nếu té ngã được phát hiện, dữ liệu được truyền đến máy chủ qua kênh Wi-Fi (Ưu tiên) hoặc 4G (Dự phòng).
+    \item \textbf{Xác minh Máy chủ}: Máy chủ tiến hành phân tích hình ảnh (HPE) kết hợp với dữ liệu IMU để xác minh té ngã (Multi-stage Fall Detection Logic).
+    \item \textbf{Kích hoạt Cảnh báo}: Nếu xác nhận té ngã, máy chủ ra lệnh cho ESP32 kích hoạt Module EC800K gửi cảnh báo (SMS/Cuộc gọi), hoàn tất chu trình cứu hộ.
 \end{enumerate}

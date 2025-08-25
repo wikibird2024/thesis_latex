@@ -1,0 +1,11 @@
+\subsection{Tóm tắt Chương và Cơ sở cho Triển khai}
+\label{sec:chapter_conclusion}
+
+Chương này đã thiết lập nền tảng lý thuyết toàn diện, tạo cơ sở khoa học cho việc thiết kế và triển khai hệ thống phát hiện té ngã tích hợp. Những kiến thức cốt lõi đã được trình bày bao gồm:
+\begin{itemize}
+    \item \textbf{Cơ sở Thị giác Máy tính:} Nắm vững kiến trúc CNN và Transformer, là nền tảng cho việc xử lý hình ảnh và nhận diện tư thế người.
+    \item \textbf{Phương pháp Ước lượng Tư thế Người (HPE):} Chi tiết về MediaPipe Pose (BlazePose) như một giải pháp thời gian thực, cung cấp tọa độ 3D $\mathcal{K}$ (keypoints) làm dữ liệu đầu vào cho các thuật toán phân tích hành vi.
+    \item \textbf{Phần cứng Hệ thống Nhúng:} Phân tích vai trò của ESP32/ESP32-S3, cảm biến IMU (Gia tốc, Con quay, Từ kế) và Module Truyền thông (Wi-Fi, 4G), cùng với các nguyên lý xử lý tín hiệu sơ cấp như tính toán Gia tốc Tổng.
+\end{itemize}
+
+Tất cả các thành phần lý thuyết này sẽ được tích hợp trong Chương tiếp theo. Cụ thể, mô hình lý thuyết về các \textbf{đặc trưng động học} và \textbf{tư thế} (Kinematic \& Postural Features) sẽ được chuyển hóa thành các mô-đun phần mềm trên nền tảng ESP-IDF và các Framework. Chương tiếp theo, \textbf{Thiết kế và Phương pháp luận Triển khai}, sẽ tập trung vào việc kiến trúc hóa hệ thống, chi tiết hóa cấu trúc mã nguồn, và mô tả quy trình thực nghiệm được tiến hành để biến các nguyên lý cơ sở thành một giải pháp phát hiện té ngã thời gian thực, đáng tin cậy.

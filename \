@@ -1,10 +1,8 @@
 \section{Các Giao Thức Truyền Thông}
 \label{sec:communication_protocols}
-Tiếp nối các phân tích về tình hình nghiên cứu hiện có và các khoảng trống công nghệ được xác định trong phần tổng quan và tình hình nghiên cứu. Phần sau đây chuyển trọng tâm sang trình bày chi tiết về các \textbf{cơ sở lý thuyết và giao thức nền tảng} chi phối hoạt động của Hệ thống Cảnh báo Viễn thông Nhúng IoT được đề xuất, đặc biệt trong ứng dụng \textbf{Phát hiện Ngã (Fall Detection)}.
+Tiếp nối các phân tích về tình hình nghiên cứu hiện có và các khoảng trống công nghệ được xác định trong phần tổng quan và tình hình nghiên cứu. Chương này chuyển trọng tâm sang trình bày chi tiết về các \textbf{cơ sở lý thuyết và giao thức nền tảng} chi phối hoạt động của Hệ thống Cảnh báo Viễn thông Nhúng IoT được đề xuất, đặc biệt trong ứng dụng \textbf{Phát hiện Ngã (Fall Detection)}.
 
 Trong hệ thống cảnh báo thời gian thực, nơi tính kịp thời của thông tin là yếu tố quyết định, khả năng \textbf{giao tiếp không gián đoạn} giữa các thành phần nhúng và trung tâm điều khiển là tối quan trọng. Chương này sẽ hệ thống hóa các giao thức truyền thông cốt lõi. Cụ thể, \textbf{Giao thức Khởi tạo Phiên (SIP)} sẽ được làm rõ như xương sống cho việc truyền tải âm thanh/video cảnh báo theo thời gian thực; \textbf{Message Queuing Telemetry Transport (MQTT)} được phân tích như một giải pháp \textit{lightweight} và hiệu quả để vận chuyển dữ liệu cảm biến (như dữ liệu gia tốc kế, con quay hồi chuyển sau khi xử lý thuật toán phát hiện ngã) trên các mạng bị hạn chế băng thông; và \textbf{JavaScript Object Notation (JSON)} như định dạng chuẩn để cấu trúc và trao đổi thông tin. Việc nắm vững các cơ chế này là nền tảng để xây dựng và đảm bảo hiệu suất của một hệ thống cảnh báo từ xa, tin cậy và có khả năng mở rộng.
-Phần này trình bày các giao thức truyền thông cốt lõi cho phép trao đổi dữ liệu và điều khiển trong hệ thống cảnh báo viễn thông nhúng IoT, bao gồm: Giao thức Khởi tạo Phiên (SIP), Message Queuing Telemetry Transport (MQTT), và JavaScript Object Notation (JSON).
-
 \subsection{Giao Thức Khởi Tạo Phiên (SIP)}
 \label{subsec:sip_protocol}
 

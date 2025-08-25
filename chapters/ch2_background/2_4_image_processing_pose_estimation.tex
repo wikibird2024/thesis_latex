@@ -1,182 +1,109 @@
-
-\section{Nhận diện tư thế người và phát hiện té ngã}
+\section{Nhận diện Tư thế Người và Phát hiện Té ngã}
 \label{sec:pose_fall_system}
 
-Mục này trình bày tổng quan về nhận diện tư thế người (Human Pose Estimation - HPE), MediaPipe Pose, thuật toán phát hiện té ngã multi-stage, cùng triển khai hệ thống tích hợp.
+Mục này trình bày tổng quan về nhận diện tư thế người (Human Pose Estimation - HPE), giải pháp thời gian thực MediaPipe Pose, xây dựng thuật toán phát hiện té ngã dựa trên đặc trưng động học (kinematic) và tư thế (postural), cùng mô tả chi tiết hệ thống tích hợp.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Nhận diện tư thế người (Human Pose Estimation)}
+\subsection{Nhận diện Tư thế Người (Human Pose Estimation)}
 
-Nhận diện tư thế người là lĩnh vực quan trọng trong thị giác máy tính, nhằm xác định vị trí và hướng các khớp cũng như bộ phận cơ thể từ hình ảnh hoặc video. Khả năng này đóng vai trò then chốt trong các hệ thống giám sát an toàn, đặc biệt là phát hiện té ngã, phân tích chuyển động và nhận diện hành vi bất thường.
+Nhận diện tư thế người là một lĩnh vực then chốt trong thị giác máy tính, nhằm xác định vị trí và hướng các khớp (joints) và bộ phận cơ thể từ hình ảnh hoặc chuỗi video. Khả năng này là nền tảng cho các ứng dụng giám sát an toàn, phân tích chuyển động, và nhận diện hành vi bất thường (như té ngã).
 
-\subsubsection{Khái niệm và định nghĩa}
+\subsubsection{Khái niệm và Định nghĩa}
 
-Pose Estimation xác định vị trí và hướng các bộ phận cơ thể trong không gian 2D hoặc 3D, biểu diễn qua tập hợp các keypoints:
+Pose Estimation ước lượng vị trí của các bộ phận cơ thể trong không gian 2D hoặc 3D, được biểu diễn qua tập hợp các \textbf{keypoints} (khớp/điểm mốc):
 \begin{equation}
 \mathcal{K} = \{k_1, k_2, ..., k_n\}, \quad k_i = (x_i, y_i, z_i, c_i)
 \end{equation}
-với $(x_i, y_i, z_i)$ là tọa độ và $c_i$ là độ tin cậy (confidence) của keypoint.
+trong đó $(x_i, y_i, z_i)$ là tọa độ không gian (với $z_i$ là tọa độ chiều sâu tương đối) và $c_i$ là độ tin cậy (\textbf{confidence score}) của keypoint thứ $i$.
 
-\paragraph{Biểu diễn dữ liệu hình ảnh:}
+\paragraph{Phân loại Phương pháp HPE:}
 \begin{itemize}
-    \item \textbf{Grayscale}: Mảng 2D $(H, W)$
-    \item \textbf{RGB Color}: Mảng 3D $(H, W, 3)$
-    \item \textbf{Video}: Chuỗi khung hình $(T, H, W, C)$
-\end{itemize}
-
-\subsubsection{Pipeline xử lý}
-
-\begin{enumerate}
-    \item \textbf{Thu nhận và tiền xử lý:} Capture, normalization, resizing, noise reduction.
-    \item \textbf{Phát hiện và localization:} Person detection, ROI extraction.
-    \item \textbf{Keypoint regression và tracking:} Landmark prediction, temporal smoothing, 3D projection.
-\end{enumerate}
-
-\subsubsection{Các phương pháp HPE}
-
-\paragraph{Phương pháp truyền thống:} HOG, SIFT, Pictorial Structure Models.  
-\textit{Ưu điểm:} Dễ giải thích, đơn giản.  
-\textit{Hạn chế:} Độ chính xác thấp.  
-
-\paragraph{Phương pháp học sâu hiện đại:} Sử dụng CNN:
-\begin{itemize}
-    \item \textbf{Bottom-up:} Phát hiện keypoints trước, nhóm thành người (OpenPose)
-    \item \textbf{Top-down:} Phát hiện người trước, ước lượng pose (Mask R-CNN, MediaPipe)
+    \item \textbf{Top-down Approach:} Đầu tiên phát hiện đối tượng người, sau đó ước lượng keypoints cho từng hộp giới hạn (bounding box) của người. (VD: Mask R-CNN, MediaPipe).
+    \item \textbf{Bottom-up Approach:} Đầu tiên phát hiện tất cả các keypoints, sau đó nhóm chúng lại để tạo thành tư thế của từng người. (VD: OpenPose).
 \end{itemize}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{MediaPipe Pose Estimation}
+\subsection{MediaPipe Pose Estimation cho Ứng dụng Thời gian thực}
 
-MediaPipe Pose (Google) tối ưu cho thời gian thực trên nhiều nền tảng, cung cấp giải pháp HPE nhanh và chính xác.
+MediaPipe Pose, dựa trên mô hình **BlazePose** của Google, được tối ưu hóa để cung cấp giải pháp HPE 3D nhanh và chính xác trong môi trường thời gian thực trên nhiều nền tảng (Mobile, Web, Desktop).
 
-\subsubsection{Kiến trúc Graph-based Processing}
+\subsubsection{Kiến trúc xử lý Graph-based}
 
+MediaPipe sử dụng kiến trúc xử lý dữ liệu dựa trên đồ thị (Graph-based Processing), nơi các nhiệm vụ được tổ chức thành một chuỗi các module:
 \begin{itemize}
-    \item \textbf{Nodes (Calculator):} Module xử lý độc lập.
-    \item \textbf{Edges (Packet Stream):} Luồng dữ liệu giữa các module.
-    \item \textbf{Synchronization:} Đảm bảo timing và consistency.
+    \item \textbf{Nodes (Calculator):} Các module xử lý độc lập thực hiện các nhiệm vụ cụ thể (VD: Phát hiện đối tượng, Ước lượng điểm mốc).
+    \item \textbf{Edges (Packet Stream):} Các luồng dữ liệu (packets) được truyền tải giữa các Nodes, đảm bảo đồng bộ hóa và nhất quán dữ liệu giữa các bước.
 \end{itemize}
 
-\subsubsection{Các thành phần mô hình chính}
+\subsubsection{Các thành phần Mô hình Chính}
 
-\paragraph{Pose Detection Model:}
+\paragraph{Pose Detection Model (Localization):} Nhiệm vụ là phát hiện sự hiện diện và xác định \textbf{Vùng quan tâm (ROI)} chứa người trong khung hình.
 \begin{itemize}
-    \item Input: RGB frame $(H \times W \times 3)$
-    \item Output: Bounding box và pose presence probability
+    \item Input: Khung hình RGB.
+    \item Output: Bounding box và xác suất hiện diện của người.
 \end{itemize}
 
-\paragraph{Pose Landmark Model (BlazePose):}
+\paragraph{Pose Landmark Model (BlazePose):} Mô hình ước lượng các điểm mốc chính xác trên ROI đã xác định.
 \begin{itemize}
-    \item 33 keypoints 3D $(x, y, z, visibility)$
-    \item Backbone: MobileNetV3 hoặc custom encoder-decoder
-    \item Input ROI: $256 \times 256$ pixels, Model size $\sim3.37$M
+    \item Output: 33 keypoints 3D $(x, y, z, visibility)$.
+    \item Hàm mất mát (\textbf{Loss Function}) tổng hợp:
+    \begin{equation}
+    \mathcal{L}_{\text{total}} = \lambda_1 \mathcal{L}_{\text{coord}} + \lambda_2 \mathcal{L}_{\text{confidence}} + \lambda_3 \mathcal{L}_{\text{depth}}
+    \end{equation}
 \end{itemize}
 
-\begin{equation}
-\mathcal{L}_{\text{total}} = \lambda_1 \mathcal{L}_{\text{coord}} + \lambda_2 \mathcal{L}_{\text{confidence}} + \lambda_3 \mathcal{L}_{\text{depth}}
-\end{equation}
+\paragraph{Pose Tracking Model:} Dự đoán ROI cho khung hình tiếp theo dựa trên pose hiện tại. Việc này giúp giảm đáng kể chi phí tính toán (computational cost) bằng cách tránh chạy mô hình phát hiện đầy đủ ở mỗi khung hình.
 
-\paragraph{Pose Tracking Model:} Predict ROI cho frame tiếp theo dựa trên pose hiện tại, giảm computational cost 50–70\%.
+\subsubsection{Thuật toán Hậu xử lý (Post-processing)}
 
-\subsubsection{Thuật toán hậu xử lý}
+\paragraph{Temporal Smoothing (One Euro Filter):} Áp dụng bộ lọc thời gian để làm mịn tín hiệu tọa độ keypoint qua các khung hình, loại bỏ nhiễu và tăng độ ổn định của chuyển động ước tính.
 
-\paragraph{Temporal Smoothing (One Euro Filter):}
-\begin{equation}
-\hat{x}(t) = \alpha(t) x(t) + (1-\alpha(t)) \hat{x}(t-1), \quad
-\alpha(t) = \frac{1}{1 + \tau / T_e}
-\end{equation}
-
-\paragraph{3D Coordinate Estimation:}
-\begin{equation}
-z_{\text{normalized}} = \frac{z_{\text{real}} - z_{\text{hip}}}{d_{\text{torso}}}
-\end{equation}
-
-\subsubsection{So sánh với các giải pháp khác}
-\begin{table}[htbp]
-\centering
-\caption{So sánh các giải pháp Pose Estimation}
-\begin{tabular}{|l|c|c|c|c|}
-\hline
-Metric & MediaPipe & OpenPose & MoveNet & YOLOv8-Pose \\
-\hline
-Keypoints & 33 (3D) & 25 (2D) & 17 (2D) & 17 (2D) \\
-Model Size & 3.37M & ~200M & 1.5–7M & ~11M \\
-FPS (GPU) & 60–100 & 25–45 & 80–120 & 45–80 \\
-FPS (CPU) & 25–40 & 8–15 & 30–60 & 15–25 \\
-mAP@0.5 & 0.70 & 0.75 & 0.65 & 0.72 \\
-3D Support & ✓ & ✗ & ✗ & ✗ \\
-Mobile Ready & ✓ & ✗ & ✓ & ✗ \\
-\hline
-\end{tabular}
-\end{table}
-
+\paragraph{3D Coordinate Estimation:} Chiều sâu tương đối $z$ được chuẩn hóa dựa trên kích thước cơ thể (thường là khoảng cách giữa hông).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Thuật toán phát hiện té ngã Multi-stage}
+\subsection{Thuật toán Phát hiện Té ngã Multi-stage}
 
-\subsubsection{Đặc trưng sinh học và feature engineering}
+Hệ thống phát hiện té ngã sử dụng các đặc trưng động học (Kinematic) và tư thế (Postural) được trích xuất từ dữ liệu keypoints 3D (từ MediaPipe) để đưa ra quyết định qua nhiều giai đoạn. $\Delta t$ được định nghĩa là thời gian trôi qua giữa hai khung hình liên tiếp ($1/FPS$).
 
-\paragraph{Kinematic Features:}
-\begin{align}
-\vec{v}_{\text{COM}}(t) &= \frac{\vec{p}_{\text{COM}}(t) - \vec{p}_{\text{COM}}(t-1)}{\Delta t} \\
-\vec{p}_{\text{COM}} &= \frac{\sum_i w_i \vec{p}_i c_i}{\sum_i w_i c_i} \\
-a_{\text{total}}(t) &= \frac{\|\vec{v}_{\text{COM}}(t) - \vec{v}_{\text{COM}}(t-1)\|}{\Delta t}
-\end{align}
+\subsubsection{Trích xuất Đặc trưng Sinh học (Feature Engineering)}
 
-\paragraph{Postural Features:}
-\begin{align}
-AR(t) &= \frac{\max(x_i)-\min(x_i)}{\max(y_i)-\min(y_i)} \\
-\Delta h_{\text{head}}(t) &= |y_{\text{head}}(t) - y_{\text{head}}(0)| \\
-\theta_{\text{body}}(t) &= \arctan\frac{x_{\text{shoulder}}-x_{\text{hip}}}{y_{\text{shoulder}}-y_{\text{hip}}}
-\end{align}
-
-\subsubsection{Multi-stage Fall Detection Algorithm}
-
-\paragraph{Stage 1: Pre-fall Detection}
-\begin{enumerate}
-    \item Input: Keypoints sequence $\mathcal{K}_t$, thresholds $V_{th}, A_{th}$
-    \item Compute $\vec{v}_{\text{COM}}(t)$, $a_{\text{total}}(t)$
-    \item If $\|\vec{v}_{\text{COM}}(t)\| > V_{th}$ OR $a_{\text{total}}(t) > A_{th}$, return True
-    \item Else, return False
-\end{enumerate}
-
-\paragraph{Stage 2: Fall Event Verification}
-\begin{enumerate}
-    \item Compute $AR(t), \theta_{\text{body}}(t), \Delta h_{\text{head}}(t)$
-    \item Count indicators exceeding thresholds
-    \item If $\text{indicators} \ge 2$, return True (Fall confirmed)
-    \item Else, return False
-\end{enumerate}
-
-\paragraph{Stage 3: Post-fall Inactivity Check}
-\begin{enumerate}
-    \item Evaluate average movement in $T_{\text{window}} = 5$s
-    \item If $avg\_movement < M_{th}$, return True (prolonged inactivity)
-    \item Else, return False (person active)
-\end{enumerate}
-
-\subsubsection{Parameter Tuning}
+\paragraph{Kinematic Features (Đặc trưng Động học):} Phản ánh tốc độ và gia tốc trong quá trình té ngã.
 \begin{itemize}
-    \item $V_{th} = 0.8$ m/s, $A_{th} = 15$ m/s²
-    \item $AR_{th} = 1.5$, $\theta_{th} = 45°$, $\Delta h_{th} = 0.3$, $M_{th} = 0.05$
-    \item Adaptive thresholds: $V_{th}^{adaptive}(t) = V_{th}^{base} \cdot (1 + \alpha \cdot \text{confidence\_factor}(t))$
+    \item \textbf{Vận tốc COM ($\vec{v}_{\text{COM}}$) và Gia tốc COM ($a_{\text{total}}$):}
+    \begin{align}
+    \vec{v}_{\text{COM}}(t) &= \frac{\vec{p}_{\text{COM}}(t) - \vec{p}_{\text{COM}}(t-\Delta t)}{\Delta t} \\
+    \vec{p}_{\text{COM}} &= \frac{\sum_i w_i \vec{p}_i c_i}{\sum_i w_i c_i} \quad (\text{Với } w_i \text{ là trọng số khối lượng sinh học}) \\
+    a_{\text{total}}(t) &= \frac{\|\vec{v}_{\text{COM}}(t) - \vec{v}_{\text{COM}}(t-\Delta t)\|}{\Delta t}
+    \end{align}
 \end{itemize}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Triển khai và tối ưu hóa Hệ thống}
-
-\subsubsection{System Components}
+\paragraph{Postural Features (Đặc trưng Tư thế):} Phản ánh hình dạng cơ thể và độ cao sau khi té ngã.
 \begin{itemize}
-    \item \textbf{Input Handler}: Video capture, frame preprocessing
-    \item \textbf{Pose Estimator}: MediaPipe wrapper
-    \item \textbf{Feature Extractor}: Kinematic \& postural features
-    \item \textbf{Fall Detector}: Multi-stage decision engine
-    \item \textbf{Alert System}: Notification, emergency response
+    \item \textbf{Tỷ lệ Khía cạnh (Aspect Ratio - AR):} Tỷ lệ giữa chiều rộng và chiều cao của hộp giới hạn người, tăng vọt khi người nằm ngang.
+    \item \textbf{Góc Nghiêng Cơ thể ($\theta_{\text{body}}$):} Góc tạo bởi trục cơ thể (vai-hông) so với phương thẳng đứng.
+    \item \textbf{Độ giảm chiều cao ($\Delta h_{\text{head}}$):} Sự thay đổi vị trí của đầu so với trạng thái ban đầu.
 \end{itemize}
 
-\subsubsection{Data Flow Pipeline}
+\subsubsection{Thuật toán Phát hiện Té ngã Ba Giai đoạn}
+
+\paragraph{Stage 1: Pre-fall Detection (Phát hiện Sớm)}
+Kiểm tra các dấu hiệu ban đầu của sự mất kiểm soát, chủ yếu dựa vào tốc độ và gia tốc của Trung tâm Khối lượng (COM).
+
+\paragraph{Stage 2: Fall Event Verification (Xác nhận Sự kiện Té ngã)}
+Nếu Stage 1 là True, kiểm tra các đặc trưng tư thế (AR, $\theta_{\text{body}}$) để xác nhận trạng thái cơ thể chuyển từ đứng/đi sang nằm ngang.
+
+\paragraph{Stage 3: Post-fall Inactivity Check (Kiểm tra Bất động sau té ngã)}
+Sau khi té ngã được xác nhận (Stage 2 là True), hệ thống theo dõi mức độ chuyển động trong một khoảng thời gian ($T_{\text{window}}$). Nếu sự chuyển động thấp hơn ngưỡng $M_{th}$ trong thời gian dài, cảnh báo được kích hoạt, loại trừ các trường hợp ngồi hoặc nằm chủ động.
+
+\subsection{Triển khai và Tối ưu hóa Hệ thống Tích hợp}
+
+\subsubsection{Chuỗi Xử lý Dữ liệu (Data Flow Pipeline)}
+Hệ thống được thiết kế theo kiến trúc module để dễ dàng tích hợp và tối ưu hóa hiệu suất:
 \begin{equation}
 \text{Video Stream} \xrightarrow{\text{MediaPipe}} \text{Keypoints} 
-\xrightarrow{\text{Feature Extraction}} \text{Decision Engine} 
+\xrightarrow[\text{Kinematic/Postural}]{3\text{D/Temporal Filtering}} \text{Feature Extraction} 
+\xrightarrow{\text{Multi-stage Logic}} \text{Decision Engine} 
 \xrightarrow{\text{Alert System}} \text{Response}
 \end{equation}
+
+\subsubsection{Tối ưu hóa Tham số (Parameter Tuning)}
+Việc điều chỉnh các ngưỡng ($V_{th}, A_{th}, AR_{th}, \dots$) là rất quan trọng. Việc sử dụng \textbf{Ngưỡng Thích ứng (Adaptive Thresholds)} $V_{th}^{adaptive}(t)$ (phụ thuộc vào độ tin cậy của keypoints $c_i$) có thể cải thiện độ chính xác trong các môi trường nhiễu hoặc ánh sáng yếu.
