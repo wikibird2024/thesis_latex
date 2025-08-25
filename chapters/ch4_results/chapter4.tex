@@ -1,5 +1,13 @@
-\chapter{Ket qua xay dung he thong canh bao te nga}
+\chapter[KẾT QUẢ VÀ THỰC NGHIỆM]{THỰC NGHIỆM VÀ ĐÁNH GIÁ KẾT QUẢ HIỆU NĂNG HỆ THỐNG}
+\label{chap:results} % Consistent English label
 
-\input{chapters/ch4_results/4_1_fall_detection_results.tex}
-\input{chapters/ch4_results/4_2_latency_analysis.tex}
-\input{chapters/ch4_results/4_3_stability_evaluation.tex}
+\section*{Giới thiệu Chương} % Chapter introduction (un-numbered section)
+% This section transitions from the methodology to the results.
+Chương trước đã hoàn tất việc thiết kế chi tiết các mô-đun phần cứng, phần mềm và thuật toán. Chương này sẽ tập trung vào việc \textbf{đánh giá hiệu năng thực tế} của hệ thống được triển khai. Các thí nghiệm được thiết kế nhằm kiểm tra tính khả thi và độ tin cậy của phương pháp tiếp cận đa phương thức được đề xuất. Nội dung chương sẽ trình bày chi tiết về thiết lập thực nghiệm, các tiêu chí đánh giá và phân tích chuyên sâu các kết quả thu được, đặc biệt là khả năng giảm thiểu cảnh báo sai so với các hệ thống đơn lẻ.
+
+% --- START OF CHAPTER SECTIONS (Input files) ---
+\input{chapters/ch4_results/4_1_experimental_setup.tex} % 4.1 New: Experimental setup and metrics
+\input{chapters/ch4_results/4_2_fall_detection_results.tex} % 4.2 Fall detection performance (Accuracy, Sensitivity)
+\input{chapters/ch4_results/4_3_latency_analysis.tex} % 4.3 Latency and computational efficiency
+\input{chapters/ch4_results/4_4_stability_evaluation.tex} % 4.4 Stability and reliability of the alerting system
+\input{chapters/ch4_results/4_5_chapter_conclusion.tex} % 4.5 Chapter conclusion and discussion

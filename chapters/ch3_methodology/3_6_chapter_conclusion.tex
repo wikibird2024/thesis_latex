@@ -1,0 +1,12 @@
+\section{Tóm tắt Chương và Cơ sở cho Đánh giá Thực nghiệm}
+\label{sec:methodology_conclusion} % Section label for conclusion
+
+Chương này đã hoàn tất việc thiết kế và phương pháp luận triển khai cho hệ thống phát hiện té ngã đa phương thức. Toàn bộ các thành phần, từ lựa chọn kiến trúc phần cứng (ESP32-S3 và IMU), đến chi tiết thuật toán xử lý ảnh (sử dụng tọa độ $\mathcal{K}$ từ BlazePose) và logic kết hợp dữ liệu (\textbf{Data Fusion}), đều đã được xác định rõ ràng. Đặc biệt, chương đã làm rõ cơ chế cảnh báo SIP/MQTT và các chế độ hoạt động linh hoạt (giám sát tại chỗ và di động), giải quyết các hạn chế của các phương pháp đơn lẻ.
+
+\begin{itemize}
+    \item \textbf{Kiến trúc Đa tầng:} Hệ thống được kiến trúc hóa thành ba tầng (Tầng Cảm biến, Tầng Xử lý Biên, và Tầng Cảnh báo), đảm bảo tính module và khả năng mở rộng.
+    \item \textbf{Thuật toán Cốt lõi:} Logic phát hiện té ngã dựa trên sự kết hợp giữa phân tích \textbf{Gia tốc Tổng} (IMU) và phân tích \textbf{Tỷ lệ Chiều cao/Chiều rộng Cơ thể} (Vision).
+    \item \textbf{Hệ thống Cảnh báo Đáng tin cậy:} Thiết lập song song kênh truyền thông qua SIP (nội bộ) và MQTT (từ xa), cung cấp tính dự phòng tối đa.
+\end{itemize}
+
+Những mô-đun đã thiết kế này là cơ sở vững chắc cho giai đoạn tiếp theo. Chương sau, \textbf{Thực nghiệm và Kết quả}, sẽ tập trung vào việc đánh giá hiệu năng của hệ thống được triển khai. Các thử nghiệm sẽ được tiến hành để xác định độ chính xác (Accuracy), độ nhạy (Sensitivity) và tỷ lệ cảnh báo sai (False Positive Rate), chứng minh tính khả thi và hiệu quả của phương pháp tiếp cận đa phương thức được đề xuất.
