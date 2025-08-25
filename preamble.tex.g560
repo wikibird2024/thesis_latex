@@ -11,40 +11,36 @@
 \setmainlanguage{vietnamese}
 \setotherlanguage{english}
 
-% =======================================
-% FONT CONFIGURATION - Optimized for XeLaTeX
-% =======================================
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                        FONT CONFIGURATION
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Main serif font: Cormorant Garamond (đẹp & thanh thoát)
+\setmainfont{Cormorant Garamond}[Ligatures=TeX, Scale=1.05]
 
-% --- Main serif font (text) ---
-\setmainfont{Liberation Serif}[Scale=1.05]
+% Sans-serif: TeX Gyre Heros (heading, caption – hiện đại & học thuật)
+\setsansfont{TeX Gyre Heros}[Ligatures=TeX]
 
-% --- Sans-serif font (headings, captions) ---
-\setsansfont{TeX Gyre Heros}
+% Monospaced / code font: Fira Code
+\setmonofont{Fira Code}[Scale=0.9, Ligatures=TeX]
 
-% --- Monospaced / code font ---
-\setmonofont{DejaVu Sans Mono}[Scale=0.9]
+% Font riêng cho văn bản tiếng Việt nếu cần
+\newfontfamily{\vietfont}{Cormorant Garamond}[Scale=MatchLowercase]
 
-% --- Optional font for Vietnamese ---
-\newfontfamily{\vietfont}{Liberation Serif}[Scale=MatchLowercase]
-
-% --- Unicode math font ---
+% Unicode math
 \usepackage{unicode-math}
 \setmathfont{Latin Modern Math}
 
+% Microtype tối ưu: spacing và kerning đẹp
+\usepackage[protrusion=true, expansion=true]{microtype}
+\microtypesetup{spacing=true, kerning=true}
 
-% --- Microtype for minor adjustments ---
-% Đã vô hiệu hóa expansion/protrusion để tránh lỗi Fatal Error với XeLaTeX
-\usepackage[protrusion=false, expansion=false]{microtype}
-% Tắt luôn spacing/kerning để tránh cảnh báo
-\microtypesetup{spacing=false, kerning=false}
-
-
-% --- Paragraph & line spacing ---
+% Line spacing và paragraph
 \usepackage{setspace}
 \onehalfspacing
 \usepackage{indentfirst}
 \setlength{\parindent}{1.2em}
 \setlength{\parskip}{0pt}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                    ADDITIONAL PACKAGES
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

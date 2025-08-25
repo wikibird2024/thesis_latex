@@ -2,57 +2,59 @@
 \section{Nhận diện tư thế người và phát hiện té ngã}
 \label{sec:pose_fall_system}
 
-Mục này mô tả tổng quan về nhận diện tư thế người (Human Pose Estimation - HPE), MediaPipe Pose, thuật toán phát hiện té ngã multi-stage và triển khai hệ thống tích hợp.
+Mục này trình bày tổng quan về nhận diện tư thế người (Human Pose Estimation - HPE), MediaPipe Pose, thuật toán phát hiện té ngã multi-stage, cùng triển khai hệ thống tích hợp.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Nhận diện tư thế người (Human Pose Estimation)}
 
-Nhận diện tư thế người là một lĩnh vực quan trọng trong thị giác máy tính, nhằm xác định vị trí và hướng của các khớp cũng như bộ phận cơ thể từ hình ảnh hoặc video. Khả năng này đóng vai trò then chốt trong việc xây dựng các hệ thống giám sát an toàn, đặc biệt là phát hiện té ngã, giúp phân tích chuyển động và nhận diện hành vi bất thường.
+Nhận diện tư thế người là lĩnh vực quan trọng trong thị giác máy tính, nhằm xác định vị trí và hướng các khớp cũng như bộ phận cơ thể từ hình ảnh hoặc video. Khả năng này đóng vai trò then chốt trong các hệ thống giám sát an toàn, đặc biệt là phát hiện té ngã, phân tích chuyển động và nhận diện hành vi bất thường.
 
 \subsubsection{Khái niệm và định nghĩa}
 
-Pose Estimation xác định vị trí và hướng của các bộ phận cơ thể trong không gian 2D hoặc 3D. Biểu diễn cấu trúc tư thế thông qua tập hợp các keypoints:
+Pose Estimation xác định vị trí và hướng các bộ phận cơ thể trong không gian 2D hoặc 3D, biểu diễn qua tập hợp các keypoints:
 \begin{equation}
 \mathcal{K} = \{k_1, k_2, ..., k_n\}, \quad k_i = (x_i, y_i, z_i, c_i)
 \end{equation}
-với $(x_i, y_i, z_i)$ là tọa độ và $c_i$ là độ tin cậy.
+với $(x_i, y_i, z_i)$ là tọa độ và $c_i$ là độ tin cậy (confidence) của keypoint.
 
 \paragraph{Biểu diễn dữ liệu hình ảnh:}
 \begin{itemize}
     \item \textbf{Grayscale}: Mảng 2D $(H, W)$
     \item \textbf{RGB Color}: Mảng 3D $(H, W, 3)$
-    \item \textbf{Video}: Sequence $(T, H, W, C)$
+    \item \textbf{Video}: Chuỗi khung hình $(T, H, W, C)$
 \end{itemize}
 
 \subsubsection{Pipeline xử lý}
 
 \begin{enumerate}
-    \item \textbf{Thu nhận và tiền xử lý}: Capture, normalization, resizing, noise reduction
-    \item \textbf{Phát hiện và localization}: Person detection, ROI extraction
-    \item \textbf{Keypoint regression và tracking}: Landmark prediction, temporal smoothing, 3D projection
+    \item \textbf{Thu nhận và tiền xử lý:} Capture, normalization, resizing, noise reduction.
+    \item \textbf{Phát hiện và localization:} Person detection, ROI extraction.
+    \item \textbf{Keypoint regression và tracking:} Landmark prediction, temporal smoothing, 3D projection.
 \end{enumerate}
 
 \subsubsection{Các phương pháp HPE}
 
-\paragraph{Phương pháp truyền thống:} HOG, SIFT, Pictorial Structure Models. Ưu điểm: dễ giải thích, đơn giản; Hạn chế: chính xác thấp.  
+\paragraph{Phương pháp truyền thống:} HOG, SIFT, Pictorial Structure Models.  
+\textit{Ưu điểm:} Dễ giải thích, đơn giản.  
+\textit{Hạn chế:} Độ chính xác thấp.  
 
-\paragraph{Phương pháp học sâu hiện đại:} Sử dụng CNN, gồm:
+\paragraph{Phương pháp học sâu hiện đại:} Sử dụng CNN:
 \begin{itemize}
-\item \textbf{Bottom-up}: Phát hiện keypoints trước, nhóm thành người (OpenPose)
-\item \textbf{Top-down}: Phát hiện người trước, ước tính pose (Mask R-CNN, MediaPipe)
+    \item \textbf{Bottom-up:} Phát hiện keypoints trước, nhóm thành người (OpenPose)
+    \item \textbf{Top-down:} Phát hiện người trước, ước lượng pose (Mask R-CNN, MediaPipe)
 \end{itemize}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{MediaPipe Pose Estimation}
 
-MediaPipe Pose của Google tối ưu cho thời gian thực trên nhiều nền tảng.
+MediaPipe Pose (Google) tối ưu cho thời gian thực trên nhiều nền tảng, cung cấp giải pháp HPE nhanh và chính xác.
 
 \subsubsection{Kiến trúc Graph-based Processing}
 
 \begin{itemize}
-    \item \textbf{Nodes (Calculator)}: Module xử lý độc lập
-    \item \textbf{Edges (Packet Stream)}: Luồng dữ liệu giữa các module
-    \item \textbf{Synchronization}: Đảm bảo timing và consistency
+    \item \textbf{Nodes (Calculator):} Module xử lý độc lập.
+    \item \textbf{Edges (Packet Stream):} Luồng dữ liệu giữa các module.
+    \item \textbf{Synchronization:} Đảm bảo timing và consistency.
 \end{itemize}
 
 \subsubsection{Các thành phần mô hình chính}
@@ -67,14 +69,14 @@ MediaPipe Pose của Google tối ưu cho thời gian thực trên nhiều nền
 \begin{itemize}
     \item 33 keypoints 3D $(x, y, z, visibility)$
     \item Backbone: MobileNetV3 hoặc custom encoder-decoder
-    \item Input ROI: $256 \times 256$ pixels, Model size ~3.37M
+    \item Input ROI: $256 \times 256$ pixels, Model size $\sim3.37$M
 \end{itemize}
 
 \begin{equation}
 \mathcal{L}_{\text{total}} = \lambda_1 \mathcal{L}_{\text{coord}} + \lambda_2 \mathcal{L}_{\text{confidence}} + \lambda_3 \mathcal{L}_{\text{depth}}
 \end{equation}
 
-\paragraph{Pose Tracking Model:} Predict ROI cho frame tiếp theo dựa trên pose hiện tại, giảm computational cost 50-70\%.
+\paragraph{Pose Tracking Model:} Predict ROI cho frame tiếp theo dựa trên pose hiện tại, giảm computational cost 50–70\%.
 
 \subsubsection{Thuật toán hậu xử lý}
 
@@ -98,9 +100,9 @@ z_{\text{normalized}} = \frac{z_{\text{real}} - z_{\text{hip}}}{d_{\text{torso}}
 Metric & MediaPipe & OpenPose & MoveNet & YOLOv8-Pose \\
 \hline
 Keypoints & 33 (3D) & 25 (2D) & 17 (2D) & 17 (2D) \\
-Model Size & 3.37M & ~200M & 1.5-7M & ~11M \\
-FPS (GPU) & 60-100 & 25-45 & 80-120 & 45-80 \\
-FPS (CPU) & 25-40 & 8-15 & 30-60 & 15-25 \\
+Model Size & 3.37M & ~200M & 1.5–7M & ~11M \\
+FPS (GPU) & 60–100 & 25–45 & 80–120 & 45–80 \\
+FPS (CPU) & 25–40 & 8–15 & 30–60 & 15–25 \\
 mAP@0.5 & 0.70 & 0.75 & 0.65 & 0.72 \\
 3D Support & ✓ & ✗ & ✗ & ✗ \\
 Mobile Ready & ✓ & ✗ & ✓ & ✗ \\
@@ -108,15 +110,12 @@ Mobile Ready & ✓ & ✗ & ✓ & ✗ \\
 \end{tabular}
 \end{table}
 
-\subsubsection{Ví dụ code cơ bản Python}
-\begin{minted}[linenos, numbersep=5pt, frame=lines, framesep=2mm, fontsize=\small]{python}
-# (giữ nguyên code MediaPipe mà bạn đã cung cấp)
-\end{minted}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Thuật toán phát hiện té ngã Multi-stage}
 
 \subsubsection{Đặc trưng sinh học và feature engineering}
+
 \paragraph{Kinematic Features:}
 \begin{align}
 \vec{v}_{\text{COM}}(t) &= \frac{\vec{p}_{\text{COM}}(t) - \vec{p}_{\text{COM}}(t-1)}{\Delta t} \\
@@ -132,38 +131,39 @@ AR(t) &= \frac{\max(x_i)-\min(x_i)}{\max(y_i)-\min(y_i)} \\
 \end{align}
 
 \subsubsection{Multi-stage Fall Detection Algorithm}
+
 \paragraph{Stage 1: Pre-fall Detection}
 \begin{enumerate}
-\item Input: Keypoints sequence $\mathcal{K}_t$, thresholds $V_{th}, A_{th}$
-\item Compute $\vec{v}_{\text{COM}}(t)$, $a_{\text{total}}(t)$
-\item If $\|\vec{v}_{\text{COM}}(t)\| > V_{th}$ OR $a_{\text{total}}(t) > A_{th}$, return True
-\item Else, return False
+    \item Input: Keypoints sequence $\mathcal{K}_t$, thresholds $V_{th}, A_{th}$
+    \item Compute $\vec{v}_{\text{COM}}(t)$, $a_{\text{total}}(t)$
+    \item If $\|\vec{v}_{\text{COM}}(t)\| > V_{th}$ OR $a_{\text{total}}(t) > A_{th}$, return True
+    \item Else, return False
 \end{enumerate}
 
 \paragraph{Stage 2: Fall Event Verification}
 \begin{enumerate}
-\item Compute $AR(t), \theta_{\text{body}}(t), \Delta h_{\text{head}}(t)$
-\item Count indicators exceeding thresholds
-\item If $\text{indicators} \ge 2$, return True (Fall confirmed)
-\item Else, return False
+    \item Compute $AR(t), \theta_{\text{body}}(t), \Delta h_{\text{head}}(t)$
+    \item Count indicators exceeding thresholds
+    \item If $\text{indicators} \ge 2$, return True (Fall confirmed)
+    \item Else, return False
 \end{enumerate}
 
 \paragraph{Stage 3: Post-fall Inactivity Check}
 \begin{enumerate}
-\item Evaluate average movement in $T_{\text{window}} = 5$s
-\item If $avg\_movement < M_{th}$, return True (prolonged inactivity)
-\item Else, return False (person active)
+    \item Evaluate average movement in $T_{\text{window}} = 5$s
+    \item If $avg\_movement < M_{th}$, return True (prolonged inactivity)
+    \item Else, return False (person active)
 \end{enumerate}
 
 \subsubsection{Parameter Tuning}
 \begin{itemize}
-\item $V_{th} = 0.8$ m/s, $A_{th} = 15$ m/s²
-\item $AR_{th} = 1.5$, $\theta_{th} = 45°$, $\Delta h_{th} = 0.3$, $M_{th} = 0.05$
-\item Adaptive thresholds: $V_{th}^{adaptive}(t) = V_{th}^{base} \cdot (1 + \alpha \cdot \text{confidence\_factor}(t))$
+    \item $V_{th} = 0.8$ m/s, $A_{th} = 15$ m/s²
+    \item $AR_{th} = 1.5$, $\theta_{th} = 45°$, $\Delta h_{th} = 0.3$, $M_{th} = 0.05$
+    \item Adaptive thresholds: $V_{th}^{adaptive}(t) = V_{th}^{base} \cdot (1 + \alpha \cdot \text{confidence\_factor}(t))$
 \end{itemize}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Triển khai và Tối ưu hóa Hệ thống}
+\subsection{Triển khai và tối ưu hóa Hệ thống}
 
 \subsubsection{System Components}
 \begin{itemize}
