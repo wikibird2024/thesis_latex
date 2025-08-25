@@ -65,6 +65,81 @@ Dưới đây là sơ đồ minh họa sự khác biệt giữa đường tín h
 \caption{Minh họa sự khác biệt giữa đường tín hiệu và đường truyền phương tiện trong VoIP}
 \label{fig:sip-media-path-distinction} 
 \end{figure}
+
+\subsubsection{Giao thức Thiết lập Kết nối Tương tác (ICE)}
+\label{subsubsec:ice_protocol}
+
+Trong môi trường mạng thực tế, các thiết bị thường nằm sau NAT (Network Address Translation) hoặc tường lửa, ngăn cản việc truyền dữ liệu trực tiếp qua RTP. \textbf{ICE} là một khung giao thức (Framework) được sử dụng để giải quyết vấn đề \textbf{NAT Traversal} (xuyên NAT) bằng cách tìm ra đường dẫn tốt nhất giữa hai điểm cuối. ICE sử dụng kết hợp các giao thức sau:
+
+\begin{itemize}
+    \item \textbf{Cục bộ (Local IP):} Địa chỉ IP nội bộ của thiết bị.
+    \item \textbf{STUN (Session Traversal Utilities for NAT):} Giao thức giúp các thiết bị phát hiện địa chỉ IP công cộng (Public IP) và cổng (Port) mà NAT đã ánh xạ.
+    \item \textbf{TURN (Traversal Using Relays around NAT):} Được sử dụng như một giải pháp cuối cùng khi STUN thất bại. TURN đóng vai trò là máy chủ chuyển tiếp (Relay Server), tất cả dữ liệu được gửi qua máy chủ này để tránh tường lửa nghiêm ngặt.
+\end{itemize}
+
+Quá trình ICE được thực hiện thông qua SDP (trong thông điệp SIP), nơi các điểm cuối trao đổi thông tin về các địa chỉ IP/cổng (gọi là "ứng cử viên") mà chúng đã thu thập.
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[
+    node distance=2.5cm and 5cm, % Tăng khoảng cách ngang để hình thoáng hơn
+    box/.style={rectangle, draw, rounded corners, minimum width=3.5cm, minimum height=1cm, align=center, fill=blue!10},
+    text_only/.style={align=left, font=\small, inner sep=0pt}, 
+    arrow_style/.style={-Stealth, thick, blue!70!black} 
+]
+
+    % Cột Endpoint A
+    \node[box] (A_ep) {SIP Endpoint A};
+    \node[text_only, below=0.5cm of A_ep.south west, anchor=north west] (A_cand_1) {1) Thu thập ứng cử viên:};
+    \node[text_only, below=0.1cm of A_cand_1.south west, anchor=north west] (A_cand_2) {- IP cục bộ: 192.168.1.10};
+    \node[text_only, below=0.1cm of A_cand_2.south west, anchor=north west] (A_cand_3) {- IP STUN: 203.0.113.5};
+    \node[text_only, below=0.1cm of A_cand_3.south west, anchor=north west] (A_cand_4) {- IP TURN: 192.0.2.10};
+
+    % Cột Endpoint B
+    % Đặt B dựa trên A (ngang bằng A_ep)
+    \node[box, right=of A_ep] (B_ep) {SIP Endpoint B};
+    
+    % Đặt văn bản B dựa trên neo của A (để đảm bảo khoảng cách đối xứng)
+    \node[text_only] (B_cand_1) at (B_ep.south west |- A_cand_1.west) [anchor=north west] {1) Thu thập ứng cử viên:};
+    \node[text_only] (B_cand_2) at (B_ep.south west |- A_cand_2.west) [anchor=north west] {- IP cục bộ: 10.0.0.20};
+    \node[text_only] (B_cand_3) at (B_ep.south west |- A_cand_3.west) [anchor=north west] {- IP STUN: 198.51.100.12};
+    \node[text_only] (B_cand_4) at (B_ep.south west |- A_cand_4.west) [anchor=north west] {- IP TURN: 192.0.2.20};
+    
+    % Vị trí Kiểm tra (Đảm bảo đối xứng hoàn toàn)
+    \coordinate (CenterMid) at ($(A_cand_4.south)!0.5!(B_cand_4.south)$);
+    \node[box, below=2.5cm of CenterMid, text width=8cm] (Check) { 
+        3) Thực hiện kiểm tra kết nối \\
+        (ví dụ: UDP trực tiếp, STUN, TURN)
+    };
+
+    \node[box, below=1cm of Check] (Select) {
+        4) Chọn đường dẫn tốt nhất \\
+        (ví dụ: UDP trực tiếp nếu có thể)
+    };
+
+    % Các đường nối
+    % Endpoint A và danh sách ứng cử viên
+    \draw[arrow_style] (A_ep.south) -- (A_cand_1.north);
+    % Endpoint B và danh sách ứng cử viên (Phải đảm bảo neo đúng)
+    \draw[arrow_style] (B_ep.south) -- (B_cand_1.north);
+
+    % Trao đổi ứng cử viên
+    \draw[arrow_style, <->] (A_cand_4.east) -- node[above, align=center, font=\small] {2) Trao đổi ứng cử viên \\ qua SIP/SDP} (B_cand_4.west);
+    
+    % Từ ứng cử viên đến Kiểm tra kết nối
+    \draw[arrow_style] (A_cand_4.south) |- (Check.west);
+    \draw[arrow_style] (B_cand_4.south) |- (Check.east);
+    
+    % Từ Kiểm tra kết nối đến Chọn đường dẫn
+    \draw[arrow_style] (Check.south) -- (Select.north);
+
+\end{tikzpicture}
+\caption{Minh họa Quá trình thu thập ứng cử viên ICE và kiểm tra kết nối}
+\label{fig:ice_flow_symmetric}
+\end{figure}
+
+Quá trình ICE đảm bảo rằng dữ liệu cảnh báo RTP được truyền một cách tin cậy nhất có thể giữa các thiết bị nhúng và trung tâm điều khiển, ngay cả khi chúng nằm sau các NAT khác nhau, tối ưu hóa độ trễ và độ tin cậy của hệ thống cảnh báo thời gian thực.
+
 \subsubsection{SIP trong Hệ Thống Cảnh Báo Asterisk}
 \label{subsubsec:sip_asterisk_integration}
 
@@ -99,8 +174,10 @@ Một bên gửi BYE, bên kia phản hồi 200 OK để đóng phiên an toàn.
 
 Có thể gửi SMS trong Asterisk bằng cách kích hoạt \texttt{textsupport=yes} trong \texttt{sip.conf} và định nghĩa logic xử lý trong \texttt{extensions.conf}. Ví dụ, sử dụng lệnh \texttt{MessageSend} để gửi tin nhắn SIP MESSAGE, tích hợp với các nhà cung cấp SMS gateway để chuyển tiếp sang mạng di động.
 
----
 
+\subsection{Giao Thức Message Queuing Telemetry Transport (MQTT)}
+\label{subsec:mqtt_protocol}
+... (Nội dung MQTT tiếp tục như cũ)
 \subsection{Giao Thức Message Queuing Telemetry Transport (MQTT)}
 \label{subsec:mqtt_protocol}
 
