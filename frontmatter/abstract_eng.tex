@@ -1,0 +1,13 @@
+
+\chapter*{ABSTRACT}
+\addcontentsline{toc}{chapter}{ABSTRACT}
+
+Falls are among the leading causes of serious injuries in the elderly and other high-risk populations. This thesis presents the design and implementation of a comprehensive real-time fall detection and alert system, built on an integrated and distributed architecture.
+
+The system consists of two main detection components, each optimized for a specific monitoring scope. The first component is a wearable system, utilizing an Inertial Measurement Unit (IMU) to track user movement and posture within a mobile range. The second component is a fixed computer vision system, employing video analysis algorithms to monitor critical areas such as living rooms or bedrooms. When a fall event is detected by any component, the information is transmitted to a central processing platform.
+
+All processing and control logic is executed on an embedded ESP32 platform, offering optimal performance and cost efficiency. Once a fall is confirmed, the alert data is encoded in JSON format and transmitted to a server via the MQTT protocol, ensuring minimal latency. This architecture enables the system to maintain reliability even if one of the components fails.
+
+The system also integrates an automated telecommunication solution based on Asterisk PBX and a 4G-GPS module, allowing automatic emergency calls, SMS notifications containing precise GPS coordinates, and sharing images from the scene via OTT messaging applications, providing fast and multi-channel responses.
+
+The outcome of this research is a modular and highly extensible architecture, facilitating future integration of additional sensors or alert methods. The system demonstrates a harmonious combination of embedded IoT, automated telecommunications, and intelligent data analysis, contributing significantly to improving community safety and quality of life.

@@ -1,9 +1,13 @@
+
 \chapter*{TÓM TẮT}
 \addcontentsline{toc}{chapter}{TÓM TẮT}
 
-Luận văn này trình bày việc thiết kế và triển khai một hệ thống phát hiện té ngã đa phương thức dành cho người cao tuổi và bệnh nhân cần giám sát liên tục. Hệ thống sử dụng ESP32 kết hợp với cảm biến quán tính MPU6050 để thu thập dữ liệu chuyển động, đồng thời phân tích luồng video thời gian thực bằng các thuật toán thị giác máy tính, nâng cao độ chính xác trong việc nhận diện các sự kiện té ngã.
+Té ngã là một trong những nguyên nhân chính gây chấn thương nghiêm trọng ở người cao tuổi và các đối tượng cần giám sát đặc biệt. Luận văn này trình bày thiết kế và triển khai một hệ thống phát hiện và cảnh báo té ngã thời gian thực, được xây dựng trên kiến trúc tích hợp và phân tán toàn diện.
 
-Dữ liệu cảm biến và cảnh báo được mã hóa dưới định dạng JSON và truyền thông qua giao thức MQTT, cho phép trao đổi thông tin thời gian thực giữa thiết bị nhúng và máy chủ. Python trên máy chủ Linux xử lý dữ liệu, đánh giá mức độ cảnh báo và điều khiển Asterisk PBX để thực hiện các hành động viễn thông tự động như gọi điện thoại, gửi tin nhắn SMS và chia sẻ hình ảnh sự kiện qua ứng dụng Telegram.
+Hệ thống gồm hai thành phần phát hiện chính, mỗi thành phần được tối ưu hóa cho một phạm vi giám sát cụ thể. Thành phần thứ nhất là hệ thống cảm biến đeo trên người (wearable system), sử dụng cảm biến quán tính (IMU) để theo dõi chuyển động và tư thế của người dùng trong phạm vi di động. Thành phần thứ hai là hệ thống thị giác máy tính cố định, sử dụng thuật toán phân tích video để giám sát các khu vực trọng yếu trong môi trường, như phòng khách hoặc phòng ngủ. Khi một sự kiện té ngã được phát hiện bởi bất kỳ thành phần nào, thông tin sẽ được truyền đến nền tảng xử lý trung tâm.
 
-Hệ thống được thiết kế theo kiến trúc mô-đun, dễ mở rộng và tối ưu chi phí, đồng thời đảm bảo tính đáng tin cậy, bảo mật dữ liệu và khả năng hoạt động ổn định trong môi trường gia đình hoặc cơ sở chăm sóc y tế. Kết quả nghiên cứu cung cấp một giải pháp toàn diện, kết hợp nhúng IoT, viễn thông và xử lý dữ liệu thông minh, góp phần nâng cao chất lượng giám sát và phản ứng kịp thời với các sự kiện té ngã.
+Logic xử lý và điều khiển được thực thi trên nền tảng điện toán nhúng ESP32, tối ưu về hiệu năng và chi phí. Khi sự kiện té ngã được xác nhận, dữ liệu cảnh báo được mã hóa dưới định dạng JSON và truyền tới máy chủ thông qua giao thức MQTT, đảm bảo thông tin được gửi đi với độ trễ tối thiểu. Kiến trúc này cho phép hệ thống duy trì tính tin cậy ngay cả khi một trong hai thành phần gặp sự cố.
 
+Hệ thống còn tích hợp giải pháp viễn thông tự động dựa trên Asterisk PBX và module 4G-GPS, cho phép tự động thực hiện các cuộc gọi khẩn cấp, gửi tin nhắn SMS chứa tọa độ GPS chính xác, và chia sẻ hình ảnh từ hiện trường qua các ứng dụng nhắn tin OTT, cung cấp phản ứng nhanh chóng và đa kênh.
+
+Kết quả nghiên cứu là một kiến trúc mô-đun, có khả năng mở rộng cao, dễ dàng tích hợp thêm các loại cảm biến hoặc phương thức cảnh báo trong tương lai. Hệ thống thể hiện sự kết hợp hài hòa giữa IoT nhúng, viễn thông tự động và phân tích dữ liệu thông minh, góp phần nâng cao chất lượng cuộc sống và đảm bảo an toàn cho cộng đồng.

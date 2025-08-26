@@ -1,5 +1,4 @@
 
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %       VIETNAMESE LATEX THESIS PREAMBLE - XeLaTeX + Cormorant Garamond
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -12,46 +11,45 @@
 \setmainlanguage{vietnamese}
 \setotherlanguage{english}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                        FONT CONFIGURATION
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Main serif font: Cormorant Garamond (đẹp và thanh thoát)
+% =======================================
+% FONT CONFIGURATION - Optimized for XeLaTeX
+% =======================================
 
+% --- Main serif font (text) ---
+\setmainfont{Liberation Serif}[Scale=1.05]
 
-\setmainfont[
-    Path = ~/.fonts/Cormorant_Garamond/,
-    UprightFont = CormorantGaramond-VariableFont_wght.ttf,
-    ItalicFont = CormorantGaramond-Italic-VariableFont_wght.ttf,
-    Ligatures=TeX
-]{CormorantGaramond-VariableFont_wght.ttf}
+% --- Sans-serif font (headings, captions) ---
+\setsansfont{TeX Gyre Heros}
 
-% Sans-serif: Roboto (hiện đại, dễ đọc)
-\setsansfont{Roboto}[
-    BoldFont = Roboto Bold,
-    ItalicFont = Roboto Italic,
-    BoldItalicFont = Roboto Bold Italic,
-    Ligatures=TeX
-]
+% --- Monospaced / code font ---
+\setmonofont{DejaVu Sans Mono}[Scale=0.9]
 
-% Monospaced / code font
-\setmonofont{Fira Code}[Scale=0.9, Ligatures=TeX]
+% --- Optional font for Vietnamese ---
+\newfontfamily{\vietfont}{Liberation Serif}[Scale=MatchLowercase]
 
-% Font riêng cho văn bản tiếng Việt nếu cần
-\newfontfamily{\vietfont}{Cormorant Garamond}[Scale=MatchLowercase]
-
-% Unicode math
+% --- Unicode math font ---
 \usepackage{unicode-math}
 \setmathfont{Latin Modern Math}
 
-% Microtype tối ưu: spacing và kerning đẹp
-\usepackage[protrusion=true, expansion=true]{microtype}
-\microtypesetup{spacing=true, kerning=true}
 
+% --- Microtype for minor adjustments ---
+% Đã vô hiệu hóa expansion/protrusion để tránh lỗi Fatal Error với XeLaTeX
+\usepackage[protrusion=false, expansion=false]{microtype}
+% Tắt luôn spacing/kerning để tránh cảnh báo
+\microtypesetup{spacing=false, kerning=false}
+
+
+% --- Paragraph & line spacing ---
+\usepackage{setspace}
+\onehalfspacing
+\usepackage{indentfirst}
+\setlength{\parindent}{1.2em}
+\setlength{\parskip}{0pt}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                    ADDITIONAL PACKAGES
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \usepackage{xcolor}
-\usepackage{minted} % Cache để tránh shell-escape mỗi lần
+\usepackage{minted}
 \usepackage{graphicx}
 \graphicspath{{figures/}{chapters/ch2_background/}{chapters/ch3_methodology/}}
 \usepackage{calc}
@@ -59,7 +57,15 @@
 \usepackage{amsmath}
 \usepackage{caption}
 \usepackage{subcaption}
-\captionsetup{justification=centering, labelfont=bf}
+
+% For graphic plot
+\usepackage{tikz}
+\usetikzlibrary{positioning, calc,arrows.meta}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+
+% Caption style: centered, nhỏ hơn body text, bold label
+\captionsetup{justification=centering, labelfont=bf, font=small}
 \captionsetup[subfigure]{justification=centering}
 
 % Màu cho minted
@@ -82,6 +88,7 @@
 % Bibliography
 \usepackage[backend=biber,style=ieee]{biblatex}
 \addbibresource{references.bib}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                    CUSTOM MACROS FOR THESIS
@@ -113,11 +120,7 @@
     footskip=20pt
 }
 
-\usepackage{setspace}
-\onehalfspacing
-\usepackage{indentfirst}
-\setlength{\parindent}{1.2em}
-\setlength{\parskip}{0pt}
+% Hyphenation & paragraph settings
 \tolerance=2000
 \emergencystretch=0.5em
 \hyphenpenalty=5000
@@ -135,6 +138,19 @@
 \renewcommand{\headrulewidth}{0.4pt}
 \renewcommand{\footrulewidth}{0pt}
 \renewcommand{\chaptermark}[1]{\markboth{\chaptername\ \thechapter.\ #1}{}}
+
+% --- Heading font sans-serif bằng titlesec ---
+\titleformat{\chapter}[display]
+  {\normalfont\sffamily\huge\bfseries}
+  {\chaptername\ \thechapter}{20pt}{\Huge}
+
+\titleformat{\section}
+  {\normalfont\sffamily\Large\bfseries}
+  {\thesection}{1em}{}
+
+\titleformat{\subsection}
+  {\normalfont\sffamily\large\bfseries}
+  {\thesubsection}{1em}{}
 
 % Hyperref (load last)
 \usepackage{hyperref}
