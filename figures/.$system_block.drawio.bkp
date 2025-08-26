@@ -1,0 +1,49 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/28.0.6 Chrome/138.0.7204.100 Electron/37.2.3 Safari/537.36" version="28.0.6">
+  <diagram name="Page-1" id="5-EtWSU6YtfRYnp5921K">
+    <mxGraphModel dx="2197" dy="1924" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="HiLvJJbdrpGc3KtGlOCQ-3" value="" style="image;aspect=fixed;html=1;points=[];align=center;fontSize=12;image=img/lib/azure2/ai_machine_learning/Computer_Vision.svg;" vertex="1" parent="1">
+          <mxGeometry x="250" y="274" width="68" height="68" as="geometry" />
+        </mxCell>
+        <mxCell id="HiLvJJbdrpGc3KtGlOCQ-4" value="" style="image;aspect=fixed;html=1;points=[];align=center;fontSize=12;image=img/lib/azure2/ai_machine_learning/Face_APIs.svg;" vertex="1" parent="1">
+          <mxGeometry x="160" y="274" width="68" height="68" as="geometry" />
+        </mxCell>
+        <mxCell id="HiLvJJbdrpGc3KtGlOCQ-5" value="" style="image;aspect=fixed;html=1;points=[];align=center;fontSize=12;image=img/lib/azure2/app_services/API_Management_Services.svg;" vertex="1" parent="1">
+          <mxGeometry x="440" y="180" width="65" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="HiLvJJbdrpGc3KtGlOCQ-6" value="" style="image;aspect=fixed;html=1;points=[];align=center;fontSize=12;image=img/lib/azure2/iot/IoT_Edge.svg;" vertex="1" parent="1">
+          <mxGeometry y="-70" width="160" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="HiLvJJbdrpGc3KtGlOCQ-7" value="" style="image;aspect=fixed;html=1;points=[];align=center;fontSize=12;image=img/lib/azure2/iot/Time_Series_Data_Sets.svg;" vertex="1" parent="1">
+          <mxGeometry x="300" y="80" width="51.2" height="68" as="geometry" />
+        </mxCell>
+        <mxCell id="HiLvJJbdrpGc3KtGlOCQ-8" value="" style="image;aspect=fixed;html=1;points=[];align=center;fontSize=12;image=img/lib/azure2/app_services/Notification_Hubs.svg;" vertex="1" parent="1">
+          <mxGeometry x="-90" y="250" width="67" height="56.00000000000001" as="geometry" />
+        </mxCell>
+        <mxCell id="HiLvJJbdrpGc3KtGlOCQ-9" value="" style="image;aspect=fixed;html=1;points=[];align=center;fontSize=12;image=img/lib/azure2/storage/Data_Share_Invitations.svg;" vertex="1" parent="1">
+          <mxGeometry x="460" y="370" width="68" height="44.800000000000004" as="geometry" />
+        </mxCell>
+        <mxCell id="HiLvJJbdrpGc3KtGlOCQ-10" value="" style="image;aspect=fixed;html=1;points=[];align=center;fontSize=12;image=img/lib/azure2/other/Instance_Pools.svg;" vertex="1" parent="1">
+          <mxGeometry x="580" y="260" width="65" height="64" as="geometry" />
+        </mxCell>
+        <mxCell id="HiLvJJbdrpGc3KtGlOCQ-12" value="" style="image;aspect=fixed;html=1;points=[];align=center;fontSize=12;image=img/lib/azure2/general/Process_Explorer.svg;" vertex="1" parent="1">
+          <mxGeometry x="355" y="-30" width="70" height="68" as="geometry" />
+        </mxCell>
+        <mxCell id="HiLvJJbdrpGc3KtGlOCQ-13" value="" style="image;aspect=fixed;html=1;points=[];align=center;fontSize=12;image=img/lib/azure2/general/Templates.svg;" vertex="1" parent="1">
+          <mxGeometry x="-50" y="120" width="74.11" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="HiLvJJbdrpGc3KtGlOCQ-14" value="" style="image;aspect=fixed;html=1;points=[];align=center;fontSize=12;image=img/lib/azure2/storage/Azure_Stack_Edge.svg;" vertex="1" parent="1">
+          <mxGeometry x="160" y="-40" width="68" height="48" as="geometry" />
+        </mxCell>
+        <mxCell id="HiLvJJbdrpGc3KtGlOCQ-15" value="" style="image;aspect=fixed;html=1;points=[];align=center;fontSize=12;image=img/lib/azure2/intune/Device_Compliance.svg;" vertex="1" parent="1">
+          <mxGeometry x="330" y="390" width="62" height="68" as="geometry" />
+        </mxCell>
+        <mxCell id="HiLvJJbdrpGc3KtGlOCQ-16" value="" style="image;aspect=fixed;html=1;points=[];align=center;fontSize=12;image=img/lib/azure2/intune/Devices.svg;" vertex="1" parent="1">
+          <mxGeometry x="160" y="394" width="68" height="60" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
