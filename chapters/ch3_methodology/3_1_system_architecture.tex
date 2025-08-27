@@ -1,1 +1,56 @@
-\section{System Architecture}
+
+\section{Kiến trúc hệ thống (System Architecture)}
+\label{sec:system_architecture}
+
+Hệ thống Phát hiện té ngã và Cảnh báo (FDAS) được thiết kế để giám sát liên tục môi trường sống hoặc làm việc, đặc biệt dành cho người cao tuổi hoặc những người có nguy cơ té ngã cao. Bằng cách xử lý dữ liệu từ nhiều nguồn độc lập, hệ thống có khả năng phát hiện sự kiện té ngã và kích hoạt các kênh cảnh báo đa dạng, đảm bảo phản ứng kịp thời và đáng tin cậy.
+
+Kiến trúc FDAS được chia thành bốn lớp chính, mỗi lớp đảm nhận các chức năng cụ thể: 
+Lớp Thiết bị\slash Cạnh (Device\slash Edge Layer), 
+Lớp Kết nối (Connectivity Layer), 
+Lớp Xử lý\slash Đám mây (Processing\slash Cloud Layer), 
+và Lớp Ứng dụng\slash Giao diện người dùng (Application\slash User Interface Layer).
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/3_1_system_architecture_diagram.pdf}
+    \caption{Sơ đồ Kiến trúc Hệ thống Phát hiện té ngã và Cảnh báo (FDAS)}
+    \label{fig:system_architecture}
+\end{figure}
+
+\subsection{Lớp Thiết bị\slash Cạnh (Sensor layer\slash Edge Layer)}
+Đây là lớp thu thập dữ liệu sơ cấp từ môi trường và thực hiện xử lý ban đầu tại biên.
+\begin{itemize}
+    \item \textbf{Module ESP32}: Chịu trách nhiệm thu thập và xử lý sơ bộ tín hiệu từ các cảm biến vật lý, cụ thể là \textbf{cảm biến gia tốc (accelerometer) và con quay hồi chuyển (gyroscope)} để phát hiện các mẫu chuyển động đặc trưng của sự kiện té ngã.
+    \item \textbf{Module GPS}: Thu thập dữ liệu vị trí địa lý của đối tượng được giám sát. Dữ liệu này rất quan trọng trong trường hợp té ngã ở ngoài trời hoặc khu vực không có camera giám sát.
+    \item \textbf{IP Camera}: Thu thập luồng video liên tục từ khu vực giám sát, gửi đến máy chủ xử lý để phân tích hình ảnh chuyên sâu.
+\end{itemize}
+
+\subsection{Lớp Kết nối (Connectivity Layer)}
+Lớp này đóng vai trò cầu nối, đảm bảo dữ liệu được truyền tải tin cậy và hiệu quả giữa các lớp.
+\begin{itemize}
+    \item \textbf{Wi-Fi \slash 4G \slash LTE}: Cung cấp các kênh truyền tải dữ liệu chính.
+    \item \textbf{MQTT Broker}: Hoạt động như một máy chủ tin nhắn nhẹ, theo mô hình \textbf{Publish\slash Subscribe}. ESP32 sẽ ``Publish'' dữ liệu JSON chứa thông tin về sự kiện té ngã và vị trí, và Main Processing Server sẽ ``Subscribe'' để nhận dữ liệu này theo thời gian thực.
+\end{itemize}
+
+\subsection{Lớp Xử lý\slash Đám mây (Processing\slash Cloud Layer)}
+Đây là trung tâm điều khiển và xử lý dữ liệu của toàn bộ hệ thống, tổng hợp thông tin từ nhiều nguồn để đưa ra quyết định.
+\begin{itemize}
+    \item \textbf{Main Processing Server (Python)}:
+    \begin{itemize}
+        \item \textbf{MQTT Client}: Thực hiện chức năng ``Subscribe'' đến MQTT Broker để nhận dữ liệu JSON từ ESP32 theo thời gian thực.
+        \item \textbf{Xử lý ảnh \& Phân tích AI (Image Processing \& AI Analytics)}: Nhận luồng video từ IP Camera, áp dụng các thuật toán xử lý hình ảnh và mô hình học sâu (Deep Learning) như \textbf{YOLO} để phát hiện sự kiện té ngã với độ chính xác cao.
+        \item \textbf{Logic nghiệp vụ \slash Quản lý cảnh báo (Business Logic \slash Alert Manager)}: Khối này đóng vai trò là trung tâm điều phối. Nó sẽ xử lý và kích hoạt các kênh cảnh báo dựa trên tín hiệu từ \textbf{hai luồng xử lý độc lập}: luồng từ ESP32\slash GPS và luồng từ Camera.
+    \end{itemize}
+    \item \textbf{Asterisk Server}: Là hệ thống tổng đài PBX mã nguồn mở. Nó nhận lệnh từ Main Processing Server để thực hiện các cuộc gọi thoại tự động đến các số liên lạc khẩn cấp thông qua giao thức \textbf{SIP}.
+    \item \textbf{Telegram Bot API}: Cung cấp giao diện lập trình để Main Processing Server có thể gửi tin nhắn văn bản, hình ảnh hoặc video clip ngắn đến một kênh hoặc nhóm Telegram cụ thể.
+\end{itemize}
+
+\subsection{Lớp Ứng dụng\slash Giao diện người dùng (Application\slash User Interface Layer)}
+Lớp này cung cấp các giao diện tương tác và hiển thị thông tin cho người dùng cuối.
+\begin{itemize}
+    \item \textbf{Mobile App \slash Web Dashboard}: Hiển thị trạng thái hệ thống, lịch sử các sự kiện té ngã, và cung cấp giao diện để cấu hình các thông số.
+    \item \textbf{Ứng dụng SIP Client}: Người dùng cài đặt các ứng dụng mã nguồn mở như \textbf{Linphone} hoặc \textbf{Zoiper} trên điện thoại để nhận cuộc gọi báo động từ Asterisk Server.
+    \item \textbf{Telegram Bot Client}: Người dùng nhận các thông báo cảnh báo trực tiếp trên ứng dụng Telegram của họ.
+\end{itemize}
+
+\subsection{Tổng kết kiến trúc (Architectural Summary)}
+Kiến trúc hệ thống FDAS tích hợp mạnh mẽ các công nghệ IoT để cung cấp giải pháp giám sát và cảnh báo té ngã toàn diện. Khả năng phát hiện từ hai nguồn độc lập (cảm biến IMU\slash GPS và camera) cùng với hệ thống cảnh báo đa kênh (gọi thoại và nhắn tin) đảm bảo tính tin cậy và hiệu quả cao, góp phần nâng cao an toàn cho đối tượng được giám sát.
