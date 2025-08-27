@@ -1,0 +1,6 @@
+[mqtt-alert]
+exten => s,1,NoOp(Received MQTT Alert)
+exten => s,n,Set(ALERT_MSG=${ALERT_INFO})
+exten => s,n,Verbose(1, Alert received: ${ALERT_MSG})
+exten => s,n,System(/usr/bin/php /var/www/alert_processor.php "${ALERT_MSG}")
+exten => s,n,Hangup()

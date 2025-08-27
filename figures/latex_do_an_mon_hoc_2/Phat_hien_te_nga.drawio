@@ -1,0 +1,47 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/26.2.2 Chrome/134.0.6998.178 Electron/35.1.2 Safari/537.36" version="26.2.2">
+  <diagram name="Page-1" id="wFkHyp61qeiP-Z15NRNa">
+    <mxGraphModel dx="1028" dy="632" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="p49CPGKA-X0RS1FkhEIu-7" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="p49CPGKA-X0RS1FkhEIu-1" target="p49CPGKA-X0RS1FkhEIu-6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="p49CPGKA-X0RS1FkhEIu-1" value="Nhận sensor_data" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="90" y="160" width="260" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="p49CPGKA-X0RS1FkhEIu-9" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="p49CPGKA-X0RS1FkhEIu-6" target="p49CPGKA-X0RS1FkhEIu-8">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="p49CPGKA-X0RS1FkhEIu-6" value="Tính acc_mag, gyro_mag" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="90" y="260" width="270" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="p49CPGKA-X0RS1FkhEIu-13" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="p49CPGKA-X0RS1FkhEIu-8" target="p49CPGKA-X0RS1FkhEIu-12">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="p49CPGKA-X0RS1FkhEIu-16" value="yes" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="p49CPGKA-X0RS1FkhEIu-13">
+          <mxGeometry x="-0.3831" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p49CPGKA-X0RS1FkhEIu-14" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="p49CPGKA-X0RS1FkhEIu-8" target="p49CPGKA-X0RS1FkhEIu-10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="p49CPGKA-X0RS1FkhEIu-15" value="no" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="p49CPGKA-X0RS1FkhEIu-14">
+          <mxGeometry x="-0.4286" y="-1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p49CPGKA-X0RS1FkhEIu-8" value="acc_mag &amp;lt; ngưỡng &amp;amp;&amp;amp;&lt;div&gt;gyro-mag &amp;gt; ngưỡng&lt;/div&gt;" style="rhombus;whiteSpace=wrap;html=1;rounded=1;" vertex="1" parent="1">
+          <mxGeometry x="75" y="350" width="290" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="p49CPGKA-X0RS1FkhEIu-10" value="Té ngã" style="whiteSpace=wrap;html=1;rounded=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="410" y="360" width="180" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="p49CPGKA-X0RS1FkhEIu-12" value="không té" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="95" y="460" width="250" height="60" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

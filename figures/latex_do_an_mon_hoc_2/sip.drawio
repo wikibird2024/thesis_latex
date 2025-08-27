@@ -1,0 +1,122 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/26.2.15 Chrome/134.0.6998.205 Electron/35.2.1 Safari/537.36" version="26.2.15">
+  <diagram name="Page-1" id="4S973Y1qu5q8ZNvNxHN1">
+    <mxGraphModel dx="1453" dy="895" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="PBAHkHM5xfs7sURcC6pc-29" value="Endpoint B" style="whiteSpace=wrap;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="60" y="97" width="321" height="663" as="geometry" />
+        </mxCell>
+        <mxCell id="PBAHkHM5xfs7sURcC6pc-30" value="Endpoint A" style="whiteSpace=wrap;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="430" y="111" width="330" height="641" as="geometry" />
+        </mxCell>
+        <mxCell id="PBAHkHM5xfs7sURcC6pc-31" value="SIP Endpoint A" style="whiteSpace=wrap;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="509" y="20.5" width="162" height="54" as="geometry" />
+        </mxCell>
+        <mxCell id="PBAHkHM5xfs7sURcC6pc-32" value="1) Thu thập ứng cử viên:" style="whiteSpace=wrap;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="460" y="136.5" width="260" height="78" as="geometry" />
+        </mxCell>
+        <mxCell id="PBAHkHM5xfs7sURcC6pc-33" value="- IP cục bộ: 192.168.1.10" style="whiteSpace=wrap;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="465" y="280" width="260" height="78" as="geometry" />
+        </mxCell>
+        <mxCell id="PBAHkHM5xfs7sURcC6pc-34" value="- IP STUN: 203.0.113.5" style="whiteSpace=wrap;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="460" y="410" width="260" height="78" as="geometry" />
+        </mxCell>
+        <mxCell id="PBAHkHM5xfs7sURcC6pc-35" value="- IP TURN: 192.0.2.10" style="whiteSpace=wrap;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="465" y="530" width="260" height="78" as="geometry" />
+        </mxCell>
+        <mxCell id="PBAHkHM5xfs7sURcC6pc-36" value="SIP Endpoint B" style="whiteSpace=wrap;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="119" y="20.5" width="163" height="54" as="geometry" />
+        </mxCell>
+        <mxCell id="PBAHkHM5xfs7sURcC6pc-37" value="1) Thu thập ứng cử viên:" style="whiteSpace=wrap;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="70" y="136.5" width="260" height="78" as="geometry" />
+        </mxCell>
+        <mxCell id="PBAHkHM5xfs7sURcC6pc-38" value="- IP cục bộ: 10.0.0.20" style="whiteSpace=wrap;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="70.5" y="260" width="260" height="78" as="geometry" />
+        </mxCell>
+        <mxCell id="PBAHkHM5xfs7sURcC6pc-39" value="- IP STUN: 198.51.100.12" style="whiteSpace=wrap;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="70" y="392.5" width="260" height="78" as="geometry" />
+        </mxCell>
+        <mxCell id="PBAHkHM5xfs7sURcC6pc-40" value="- IP TURN: 192.0.2.20" style="whiteSpace=wrap;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="80" y="530" width="260" height="78" as="geometry" />
+        </mxCell>
+        <mxCell id="PBAHkHM5xfs7sURcC6pc-41" value="3) Thực hiện kiểm tra kết nối&#xa;(ví dụ: UDP trực tiếp, STUN, TURN)" style="whiteSpace=wrap;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="282" y="820" width="260" height="78" as="geometry" />
+        </mxCell>
+        <mxCell id="PBAHkHM5xfs7sURcC6pc-42" value="4) Chọn đường dẫn tốt nhất&#xa;(ví dụ: UDP trực tiếp nếu có thể)" style="whiteSpace=wrap;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="280" y="950" width="260" height="78" as="geometry" />
+        </mxCell>
+        <mxCell id="PBAHkHM5xfs7sURcC6pc-43" value="" style="curved=1;startArrow=none;endArrow=block;exitX=0.5;exitY=1;entryX=0.5;entryY=0;rounded=0;" parent="1" source="PBAHkHM5xfs7sURcC6pc-31" target="PBAHkHM5xfs7sURcC6pc-32" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="PBAHkHM5xfs7sURcC6pc-44" value="" style="curved=1;startArrow=none;endArrow=block;exitX=0.5;exitY=1;entryX=0.5;entryY=0;rounded=0;" parent="1" source="PBAHkHM5xfs7sURcC6pc-32" target="PBAHkHM5xfs7sURcC6pc-33" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="PBAHkHM5xfs7sURcC6pc-45" value="" style="curved=1;startArrow=none;endArrow=block;exitX=0.5;exitY=1;entryX=0.5;entryY=0;rounded=0;" parent="1" source="PBAHkHM5xfs7sURcC6pc-33" target="PBAHkHM5xfs7sURcC6pc-34" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="PBAHkHM5xfs7sURcC6pc-46" value="" style="curved=1;startArrow=none;endArrow=block;exitX=0.5;exitY=1;entryX=0.5;entryY=0;rounded=0;" parent="1" source="PBAHkHM5xfs7sURcC6pc-34" target="PBAHkHM5xfs7sURcC6pc-35" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="PBAHkHM5xfs7sURcC6pc-47" value="" style="curved=1;startArrow=none;endArrow=block;exitX=0.5;exitY=1;entryX=0.5;entryY=0;rounded=0;" parent="1" source="PBAHkHM5xfs7sURcC6pc-36" target="PBAHkHM5xfs7sURcC6pc-37" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="PBAHkHM5xfs7sURcC6pc-48" value="" style="curved=1;startArrow=none;endArrow=block;exitX=0.5;exitY=1;entryX=0.5;entryY=0;rounded=0;" parent="1" source="PBAHkHM5xfs7sURcC6pc-37" target="PBAHkHM5xfs7sURcC6pc-38" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="PBAHkHM5xfs7sURcC6pc-49" value="" style="curved=1;startArrow=none;endArrow=block;exitX=0.5;exitY=1;entryX=0.5;entryY=0;rounded=0;" parent="1" source="PBAHkHM5xfs7sURcC6pc-38" target="PBAHkHM5xfs7sURcC6pc-39" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="PBAHkHM5xfs7sURcC6pc-50" value="" style="curved=1;startArrow=none;endArrow=block;exitX=0.5;exitY=1;entryX=0.48;entryY=0;rounded=0;" parent="1" source="PBAHkHM5xfs7sURcC6pc-39" target="PBAHkHM5xfs7sURcC6pc-40" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="180" y="562" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="PBAHkHM5xfs7sURcC6pc-51" value="2) Trao đổi ứng cử viên qua SIP/SDP" style="curved=1;startArrow=block;endArrow=block;exitX=0.35;exitY=1;entryX=0.66;entryY=0;rounded=0;" parent="1" source="PBAHkHM5xfs7sURcC6pc-35" target="PBAHkHM5xfs7sURcC6pc-40" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="484" y="661" />
+              <mxPoint x="268" y="688" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="PBAHkHM5xfs7sURcC6pc-52" value="" style="curved=1;startArrow=none;endArrow=block;exitX=0.67;exitY=1;entryX=1;entryY=0.07;rounded=0;" parent="1" source="PBAHkHM5xfs7sURcC6pc-35" target="PBAHkHM5xfs7sURcC6pc-41" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="619" y="661" />
+              <mxPoint x="619" y="843" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="PBAHkHM5xfs7sURcC6pc-53" value="" style="curved=1;startArrow=none;endArrow=block;exitX=0.5;exitY=1;entryX=0.09;entryY=0;rounded=0;" parent="1" source="PBAHkHM5xfs7sURcC6pc-40" target="PBAHkHM5xfs7sURcC6pc-41" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="196" y="843" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="PBAHkHM5xfs7sURcC6pc-54" value="" style="curved=1;startArrow=none;endArrow=block;exitX=0.5;exitY=1;entryX=0.5;entryY=0;rounded=0;" parent="1" source="PBAHkHM5xfs7sURcC6pc-41" target="PBAHkHM5xfs7sURcC6pc-42" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
