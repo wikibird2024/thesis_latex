@@ -1,0 +1,10 @@
+\subsection{Phần mềm Module Cảm biến (Module I)}
+\label{ssec:module_i_software}
+Việc triển khai phần mềm cho Module I tập trung vào việc xử lý dữ liệu từ cảm biến và truyền thông không dây. Mã nguồn được phát triển trên môi trường Arduino IDE, sử dụng ngôn ngữ C/C++ để tối ưu hiệu suất. Các thư viện chính được sử dụng bao gồm \texttt{Adafruit\_MPU6050} để đọc dữ liệu IMU, \texttt{TinyGPSPlus} cho việc phân tích dữ liệu GPS và các thư viện tích hợp của ESP-IDF để quản lý kết nối Wi-Fi và giao tiếp MQTT.
+
+\begin{enumerate}
+    \item \textbf{Khởi tạo và cấu hình:} Thiết bị được khởi động và kết nối với mạng Wi-Fi, sau đó đăng ký kết nối tới MQTT Broker. Việc này đảm bảo thiết bị có thể gửi dữ liệu thời gian thực đến máy chủ.
+    \item \textbf{Đọc và xử lý dữ liệu IMU:} Dữ liệu gia tốc và con quay hồi chuyển từ MPU6050 được đọc liên tục. Các thuật toán lọc (ví dụ: bộ lọc Kalman) có thể được áp dụng để giảm nhiễu.
+    \item \textbf{Đọc và xử lý dữ liệu GPS:} Dữ liệu vị trí được thu thập từ module GPS để xác định tọa độ.
+    \item \textbf{Gửi dữ liệu qua MQTT:} Dữ liệu đã xử lý từ cảm biến và GPS được đóng gói dưới dạng JSON và gửi đến máy chủ thông qua giao thức MQTT.
+\end{enumerate}
