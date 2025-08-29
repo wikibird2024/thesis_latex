@@ -1,5 +1,3 @@
-
-% Trang bìa
 \thispagestyle{empty}
 \begin{center}
     \setlength{\fboxrule}{2pt} % Độ dày viền 2pt
@@ -8,30 +6,31 @@
     \fcolorbox{darkblue}{white}{%
         \begin{minipage}{0.95\textwidth} % tăng lên để tránh overfull
             \vspace{1cm}
-            \begin{center}
-                \textbf{ĐẠI HỌC QUỐC GIA TP. HỒ CHÍ MINH} \\[0.2cm]
-                \textbf{TRƯỜNG ĐẠI HỌC BÁCH KHOA} \\[0.2cm]
-                \textbf{KHOA ĐIỆN - ĐIỆN TỬ} \\[0.2cm]
-                -----------------o0o----------------- \\[0.5cm]
-                
-                \vspace*{1cm}
-                \includegraphics[height=3.5cm]{figures/logo_hcmut.png}
-                \vspace{1cm}
-                
-                \textbf{BÁO CÁO LUẬN VĂN} \\[1cm]
-                
-                % Cho phép xuống dòng dễ hơn
-                \parbox{0.9\textwidth}{\centering
-                    \textbf{ĐỀ TÀI: \TENLUANVAN} \\[0.3cm]
-                    \textit{\THESISNAME}
-                } \\[1cm]
-                
-                \textbf{GVHD:} \TENNGUOIHUONGDAN \\[0.2cm]
-                \textbf{SVTH:} \TENTACGIA \\[0.2cm]
-                \textbf{MSSV:} \MSSV \\[1cm]
-                
-                \textbf{TP. HỒ CHÍ MINH, THÁNG 07/2025}
-            \end{center}
+            \centering % Chỉ cần một lần để căn giữa toàn bộ nội dung
+            
+            \textbf{ĐẠI HỌC QUỐC GIA TP. HỒ CHÍ MINH} \\[0.2cm]
+            \textbf{TRƯỜNG ĐẠI HỌC BÁCH KHOA} \\[0.2cm]
+            \textbf{KHOA ĐIỆN - ĐIỆN TỬ} \\[0.2cm]
+            
+            \textbf{\rule{0.25\textwidth}{0.4pt} \, o0o \, \rule{0.25\textwidth}{0.4pt}} \\[0.5cm]
+            
+            \vspace*{1cm}
+            \includegraphics[height=3.5cm]{figures/logo_hcmut.png}
+            \vspace{1cm}
+            
+            \textbf{BÁO CÁO LUẬN VĂN} \\[1cm]
+            
+            % Cho phép xuống dòng dễ hơn
+            \parbox{0.9\textwidth}{\centering
+                \textbf{ĐỀ TÀI: \TENLUANVAN} \\[0.3cm]
+                \textit{\THESISNAME}
+            } \\[1cm]
+            
+            \textbf{GVHD:} \TENNGUOIHUONGDAN \\[0.2cm]
+            \textbf{SVTH:} \TENTACGIA \\[0.2cm]
+            \textbf{MSSV:} \MSSV \\[1cm]
+            
+            \textbf{TP. HỒ CHÍ MINH, THÁNG 07/2025}
             \vspace{1cm}
         \end{minipage}
     }

@@ -1,0 +1,12 @@
+\subsection{Server: Quản lý và Xử lý Dữ liệu Trung tâm}
+\label{sec:server_overview}
+
+Phần server đảm nhiệm vai trò **trung tâm quản lý dữ liệu và điều phối luồng thông tin** từ các module phần cứng và phần mềm trong hệ thống. Server chịu trách nhiệm:
+\begin{itemize}
+    \item Nhận và lưu trữ luồng video, dữ liệu cảm biến và trạng thái thiết bị từ các ESP32.
+    \item Cung cấp giao diện cho các ứng dụng client hoặc dịch vụ thứ ba truy xuất dữ liệu.
+    \item Hỗ trợ các chức năng giám sát và xử lý cảnh báo, báo cáo hiệu suất và trạng thái hệ thống.
+\end{itemize}
+
+Mục tiêu của phần server là đảm bảo **tính ổn định, tin cậy và khả năng mở rộng**, đồng thời làm nền tảng cho các thuật toán xử lý dữ liệu và thị giác máy tính triển khai ở tầng cao hơn. Các chi tiết triển khai về kiến trúc server, cơ chế lưu trữ và xử lý dữ liệu sẽ được trình bày trong các phần tiếp theo.
+
