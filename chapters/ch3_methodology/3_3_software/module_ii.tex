@@ -1,0 +1,53 @@
+\subsection{Module II: Hệ thống Truyền tải Video Thời gian thực (Software Implementation)}
+\label{sec:module_ii_software}
+
+\subsubsection{Tổng quan phần mềm}
+Phần mềm của Module II được triển khai trên vi điều khiển \textbf{ESP32-S3} để thu thập và truyền tải video từ camera OV5640 theo thời gian thực. Hệ thống hoạt động như một thiết bị đầu cuối thông minh, cung cấp luồng video MJPEG qua HTTP làm nguồn dữ liệu cho các module xử lý thị giác máy tính ở tầng cao hơn.  
+
+Mô hình phần mềm dựa trên kiến trúc **hướng sự kiện (event-driven)** của ESP-IDF, cho phép quản lý đồng thời các tác vụ mạng, camera, và xử lý bộ đệm mà không làm nghẽn luồng.
+
+\subsubsection{Luồng hoạt động chính}
+Sơ đồ Hình \ref{fig:sw_architecture_flow} minh họa luồng phần mềm:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{module2_flow_2.pdf}
+    \caption{Luồng hoạt động chính của phần mềm Module II}
+    \label{fig:sw_architecture_flow}
+\end{figure}
+
+Các bước chính gồm:
+
+\begin{enumerate}
+    \item \textbf{Khởi tạo hệ thống}: cấu hình Wi-Fi, camera, và máy chủ HTTP.
+    \item \textbf{Chờ yêu cầu client}: hệ thống liên tục lắng nghe yêu cầu xem video.
+    \item \textbf{Lấy khung hình}: sử dụng triple buffering trên PSRAM để đảm bảo hiệu suất và giảm độ trễ.
+    \item \textbf{Gửi frame qua HTTP}: mỗi frame JPEG được đóng gói trong phản hồi HTTP dạng multipart, hiển thị liên tục trên client.
+    \item \textbf{Giám sát và xử lý lỗi}: kiểm tra FPS, giám sát kết nối client, xử lý ngắt kết nối để tránh lãng phí tài nguyên.
+\end{enumerate}
+
+\subsubsection{Cấu hình phần mềm với Kconfig}
+Module II sử dụng \textbf{Kconfig} để tùy chỉnh các thông số quan trọng mà không cần thay đổi code, giúp dễ dàng điều chỉnh khi build firmware mới. Các tham số tiêu biểu:
+
+\begin{itemize}
+    \item \textbf{Wi-Fi}: SSID và Password để kết nối mạng.
+    \item \textbf{Kích thước khung hình (Frame Size)}: từ QQVGA đến UXGA, ảnh hưởng đến chất lượng video và băng thông.
+    \item \textbf{Chất lượng JPEG (JPEG Quality)}: giá trị từ 10–63, quyết định độ nén hình ảnh.
+    \item \textbf{Khoảng thời gian giữa các frame (Frame Interval)}: từ 0–200 ms, ảnh hưởng đến tốc độ khung hình và băng thông.
+\end{itemize}
+
+Việc sử dụng Kconfig giúp firmware trở nên **modular và dễ bảo trì**, các thông số có thể được thay đổi nhanh chóng theo nhu cầu ứng dụng hoặc điều kiện mạng.
+
+\subsubsection{Tối ưu hóa hiệu suất}
+Một số kỹ thuật quan trọng:
+
+\begin{itemize}
+    \item \textbf{Quản lý bộ nhớ}: sử dụng PSRAM cho buffer, giảm tải SRAM.
+    \item \textbf{Triple buffering}: chụp frame mới đồng thời với việc truyền frame cũ.
+    \item \textbf{Giám sát hiệu suất}: đo FPS theo thời gian thực, xử lý lỗi khi client ngắt kết nối.
+\end{itemize}
+
+\subsubsection{Tích hợp và ứng dụng}
+Module II đóng vai trò là cầu nối giữa phần cứng thu thập dữ liệu và các module xử lý phức tạp (ví dụ: Module III). Đầu ra video HTTP có thể được trực tiếp sử dụng làm dữ liệu đầu vào cho các thuật toán xử lý thị giác máy tính.
+
+

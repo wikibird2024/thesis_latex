@@ -16,7 +16,7 @@
         <mxCell id="5jznRoAWgzzJiD-D76dw-4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;labelBackgroundColor=none;fontColor=default;" edge="1" parent="1" source="AOXDfMxbHxmrqoLTAo5D-36" target="AOXDfMxbHxmrqoLTAo5D-39">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="AOXDfMxbHxmrqoLTAo5D-36" value="Gia tốc &amp;lt; Ngưỡng?" style="rhombus;strokeWidth=2;whiteSpace=wrap;labelBackgroundColor=none;" parent="1" vertex="1">
+        <mxCell id="AOXDfMxbHxmrqoLTAo5D-36" value="Gia tốc &gt; Ngưỡng?" style="rhombus;strokeWidth=2;whiteSpace=wrap;labelBackgroundColor=none;" parent="1" vertex="1">
           <mxGeometry x="103" y="250" width="247" height="90" as="geometry" />
         </mxCell>
         <mxCell id="5jznRoAWgzzJiD-D76dw-1" value="" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;labelBackgroundColor=none;fontColor=default;" edge="1" parent="1" source="AOXDfMxbHxmrqoLTAo5D-37" target="AOXDfMxbHxmrqoLTAo5D-38">
