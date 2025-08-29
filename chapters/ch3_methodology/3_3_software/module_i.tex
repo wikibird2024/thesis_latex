@@ -1,10 +1,91 @@
-\subsection{Phần mềm Module Cảm biến (Module I)}
-\label{ssec:module_i_software}
-Việc triển khai phần mềm cho Module I tập trung vào việc xử lý dữ liệu từ cảm biến và truyền thông không dây. Mã nguồn được phát triển trên môi trường Arduino IDE, sử dụng ngôn ngữ C/C++ để tối ưu hiệu suất. Các thư viện chính được sử dụng bao gồm \texttt{Adafruit\_MPU6050} để đọc dữ liệu IMU, \texttt{TinyGPSPlus} cho việc phân tích dữ liệu GPS và các thư viện tích hợp của ESP-IDF để quản lý kết nối Wi-Fi và giao tiếp MQTT.
+
+\subsection{Mô-đun nhúng phát hiện té ngã (ESP32)}
+\label{sec:module_i}
+
+Mô-đun nhúng phát hiện té ngã được triển khai trên nền tảng vi điều khiển ESP32, đóng vai trò là nút cảm biến và trung tâm cảnh báo trong hệ thống. Chức năng chính của mô-đun là thu thập dữ liệu chuyển động từ cảm biến, phân tích thuật toán phát hiện té ngã và kích hoạt cơ chế cảnh báo theo thời gian thực, cả cục bộ (buzzer, LED) và từ xa (Wi-Fi/4G, MQTT, SMS).
+
+\paragraph{Môi trường phát triển}  
+Phần mềm được xây dựng trên \textbf{ESP-IDF} (Espressif IoT Development Framework), cung cấp hệ thống build dựa trên \textbf{CMake}, quản lý mô-đun thông qua \texttt{idf\_component.yml}, cũng như các API điều khiển ngoại vi (UART, I2C, SPI, PWM, GPIO) và dịch vụ mạng (Wi-Fi, MQTT, HTTP). Cấu hình dự án sử dụng \textbf{Kconfig}, lưu trữ trong \texttt{sdkconfig}, cho phép tinh chỉnh tham số mà không cần thay đổi mã nguồn. Môi trường này đảm bảo tính ổn định, khả năng mở rộng và tương thích với các driver hiện có.
+
+\paragraph{Luồng làm việc}  
+Phần mềm được tổ chức theo một luồng làm việc logic, điều phối từ việc thu thập dữ liệu cảm biến đến xử lý sự kiện và kích hoạt cảnh báo. Sơ đồ minh họa luồng làm việc chính của mô-đun được thể hiện trong Hình~\ref{fig:module1_flow}.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.8\textwidth, height=0.7\textheight, keepaspectratio]{figures/module1_time_flow.pdf}
+    \caption{Lưu đồ luồng làm việc của mô-đun phát hiện té ngã trên ESP32.}
+    \label{fig:module1_flow}
+\end{figure}
+
+\paragraph{Cấu trúc phần mềm}  
+Phần mềm được thiết kế theo kiến trúc \textbf{mô-đun} và \textbf{phân lớp}, đảm bảo tính linh hoạt, mở rộng và dễ bảo trì. Mỗi chức năng được đóng gói thành các thành phần độc lập, từ thu thập dữ liệu, phân tích thuật toán, đến quản lý giao tiếp mạng. Cấu trúc tổng thể dự án:
+
+\begin{minted}[fontsize=\footnotesize, breaklines, frame=single, linenos]{text}
+mainproject/
+├── main/
+│   ├── main.c
+│   ├── app_main.c
+│   └── app_main.h
+├── components/
+│   ├── buzzer/
+│   ├── comm/
+│   ├── data_manager/
+│   ├── event_handler/
+│   ├── fall_logic/
+│   ├── json_wrapper/
+│   ├── led_indicator/
+│   ├── mpu6050/
+│   ├── sim4g_gps/
+│   ├── user_mqtt/
+│   └── wifi_connect/
+\end{minted}
+
+\paragraph{Mô tả các thành phần}
+\begin{itemize}
+    \item \textbf{main.c}: Điểm khởi đầu, gọi \texttt{app\_main()}.  
+    \item \textbf{app\_main.c/h}: Bộ điều phối chính, khởi tạo và liên kết các mô-đun.  
+    \item \textbf{fall\_logic}: Thuật toán phát hiện té ngã dựa trên dữ liệu MPU6050.  
+    \item \textbf{event\_handler}: Điều phối phản ứng (buzzer, LED, MQTT, SMS).  
+    \item \textbf{mpu6050}: Driver cảm biến chuyển động.  
+    \item \textbf{buzzer, led\_indicator}: Cảnh báo cục bộ.  
+    \item \textbf{sim4g\_gps, wifi\_connect}: Kết nối từ xa, gửi dữ liệu và SMS.  
+    \item \textbf{user\_mqtt}: Giao tiếp với máy chủ qua MQTT.  
+    \item \textbf{comm, data\_manager}: Quản lý giao tiếp phần cứng và dữ liệu.  
+    \item \textbf{json\_wrapper}: Chuẩn hóa dữ liệu trao đổi với hệ thống bên ngoài.
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{figures/module1_software_block-crop.pdf}
+    \caption{Sơ đồ khối phần mềm của mô-đun nhúng ESP32.}
+    \label{fig:module1_software_block}
+\end{figure}
+
+\paragraph{Thuật toán phát hiện té ngã}  
+Thuật toán trong \texttt{fall\_logic} sử dụng \textbf{gia tốc tổng hợp}:
+
+\[
+a_{total} = \sqrt{a_x^2 + a_y^2 + a_z^2}
+\]
+
+Khi $a_{total}$ giảm dưới ngưỡng (\texttt{FALL\_THRESHOLD}), hệ thống đánh dấu sự kiện nghi ngờ té ngã. Ngưỡng có thể hiệu chỉnh qua \texttt{CONFIG\_FALL\_LOGIC\_THRESHOLD\_G}. Thuật toán chạy trong \textbf{tác vụ FreeRTOS riêng biệt} theo chu kỳ \texttt{CHECK\_INTERVAL\_MS}. Trong mỗi chu kỳ:
 
 \begin{enumerate}
-    \item \textbf{Khởi tạo và cấu hình:} Thiết bị được khởi động và kết nối với mạng Wi-Fi, sau đó đăng ký kết nối tới MQTT Broker. Việc này đảm bảo thiết bị có thể gửi dữ liệu thời gian thực đến máy chủ.
-    \item \textbf{Đọc và xử lý dữ liệu IMU:} Dữ liệu gia tốc và con quay hồi chuyển từ MPU6050 được đọc liên tục. Các thuật toán lọc (ví dụ: bộ lọc Kalman) có thể được áp dụng để giảm nhiễu.
-    \item \textbf{Đọc và xử lý dữ liệu GPS:} Dữ liệu vị trí được thu thập từ module GPS để xác định tọa độ.
-    \item \textbf{Gửi dữ liệu qua MQTT:} Dữ liệu đã xử lý từ cảm biến và GPS được đóng gói dưới dạng JSON và gửi đến máy chủ thông qua giao thức MQTT.
+    \item Đọc dữ liệu từ \texttt{mpu6050}.  
+    \item Tính toán gia tốc tổng hợp và so sánh với ngưỡng.  
+    \item Nếu vượt ngưỡng, gửi \texttt{EVENT\_FALL\_DETECTED} tới \texttt{event\_handler}.  
+    \item Đặt cờ trạng thái (\texttt{s\_fall\_detected}) để tránh cảnh báo trùng lặp, reset qua \texttt{fall\_logic\_reset\_fall\_status()}.
 \end{enumerate}
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.7\textwidth]{figures/module1_fall_logic_diagram.pdf}
+    \caption{Lưu đồ thuật toán phát hiện té ngã trong mô-đun \texttt{fall\_logic}.}
+    \label{fig:fall_logic_flow}
+\end{figure}
+
+\paragraph{Cơ chế biên dịch và cấu hình}  
+Mỗi mô-đun trong \texttt{components/} định nghĩa bằng \texttt{CMakeLists.txt} và đăng ký qua \texttt{idf\_component\_register}, quản lý phụ thuộc rõ ràng và chỉ biên dịch mô-đun cần thiết. Tham số hệ thống (UART, mạng, ngưỡng té ngã) được tập trung trong \texttt{Kconfig} và \texttt{sdkconfig}, giúp linh hoạt và hạn chế lỗi khi thay đổi cấu hình.
+
+\paragraph{Tóm tắt}  
+Kiến trúc mô-đun cho phép mỗi thành phần đảm nhận chức năng riêng biệt, tăng tính linh hoạt, khả năng mở rộng và dễ bảo trì. Mô-đun nhúng ESP32 thực hiện phát hiện té ngã và cảnh báo theo thời gian thực, đồng thời hỗ trợ cảnh báo cục bộ và truyền dữ liệu tới hệ thống giám sát tổng thể. Đây là nền tảng cho các giai đoạn phát triển tiếp theo, ví dụ thêm cảm biến hoặc mở rộng kênh truyền thông.

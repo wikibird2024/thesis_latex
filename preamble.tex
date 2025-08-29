@@ -25,9 +25,6 @@
 % Monospaced / code font: Fira Code
 \setmonofont{Fira Code}[Scale=0.9, Ligatures=TeX]
 
-% Font riêng cho văn bản tiếng Việt nếu cần
-\newfontfamily{\vietfont}{Cormorant Garamond}[Scale=MatchLowercase]
-
 % Unicode math
 \usepackage{unicode-math}
 \setmathfont{Latin Modern Math}
@@ -135,8 +132,9 @@
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 \fancyhf{}
-\fancyhead[L]{\nouppercase{\leftmark}}
-\fancyfoot[C]{\thepage}
+\fancyhead[L]{\nouppercase{\leftmark}} % Set the chapter title on the left
+\fancyhead[R]{\TENTACGIA}              % Set the author's name on the right
+\fancyfoot[C]{\thepage}                % Set the page number in the center
 \renewcommand{\headrulewidth}{0.4pt}
 \renewcommand{\footrulewidth}{0pt}
 \renewcommand{\chaptermark}[1]{\markboth{\chaptername\ \thechapter.\ #1}{}}

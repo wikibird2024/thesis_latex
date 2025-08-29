@@ -8,19 +8,20 @@ Phần này cung cấp kiến thức nền tảng và tổng quan về lĩnh v�
 \subsection{Pipeline Cơ bản của Hệ thống CV}
 Một hệ thống Thị giác Máy tính điển hình hoạt động theo quy trình tuần tự sau:
 
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.9\textwidth]{vision_flow-crop.pdf}
+    \caption{Quy trình tổng thể của một hệ thống Thị giác Máy tính từ ảnh đầu vào đến kết quả phân tích.}
+    \label{fig:cv_pipeline}
+\end{figure}
+
 \begin{enumerate}
     \item \textbf{Thu nhận Dữ liệu (Data Acquisition)}: Thu thập hình ảnh tĩnh hoặc chuỗi video từ các thiết bị cảm biến camera, đảm bảo chất lượng và độ phân giải phù hợp.
     \item \textbf{Tiền xử lý (Preprocessing)}: Áp dụng các kỹ thuật xử lý ảnh sơ cấp như chuẩn hóa kích thước, điều chỉnh độ sáng/tương phản, cân bằng màu sắc, và loại bỏ nhiễu (noise reduction).
     \item \textbf{Trích xuất Đặc trưng (Feature Extraction)}: Biểu diễn thông tin thị giác thô (pixel) thành các dạng đặc trưng trừu tượng và có ý nghĩa (ví dụ: cạnh, góc, kết cấu, hoặc các đặc trưng phân cấp sâu được học qua mạng nơ-ron).
     \item \textbf{Phân tích và Ra quyết định (Analysis and Decision Making)}: Dựa trên các đặc trưng đã trích xuất, mô hình thực hiện nhiệm vụ cụ thể như phân loại, nhận dạng, theo dõi, hoặc ước lượng tư thế, sau đó đưa ra kết quả cuối cùng.
 \end{enumerate}
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=0.9\textwidth]{vision_flow.png}
-    \caption{Quy trình tổng thể của một hệ thống Thị giác Máy tính từ ảnh đầu vào đến kết quả phân tích.}
-    \label{fig:cv_pipeline}
-\end{figure}
 
 \subsection{Phân loại các Bài toán CV Cốt lõi}
 Các bài toán trong CV được phân loại dựa trên mức độ chi tiết của thông tin đầu ra:
