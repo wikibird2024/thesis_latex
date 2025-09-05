@@ -1,12 +1,118 @@
+
 \subsection{Asterisk: Hệ thống Liên lạc và Xử lý Cuộc gọi}
 \label{sec:asterisk_overview}
 
-Phần Asterisk triển khai **hệ thống VoIP/Điện thoại IP**, chịu trách nhiệm quản lý và điều phối các cuộc gọi thoại trong hệ thống. Vai trò chính bao gồm:
+Phần Asterisk triển khai \textbf{hệ thống VoIP/Điện thoại IP}, chịu trách nhiệm quản lý và điều phối các cuộc gọi thoại trong hệ thống. Vai trò chính bao gồm:
 \begin{itemize}
     \item Thiết lập và quản lý các kênh giao tiếp thoại giữa các thiết bị client và server.
     \item Hỗ trợ thông báo, cảnh báo bằng giọng nói từ hệ thống đến người dùng.
     \item Tích hợp với các module phần mềm khác để đảm bảo luồng dữ liệu và cảnh báo được đồng bộ.
 \end{itemize}
 
-Mục tiêu của phần này là cung cấp **cơ chế liên lạc đáng tin cậy, linh hoạt và có thể mở rộng**, phục vụ các chức năng cảnh báo và giám sát từ hệ thống. Chi tiết triển khai Asterisk, bao gồm cấu hình, kịch bản gọi và tích hợp với các module khác, sẽ được trình bày trong nội dung chi tiết tiếp theo.
 
+Trong hệ thống, Asterisk đóng vai trò là một tổng đài \textbf{VoIP (Voice over IP)} nội bộ, phục vụ việc định tuyến và xử lý các cuộc gọi khẩn cấp từ thiết bị phát hiện ngã. Việc sử dụng Asterisk cho phép hệ thống có khả năng mở rộng, quản lý linh hoạt các kênh liên lạc và tích hợp dễ dàng với các ứng dụng xử lý dữ liệu phức tạp trên máy chủ. Asterisk phiên bản \textbf{22.5.1} được cài đặt trên nền tảng hệ điều hành \textbf{Linux Mint 21}. Vai trò của Asterisk không phải là xử lý logic sự kiện cuối cùng, mà là kênh kết nối, tiếp nhận tín hiệu từ thiết bị và chuyển giao quyền xử lý cho máy chủ.
+
+\begin{table}[h!]
+    \centering
+    \caption{Tóm tắt các tệp cấu hình chính của Asterisk}
+    \label{tab:asterisk_config_files}
+    \begin{tabular}{|p{0.2\textwidth}|p{0.7\textwidth}|}
+        \hline
+        \textbf{Tệp Cấu hình} & \textbf{Vai trò và Chức năng Chính} \\
+        \hline
+        \texttt{pjsip.conf} & Quản lý các điểm cuối (endpoint), thông tin xác thực và ghi nhận địa chỉ (AOR). Tệp này chịu trách nhiệm cho việc \textbf{kết nối} các thiết bị như ESP32 và máy chủ với tổng đài Asterisk. \\
+        \hline
+        \texttt{extensions.conf} & Định nghĩa \textbf{Dial Plan}, kịch bản xử lý các cuộc gọi và tin nhắn SIP. Đây là nơi xác định logic định tuyến và hành động cho từng sự kiện truyền thông. \\
+        \hline
+        \texttt{manager.conf} & Cấu hình \textbf{Asterisk Manager Interface (AMI)}, cho phép các ứng dụng bên ngoài, như máy chủ Python, \textbf{tương tác và điều khiển} Asterisk thông qua một giao diện lập trình. \\
+        \hline
+    \end{tabular}
+\end{table}
+
+\subsubsection{Cấu hình PJSIP và Endpoint}
+
+PJSIP được lựa chọn làm giao thức chính để thiết lập kết nối giữa các thiết bị và tổng đài Asterisk. Cấu hình này định nghĩa các điểm cuối (endpoint) và thông tin xác thực cho từng thiết bị, đảm bảo chỉ các thiết bị hợp lệ mới có thể kết nối.
+
+\begin{minted}[fontsize=\small, linenos, frame=single, breaklines]{ini}
+[transport-udp]
+type=transport
+protocol=udp
+bind=0.0.0.0
+
+[6001]
+type=endpoint
+disallow=all
+allow=ulaw
+auth=auth6001
+aors=6001
+context=internal
+message_context=messages
+
+[auth6001]
+type=auth
+auth_type=userpass
+username=6001
+password=1234
+
+[6001]
+type=aor
+max_contacts=3
+
+[server]
+type=endpoint
+context=messages
+disallow=all
+allow=ulaw
+aors=server
+
+[server]
+type=aor
+max_contacts=1
+\end{minted}
+
+Trong đó, endpoint \textbf{\texttt{[6001]}} đại diện cho thiết bị phát hiện ngã, được đặt trong context \textbf{\texttt{internal}} và sử dụng codec âm thanh \textbf{\texttt{ulaw}}. Endpoint \textbf{\texttt{[server]}} được tạo ra để cho phép Asterisk gửi và nhận các tin nhắn SIP, đóng vai trò là cầu nối với máy chủ xử lý dữ liệu.
+
+\subsubsection{Cấu hình Dial Plan}
+
+\textbf{Dial Plan} là "kịch bản" xử lý cuộc gọi của Asterisk, định nghĩa luồng xử lý chi tiết cho từng cuộc gọi hoặc tin nhắn SIP. Cấu hình dưới đây cho thấy cách Asterisk xử lý các sự kiện ngã mà không cần can thiệp trực tiếp vào logic xử lý dữ liệu.
+
+\begin{minted}[fontsize=\small, linenos, frame=single, breaklines]{ini}
+[general]
+static=yes
+writeprotect=no
+clearglobalvars=no
+
+[internal]
+exten => 6001,1,Answer()
+same => n,Dial(PJSIP/6001,20)
+same => n,Hangup()
+
+exten => 6000,1,Dial(PJSIP/6001&PJSIP/6002&PJSIP/6003,20)
+same => n,Hangup()
+
+[messages]
+exten => _X.,1,NoOp(===> SIP MESSAGE from ${MESSAGE(from)} to ${MESSAGE(to)})
+same => n,MessageSend(pjsip:${EXTEN},pjsip:server)
+same => n,NoOp(===> Send status: ${MESSAGE_SEND_STATUS})
+same => n,Hangup()
+\end{minted}
+
+Context \textbf{\texttt{[internal]}} xử lý các cuộc gọi nội bộ, trong khi context \textbf{\texttt{[messages]}} chịu trách nhiệm cho các tin nhắn SIP. Khi thiết bị phát hiện ngã gửi một tin nhắn SIP, nó sẽ được xử lý trong context \textbf{\texttt{[messages]}} và được chuyển tiếp đến endpoint \textbf{\texttt{server}} thông qua lệnh \texttt{MessageSend}, từ đó kích hoạt một quy trình xử lý dữ liệu trên máy chủ Python.
+
+\subsubsection{Cấu hình Asterisk Manager Interface (AMI)}
+
+\textbf{AMI} là một giao diện lập trình cho phép các ứng dụng bên ngoài điều khiển và quản lý Asterisk. Để máy chủ Python có thể tương tác với Asterisk một cách linh hoạt (ví dụ: lấy thông tin trạng thái cuộc gọi, gửi lệnh), AMI đã được cấu hình như sau:
+
+\begin{minted}[fontsize=\small, linenos, frame=single, breaklines]{ini}
+[general]
+enabled = yes
+port = 5038
+bindaddr = 127.0.0.1
+
+[hx]
+secret = 123
+read = all
+write = all
+\end{minted}
+
+Tài khoản \textbf{\texttt{[hx]}} được tạo riêng biệt để ứng dụng máy chủ có thể đăng nhập. Việc giới hạn địa chỉ IP kết nối (\texttt{bindaddr} ở \texttt{127.0.0.1}) là một biện pháp bảo mật quan trọng, đảm bảo chỉ các ứng dụng chạy trên cùng một máy chủ mới có thể truy cập, ngăn chặn các truy cập trái phép từ bên ngoài.

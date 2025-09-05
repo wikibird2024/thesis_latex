@@ -1,12 +1,186 @@
-\subsection{Server: Quản lý và Xử lý Dữ liệu Trung tâm}
+
+\subsection{Máy chủ: Quản lý và Xử lý Dữ liệu Trung tâm}
 \label{sec:server_overview}
 
-Phần server đảm nhiệm vai trò **trung tâm quản lý dữ liệu và điều phối luồng thông tin** từ các module phần cứng và phần mềm trong hệ thống. Server chịu trách nhiệm:
+Máy chủ Python đóng vai trò là \textbf{"bộ não"} trung tâm, chịu trách nhiệm \textbf{kết hợp thông minh} dữ liệu từ hai nguồn độc lập: 
+\begin{enumerate}
+    \item \textbf{ESP32 (cảm biến chuyển động)}: Triển khai tại hiện trường, gửi dữ liệu trạng thái té ngã và GPS qua MQTT.
+    \item \textbf{Camera IP (xử lý thị giác)}: Chạy trên máy chủ hoặc máy tính chuyên dụng, thực hiện phát hiện người, theo dõi đối tượng và ước lượng tư thế bằng AI.
+\end{enumerate}
+
+Máy chủ nhận kết quả từ hai nguồn này, hợp nhất để đưa ra quyết định phát hiện té ngã chính xác và đáng tin cậy, đồng thời kích hoạt cảnh báo và ghi nhận sự kiện.
+
+\subsubsection{Kiến trúc Hệ thống}
+\label{subsubsec:system_overview}
+
+Hệ thống máy chủ được thiết kế theo mô hình phân tầng và mô-đun hóa. Như minh họa trong Hình~\ref{fig:system_architecture}:
+
 \begin{itemize}
-    \item Nhận và lưu trữ luồng video, dữ liệu cảm biến và trạng thái thiết bị từ các ESP32.
-    \item Cung cấp giao diện cho các ứng dụng client hoặc dịch vụ thứ ba truy xuất dữ liệu.
-    \item Hỗ trợ các chức năng giám sát và xử lý cảnh báo, báo cáo hiệu suất và trạng thái hệ thống.
+    \item \textbf{Lớp thu nhận dữ liệu từ các module độc lập}:
+    \begin{itemize}
+        \item \texttt{comm/}: Nhận dữ liệu ESP32 qua MQTT, API Bot Telegram, kích hoạt AMI.
+        \item \texttt{detection/}: Nhận dữ liệu video từ camera IP, xử lý thị giác máy tính.
+    \end{itemize}
+    \item \textbf{Lớp xử lý tổng hợp}: \texttt{fall/} + \texttt{processing/} tổng hợp dữ liệu từ hai module để ra quyết định té ngã.
+    \item \textbf{Lớp đầu ra}: \texttt{database/} ghi sự kiện, \texttt{comm/} gửi cảnh báo qua Telegram/AMI.
 \end{itemize}
 
-Mục tiêu của phần server là đảm bảo **tính ổn định, tin cậy và khả năng mở rộng**, đồng thời làm nền tảng cho các thuật toán xử lý dữ liệu và thị giác máy tính triển khai ở tầng cao hơn. Các chi tiết triển khai về kiến trúc server, cơ chế lưu trữ và xử lý dữ liệu sẽ được trình bày trong các phần tiếp theo.
+\begin{table}[H]
+\centering
+\caption{Cấu trúc các mô-đun máy chủ và vai trò}
+\label{tab:server_modules}
+\begin{tabular}{|l|l|p{7cm}|}
+\hline
+\textbf{Module} & \textbf{Layer} & \textbf{Role and Function} \\
+\hline
+\texttt{comm/} & ESP32 Input & Receive MQTT from ESP32, Telegram Bot, and AMI for alerts \\
+\hline
+\texttt{detection/} & Vision Input & Process IP camera frames, human detection, tracking, pose estimation \\
+\hline
+\texttt{fall/} & Processing & Fall detection algorithm, fuse ESP32 and vision data \\
+\hline
+\texttt{processing/} & Processing & \texttt{DetectionProcessor} handles synchronization, preprocessing pipeline, data fusion \\
+\hline
+\texttt{database/} & Storage & Log events into \texttt{fall\_events.db}, manage history \\
+\hline
+\texttt{config/} & Support & Configuration for MQTT, AI, DB, AMI, Telegram \\
+\hline
+\texttt{models/} & Support & Store YOLOv8n model and weights \\
+\hline
+\texttt{utils/} & Support & Visualization tools, skeleton overlay, debug utilities \\
+\hline
+\texttt{tests/} & Testing & Scripts to test fall detection logic \\
+\hline
+\texttt{main.py} & Entry point & Main loop, receive ESP32 and camera data, fuse, make decision \\
+\hline
+\end{tabular}
+\end{table}
 
+\subsubsection{Luồng Xử lý Máy chủ}
+\label{subsubsec:server_flow}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\textwidth]{figures/server_flow.pdf}
+\caption{Server data and processing flow: fusion of ESP32 and IP Camera via \texttt{DetectionProcessor}.}
+\label{fig:server_flow}
+\end{figure}
+
+\subsubsection{Kết hợp Dữ liệu Đa phương thức}
+\label{subsubsec:multi_input_fusion}
+
+Các module ESP32 và Camera IP hoàn toàn độc lập, máy chủ chỉ chịu trách nhiệm:
+\begin{itemize}
+    \item Thu nhận kết quả từ ESP32 (MQTT JSON) và camera (AI).
+    \item Đồng bộ hóa dữ liệu dựa trên timestamp.
+    \item Kết hợp dữ liệu bằng logic AND/OR với trọng số dựa trên độ tin cậy nguồn.
+    \item Kích hoạt cảnh báo và ghi nhận sự kiện.
+\end{itemize}
+
+\begin{minted}[linenos, frame=lines, fontsize=\small, bgcolor=lightgray, breaklines]{python}
+# DetectionProcessor: core fusion logic
+async def process_person(frame, person_id, box, landmarks, mqtt_msg):
+    """
+    Process individual person: fuse Camera + ESP32, draw visuals, send alerts.
+    """
+    # 1. Initialize FallDetector for new person
+    if person_id not in fall_detectors:
+        fall_detectors[person_id] = FallDetector()
+        person_status[person_id] = 'normal'
+
+    # 2. Check MQTT message
+    mqtt_status = None
+    if mqtt_msg and mqtt_msg.get('device_id') == f"ESP32_DEV_{person_id}":
+        mqtt_status = mqtt_msg
+
+    # 3. Detect fall
+    is_fall = fall_detectors[person_id].detect_fall(landmarks, mqtt_status)
+
+    # 4. Update status
+    person_status[person_id] = 'fall' if is_fall else 'normal'
+
+    # 5. Draw visuals
+    draw_bounding_box(frame, box, person_id, person_status[person_id])
+    if landmarks:
+        draw_skeleton(frame, landmarks)
+
+    # 6. Handle alerts
+    if is_fall:
+        fall_id = insert_fall_event(mqtt_msg or {...})
+        alert_msg = f"Fall detected. Event ID: {fall_id}"
+        await ami_trigger.alert_devices(alert_msg)
+        if telegram_bot:
+            _, img_encoded = cv2.imencode('.jpg', frame)
+            await telegram_bot.send_photo(img_encoded.tobytes(), alert_msg)
+\end{minted}
+
+\subsubsection{Lưu trữ và Cảnh báo}
+\label{subsubsec:data_storage_alerts}
+
+SQLite logs fall events into \texttt{fall\_events.db}:
+
+\begin{minted}[linenos, frame=lines, fontsize=\small, bgcolor=lightgray, breaklines]{sql}
+CREATE TABLE fall_events (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+    confidence REAL NOT NULL,
+    sensor_data TEXT,
+    pose_data TEXT,
+    alert_status INTEGER DEFAULT 0,
+    snapshot TEXT
+);
+\end{minted}
+
+Main loop collects asynchronous data, processes each module, fuses, and triggers alerts:
+
+\begin{minted}[linenos, frame=lines, fontsize=\small, bgcolor=lightgray, breaklines]{python}
+while system_is_running:
+    # Collect data from ESP32 and camera
+    frame = camera_thread.get_latest_frame()
+    sensor_data = mqtt_thread.get_latest_data()
+    
+    # AI processing
+    detections = human_detector.process(frame)
+    poses = pose_estimator.process(detections)
+    
+    # Data fusion
+    fall_detected, confidence = fall_detector.analyze(poses, sensor_data)
+    
+    if fall_detected:
+        alert_manager.trigger_notifications(confidence)
+        database.log_event(poses, sensor_data, confidence)
+\end{minted}
+
+\subsubsection{Cấu trúc thư mục dự án (phiên bản rút gọn)}
+\label{subsubsec:project_structure}
+
+To illustrate in the report, auxiliary files and \texttt{\_\_pycache\_\_} are omitted:
+
+\begin{minted}[fontsize=\footnotesize, breaklines, frame=single, linenos]{text}
+intergrate_fall/
+├── comm/
+│   ├── ami_trigger.py
+│   ├── mqtt_client.py
+│   └── telegram_bot.py
+├── config/
+│   └── config.py
+├── database/
+│   └── database_manager.py
+├── detection/
+│   ├── human_detector.py
+│   ├── person_tracker.py
+│   └── skeleton_tracker.py
+├── fall/
+│   └── fall_detector.py
+├── processing/
+│   └── detection_processor.py
+├── utils/
+│   └── draw_utils.py
+├── models/
+│   └── __init__.py
+├── tests/
+│   └── test_fall.py
+├── main.py
+├── fall_events.db
+├── yolov8n.pt
+\end{minted}

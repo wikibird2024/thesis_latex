@@ -1,0 +1,81 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/28.0.6 Chrome/138.0.7204.100 Electron/37.2.3 Safari/537.36" version="28.0.6">
+  <diagram name="Page-1" id="euSS6Pa3sqMTCDWZrU3M">
+    <mxGraphModel dx="727" dy="481" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="DbQKqrM7L29-hHHgCwyp-141" value="ESP32" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};size=65;labelBackgroundColor=none;rounded=1;fillColor=#F2CC8F;strokeColor=#E07A5F;fontColor=#393C56;" parent="1" vertex="1">
+          <mxGeometry x="60" y="40" width="230" height="660" as="geometry" />
+        </mxCell>
+        <mxCell id="DbQKqrM7L29-hHHgCwyp-142" value="alt" style="shape=umlFrame;dashed=1;pointerEvents=0;dropTarget=0;height=20;width=30;labelBackgroundColor=none;rounded=1;fillColor=#F2CC8F;strokeColor=#E07A5F;fontColor=#393C56;" parent="1" vertex="1">
+          <mxGeometry x="30" y="296" width="330" height="309" as="geometry" />
+        </mxCell>
+        <mxCell id="DbQKqrM7L29-hHHgCwyp-143" value="[Phát hiện té ngã]" style="text;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;labelBackgroundColor=none;rounded=1;fontColor=#393C56;" parent="DbQKqrM7L29-hHHgCwyp-142" vertex="1">
+          <mxGeometry x="34.61538461538461" width="295.38461538461536" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="DbQKqrM7L29-hHHgCwyp-144" value="loop" style="shape=umlFrame;dashed=1;pointerEvents=0;dropTarget=0;height=20;width=40;labelBackgroundColor=none;rounded=1;fillColor=#F2CC8F;strokeColor=#E07A5F;fontColor=#393C56;" parent="1" vertex="1">
+          <mxGeometry x="20" y="173" width="370" height="442" as="geometry" />
+        </mxCell>
+        <mxCell id="DbQKqrM7L29-hHHgCwyp-145" value="[Giám sát liên tục]" style="text;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;labelBackgroundColor=none;rounded=1;fontColor=#393C56;" parent="DbQKqrM7L29-hHHgCwyp-144" vertex="1">
+          <mxGeometry x="48.36601307189542" width="321.63398692810455" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="DbQKqrM7L29-hHHgCwyp-146" value="Khởi động &amp; kết nối mạng" style="curved=1;endArrow=block;rounded=1;labelBackgroundColor=none;fontColor=default;strokeColor=#E07A5F;" parent="1" source="DbQKqrM7L29-hHHgCwyp-141" target="DbQKqrM7L29-hHHgCwyp-141" edge="1">
+          <mxGeometry x="0.0316" y="87" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="223" y="123" />
+              <mxPoint x="223" y="153" />
+            </Array>
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="DbQKqrM7L29-hHHgCwyp-147" value="Đọc cảm biến &amp; xử lý dữ liệu" style="curved=1;endArrow=block;rounded=1;labelBackgroundColor=none;fontColor=default;strokeColor=#E07A5F;" parent="1" source="DbQKqrM7L29-hHHgCwyp-141" target="DbQKqrM7L29-hHHgCwyp-141" edge="1">
+          <mxGeometry x="-0.0137" y="77" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="223" y="246" />
+              <mxPoint x="223" y="276" />
+            </Array>
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="DbQKqrM7L29-hHHgCwyp-148" value="Kích hoạt cảnh báo (buzzer, LED)" style="curved=1;endArrow=block;rounded=1;labelBackgroundColor=none;fontColor=default;strokeColor=#E07A5F;" parent="1" source="DbQKqrM7L29-hHHgCwyp-141" target="DbQKqrM7L29-hHHgCwyp-141" edge="1">
+          <mxGeometry x="-0.2045" y="60" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="223" y="369" />
+              <mxPoint x="223" y="399" />
+            </Array>
+            <mxPoint x="-3" y="-19" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="DbQKqrM7L29-hHHgCwyp-149" value="Lấy GPS &amp; gửi SMS" style="curved=1;endArrow=block;rounded=1;labelBackgroundColor=none;fontColor=default;strokeColor=#E07A5F;" parent="1" source="DbQKqrM7L29-hHHgCwyp-141" target="DbQKqrM7L29-hHHgCwyp-141" edge="1">
+          <mxGeometry x="-0.0273" y="67" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="223" y="447" />
+              <mxPoint x="223" y="477" />
+            </Array>
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="DbQKqrM7L29-hHHgCwyp-150" value="Gửi dữ liệu lên server" style="curved=1;endArrow=block;rounded=1;labelBackgroundColor=none;fontColor=default;strokeColor=#E07A5F;" parent="1" source="DbQKqrM7L29-hHHgCwyp-141" target="DbQKqrM7L29-hHHgCwyp-141" edge="1">
+          <mxGeometry y="67" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="223" y="525" />
+              <mxPoint x="223" y="555" />
+            </Array>
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="DbQKqrM7L29-hHHgCwyp-151" value="Reset hệ thống" style="curved=1;endArrow=block;rounded=1;labelBackgroundColor=none;fontColor=default;strokeColor=#E07A5F;" parent="1" source="DbQKqrM7L29-hHHgCwyp-141" target="DbQKqrM7L29-hHHgCwyp-141" edge="1">
+          <mxGeometry x="0.1445" y="57" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="190" y="650" />
+              <mxPoint x="180" y="650" />
+              <mxPoint x="223" y="653" />
+              <mxPoint x="223" y="683" />
+            </Array>
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
