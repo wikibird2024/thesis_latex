@@ -1,11 +1,16 @@
-\documentclass{article}
-\usepackage{xcolor}
-\definecolor{lightgray}{rgb}{0.95,0.95,0.95}
-\usepackage{minted}
-\begin{document}
-\section{Test Minted}
-\begin{minted}[frame=single,bgcolor=lightgray]{json}
-{ "hello": "world", "value": 123 }
-\end{minted}
-\end{document}
 
+\documentclass[12pt,openany]{report}
+
+% Load the unified preamble (all packages, fonts, macros)
+\input{preamble.tex}
+
+\begin{document}
+
+% --- FRONTMATTER ---
+\pagenumbering{roman}
+\pagestyle{empty}
+
+% Title page
+\input{test_content.tex}
+
+\end{document}

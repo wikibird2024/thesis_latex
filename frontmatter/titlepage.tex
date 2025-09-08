@@ -1,38 +1,39 @@
+
 \begin{titlepage}
 \thispagestyle{empty}
 \begin{center}
-    \setlength{\fboxrule}{2pt} % Độ dày viền 2pt
-    \setlength{\fboxsep}{25pt} % Khoảng cách từ viền đến nội dung
+    \setlength{\fboxrule}{2pt}   % Độ dày viền
+    \setlength{\fboxsep}{20pt}   % Khoảng cách từ viền đến nội dung
     
     \fcolorbox{darkblue}{white}{%
-        \begin{minipage}{0.95\textwidth} % tăng lên để tránh overfull
-            \vspace{1cm}
-            \centering % Chỉ cần một lần để căn giữa toàn bộ nội dung
+        \begin{minipage}{0.93\textwidth}
+            \vspace*{0.8cm}
+            \centering
             
             \textbf{ĐẠI HỌC QUỐC GIA TP. HỒ CHÍ MINH} \\[0.2cm]
             \textbf{TRƯỜNG ĐẠI HỌC BÁCH KHOA} \\[0.2cm]
             \textbf{KHOA ĐIỆN - ĐIỆN TỬ} \\[0.2cm]
             
-            \textbf{\rule{0.25\textwidth}{0.4pt} \, o0o \, \rule{0.25\textwidth}{0.4pt}} \\[0.5cm]
+            \textbf{\rule{0.25\textwidth}{0.4pt} \, \ding{118} \, \rule{0.25\textwidth}{0.4pt}} \\[0.8cm]
             
-            \vspace*{1cm}
-            \includegraphics[height=3.5cm]{figures/logo_hcmut.png}
-            \vspace{1cm}
+            \includegraphics[width=0.25\textwidth]{figures/logo_hcmut.png} \\[0.8cm]
             
-            \textbf{BÁO CÁO LUẬN VĂN} \\[1cm]
+            {\Large \textbf{BÁO CÁO LUẬN VĂN}} \\[1cm]
             
-            % Cho phép xuống dòng dễ hơn
             \parbox{0.9\textwidth}{\centering
                 \textbf{ĐỀ TÀI: \TENLUANVAN} \\[0.3cm]
                 \textit{\THESISNAME}
             } \\[1cm]
             
-            \textbf{GVHD:} \TENNGUOIHUONGDAN \\[0.2cm]
-            \textbf{SVTH:} \TENTACGIA \\[0.2cm]
-            \textbf{MSSV:} \MSSV \\[1cm]
+            \begin{tabular}{rl}
+                \textbf{GVHD:} & \TENNGUOIHUONGDAN \\[0.3cm]
+                \textbf{SVTH:} & \TENTACGIA \\[0.3cm]
+                \textbf{MSSV:} & \MSSV
+            \end{tabular} \\[1cm]
             
             \textbf{TP. HỒ CHÍ MINH, THÁNG 07/2025}
-            \vspace{1cm}
+            
+            \vspace*{0.8cm}
         \end{minipage}
     }
 \end{center}
