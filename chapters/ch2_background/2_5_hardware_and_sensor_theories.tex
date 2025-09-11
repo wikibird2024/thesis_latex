@@ -1,14 +1,14 @@
 \section{Cơ sở Lý thuyết về Phần cứng và Kiến trúc Hệ thống Phát hiện Té ngã}
 \label{sec:hardware_theory}
 
-Mục này cung cấp kiến thức nền tảng về kiến trúc phần cứng, các công nghệ cảm biến và module truyền thông được sử dụng trong hệ thống phát hiện té ngã (Fall Detection System - FDS).
+Mục này cung cấp kiến thức nền tảng về phần cứng, các loại cảm biến và module truyền thông được sử dụng trong hệ thống phát hiện té ngã.
 
 \subsection{Tổng quan Kiến trúc Hệ thống Phát hiện Té ngã}
-Hệ thống phát hiện té ngã hiện đại thường được phân loại thành hai nhóm chính: \textbf{Hệ thống dựa trên Camera (Vision-based)} và \textbf{Hệ thống dựa trên Thiết bị đeo (Wearable/Sensor-based)}. Báo cáo này tích hợp cả hai, bao gồm các thành phần cốt lõi:
+Hệ thống phát hiện té ngã hiện đại thường được phân loại thành hai nhóm chính: \textbf{Hệ thống dựa trên Camera} và \textbf{Hệ thống dựa trên Thiết bị đeo}. Báo cáo này tích hợp cả hai, bao gồm các thành phần cốt lõi:
 \begin{enumerate}
-    \item \textbf{Thiết bị Thu thập Dữ liệu (Sensor/Edge Device)}: Thu thập dữ liệu chuyển động (IMU) và/hoặc hình ảnh (Camera).
-    \item \textbf{Máy chủ Xử lý (Processing Server)}: Thực hiện các thuật toán học sâu và logic ra quyết định phức tạp.
-    \item \textbf{Hệ thống Truyền thông (Communication Module)}: Đảm bảo luồng dữ liệu hai chiều và kích hoạt cảnh báo.
+    \item \textbf{Thiết bị Thu thập Dữ liệu}: Thu thập dữ liệu chuyển động (IMU) và/hoặc hình ảnh (Camera).
+    \item \textbf{Máy chủ Xử lý}: Thực hiện các thuật toán học sâu và logic ra quyết định phức tạp.
+    \item \textbf{Hệ thống Truyền thông}: Đảm bảo luồng dữ liệu hai chiều và kích hoạt cảnh báo.
 \end{enumerate}
 
 \subsection{Cảm biến và Xử lý Dữ liệu Sơ cấp (Edge Processing)}
@@ -17,11 +17,11 @@ Hệ thống phát hiện té ngã hiện đại thường được phân loại
 \textbf{ESP32 (hoặc ESP32-S3)} được chọn làm bộ điều khiển trung tâm nhờ kiến trúc \textbf{lõi kép Xtensa LX6} (hoặc S3), cho phép xử lý song song. Một lõi được dành riêng cho các tác vụ thời gian thực như đọc và tiền xử lý dữ liệu cảm biến (ví dụ: \textbf{Kalman Filter} để ước tính hướng và trạng thái), trong khi lõi còn lại quản lý các giao tiếp không dây (Wi-Fi, Bluetooth) và giao thức \textbf{MQTT} hoặc \textbf{HTTP}, giảm thiểu độ trễ.
 
 \subsubsection{Cảm biến Đo lường Quán tính (IMU)}
-\textbf{IMU (Inertial Measurement Unit)} là thành phần chính trong hệ thống đeo người (wearable system), cung cấp dữ liệu về động học của cơ thể. IMU tích hợp:
+\textbf{IMU (Inertial Measurement Unit)} là thành phần chính trong hệ thống đeo người, cung cấp dữ liệu về động học của cơ thể. IMU tích hợp:
 \begin{itemize}
-    \item \textbf{Gia tốc kế (Accelerometer)}: Đo gia tốc tuyến tính. Gia tốc thô được hiệu chuẩn (calibrated) để chuyển từ giá trị số nguyên sang đơn vị thực tế ($g$).
-    \item \textbf{Con quay hồi chuyển (Gyroscope)}: Đo tốc độ góc (angular velocity), dựa trên \textbf{hiệu ứng Coriolis}.
-    \item \textbf{Từ kế (Magnetometer)}: Cung cấp tham chiếu hướng từ trường để hiệu chỉnh sai số trôi (drift) của con quay hồi chuyển (thường thông qua thuật toán \textbf{Sensor Fusion} như Bộ lọc Madgwick hoặc Kalman).
+    \item \textbf{Gia tốc kế}: Đo gia tốc tuyến tính. Gia tốc thô được hiệu chuẩn để chuyển từ giá trị số nguyên sang đơn vị thực tế ($g$).
+    \item \textbf{Con quay hồi chuyển}: Đo tốc độ góc, dựa trên \textbf{hiệu ứng Coriolis}.
+    \item \textbf{Từ kế}: Cung cấp tham chiếu hướng từ trường để hiệu chỉnh sai số trôi của con quay hồi chuyển (thường thông qua thuật toán \textbf{Sensor Fusion} như Bộ lọc Madgwick hoặc Kalman).
 \end{itemize}
 
 Dữ liệu thô sau khi xử lý (ví dụ: trung bình hóa) được biểu diễn dưới dạng vector 3D:
@@ -31,7 +31,7 @@ Dữ liệu thô sau khi xử lý (ví dụ: trung bình hóa) được biểu d
 \]
 
 \paragraph{Phát hiện Té ngã dựa trên Ngưỡng IMU}
-Tại tầng vi điều khiển (Edge), té ngã được phát hiện sơ bộ bằng cách phân tích sự thay đổi đột ngột của \textbf{Gia tốc Tổng (Magnitude of Acceleration)} và tốc độ góc:
+Tại tầng vi điều khiển, té ngã được phát hiện sơ bộ bằng cách phân tích sự thay đổi đột ngột của \textbf{Gia tốc Tổng (Magnitude of Acceleration)} và tốc độ góc:
 \begin{itemize}
     \item \textbf{Shock Event}: Gia tốc tổng vượt ngưỡng cao ($a_{\text{shock}}$): $\|\mathbf{a}\| > a_{\text{shock}}$.
     \item \textbf{Post-fall State}: Gia tốc tổng sau đó giảm về gần 1g (biểu thị trạng thái nằm ngang) trong khi tốc độ góc có thay đổi lớn.
@@ -41,12 +41,12 @@ Tại tầng vi điều khiển (Edge), té ngã được phát hiện sơ bộ 
 \]
 
 \subsubsection{Cảm biến Định vị Vị trí (GPS)}
-Module GPS (ví dụ: u-blox NEO-6M) sử dụng nguyên lý \textbf{Đo tam giác (Trilateration)} để xác định vị trí địa lý của thiết bị dựa trên tín hiệu từ ít nhất bốn vệ tinh. Dữ liệu đầu ra là chuỗi \textbf{NMEA}, cung cấp tọa độ Kinh độ/Vĩ độ và độ cao, là thông tin quan trọng cho dịch vụ cứu hộ khẩn cấp.
+Module GPS (ví dụ: u-blox NEO-6M) sử dụng nguyên lý \textbf{Đo tam giác} để xác định vị trí địa lý của thiết bị dựa trên tín hiệu từ ít nhất bốn vệ tinh. Dữ liệu đầu ra là chuỗi \textbf{NMEA}, cung cấp tọa độ Kinh độ/Vĩ độ và độ cao, là thông tin quan trọng cho dịch vụ cứu hộ khẩn cấp.
 
 \subsection{Hệ thống Camera và Xử lý Máy chủ (Cloud/Host Processing)}
 
 \subsubsection{Hệ thống Camera (Vision Input)}
-Camera nhúng (\textbf{ESP32-S3 + OV5640 5MP}) cung cấp dữ liệu hình ảnh được nén theo chuẩn \textbf{JPEG}. Dữ liệu này là luồng byte được truyền tải qua Wi-Fi bằng các giao thức như \textbf{RTSP} hoặc \textbf{HTTP/MJPEG stream}, phục vụ cho việc \textbf{Xác minh Hình ảnh (Visual Verification)} trên máy chủ.
+Camera nhúng (\textbf{ESP32-S3 + OV5640 5MP}) cung cấp dữ liệu hình ảnh được nén theo chuẩn \textbf{JPEG}. Dữ liệu này là luồng byte được truyền tải qua Wi-Fi bằng các giao thức như \textbf{RTSP} hoặc \textbf{HTTP/MJPEG stream}, phục vụ cho việc \textbf{Xác minh Hình ảnh} trên máy chủ.
 
 \subsubsection{Kiến trúc Máy chủ Xử lý}
 Máy chủ là nơi thực hiện các thuật toán phức tạp như Ước lượng tư thế người (HPE) và Học sâu, đảm bảo độ chính xác cao.
@@ -61,7 +61,7 @@ Máy chủ là nơi thực hiện các thuật toán phức tạp như Ước l�
 \subsubsection{Module Truyền thông Đa dạng}
 \begin{itemize}
     \item \textbf{Wi-Fi (ESP32)}: Kênh chính để truyền tải dữ liệu dung lượng lớn (video/hình ảnh) và giao tiếp \textbf{MQTT} với máy chủ.
-    \item \textbf{Module Di động (4G/LTE - EC800K)}: Đóng vai trò là \textbf{Kênh Dự phòng (Fallback Channel)}. Nó hỗ trợ định vị GPS và quan trọng nhất là kích hoạt \textbf{cuộc gọi khẩn cấp tự động} hoặc gửi \textbf{SMS cảnh báo} bằng \textbf{AT commands}, đảm bảo cảnh báo được gửi đi ngay cả khi mạng Wi-Fi không khả dụng.
+    \item \textbf{Module Di động (4G/LTE - EC800K)}: Đóng vai trò là \textbf{Kênh Dự phòng}. Nó hỗ trợ định vị GPS và quan trọng nhất là kích hoạt \textbf{cuộc gọi khẩn cấp tự động} hoặc gửi \textbf{SMS cảnh báo} bằng \textbf{AT commands}, đảm bảo cảnh báo được gửi đi ngay cả khi mạng Wi-Fi không khả dụng.
 \end{itemize}
 
 \subsubsection{Liên kết Tổng thể và Logic Dự phòng}

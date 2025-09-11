@@ -2,7 +2,7 @@
 \label{sec:communication_protocols}
 Tiếp nối các phân tích về tình hình nghiên cứu hiện có và các khoảng trống công nghệ được xác định trong phần tổng quan và tình hình nghiên cứu. Chương này chuyển trọng tâm sang trình bày chi tiết về các \textbf{cơ sở lý thuyết và giao thức nền tảng} chi phối hoạt động của Hệ thống Cảnh báo Viễn thông Nhúng IoT được đề xuất, đặc biệt trong ứng dụng \textbf{Phát hiện Ngã (Fall Detection)}.
 
-Trong hệ thống cảnh báo thời gian thực, nơi tính kịp thời của thông tin là yếu tố quyết định, khả năng \textbf{giao tiếp không gián đoạn} giữa các thành phần nhúng và trung tâm điều khiển là tối quan trọng. Chương này sẽ hệ thống hóa các giao thức truyền thông cốt lõi. Cụ thể, \textbf{Giao thức Khởi tạo Phiên (SIP)} sẽ được làm rõ như xương sống cho việc truyền tải âm thanh/video cảnh báo theo thời gian thực; \textbf{Message Queuing Telemetry Transport (MQTT)} được phân tích như một giải pháp \textit{lightweight} và hiệu quả để vận chuyển dữ liệu cảm biến (như dữ liệu gia tốc kế, con quay hồi chuyển sau khi xử lý thuật toán phát hiện ngã) trên các mạng bị hạn chế băng thông; và \textbf{JavaScript Object Notation (JSON)} như định dạng chuẩn để cấu trúc và trao đổi thông tin. Việc nắm vững các cơ chế này là nền tảng để xây dựng và đảm bảo hiệu suất của một hệ thống cảnh báo từ xa, tin cậy và có khả năng mở rộng.
+Trong hệ thống cảnh báo thời gian thực, nơi tính kịp thời của thông tin là yếu tố quyết định, khả năng \textbf{giao tiếp không gián đoạn} giữa các thành phần nhúng và trung tâm điều khiển là tối quan trọng. Chương này sẽ hệ thống hóa các giao thức truyền thông cốt lõi. Cụ thể, \textbf{Giao thức Khởi tạo Phiên (SIP)} sẽ được làm rõ như xương sống cho việc truyền tải âm thanh/video cảnh báo theo thời gian thực nội bộ; \textbf{Message Queuing Telemetry Transport (MQTT)} được phân tích như một giải pháp \textit{nhẹ} và hiệu quả để vận chuyển dữ liệu cảm biến (như dữ liệu gia tốc kế, con quay hồi chuyển sau khi xử lý thuật toán phát hiện ngã) trên các mạng bị hạn chế băng thông; và \textbf{JavaScript Object Notation (JSON)} như định dạng chuẩn để cấu trúc và trao đổi thông tin. Việc nắm vững các cơ chế này là nền tảng để xây dựng và đảm bảo hiệu suất của một hệ thống cảnh báo từ xa, tin cậy và có khả năng mở rộng.
 \subsection{Giao Thức Khởi Tạo Phiên (SIP)}
 \label{subsec:sip_protocol}
 
@@ -69,11 +69,11 @@ Dưới đây là sơ đồ minh họa sự khác biệt giữa đường tín h
 \subsubsection{Giao thức Thiết lập Kết nối Tương tác (ICE)}
 \label{subsubsec:ice_protocol}
 
-Trong môi trường mạng thực tế, các thiết bị thường nằm sau NAT (Network Address Translation) hoặc tường lửa, ngăn cản việc truyền dữ liệu trực tiếp qua RTP. \textbf{ICE} là một khung giao thức (Framework) được sử dụng để giải quyết vấn đề \textbf{NAT Traversal} (xuyên NAT) bằng cách tìm ra đường dẫn tốt nhất giữa hai điểm cuối. ICE sử dụng kết hợp các giao thức sau:
+Trong môi trường mạng thực tế, các thiết bị thường nằm sau NAT hoặc tường lửa, ngăn cản việc truyền dữ liệu trực tiếp qua RTP. \textbf{ICE} là một khung giao thức được sử dụng để giải quyết vấn đề (xuyên NAT) bằng cách tìm ra đường dẫn tốt nhất giữa hai điểm cuối. ICE sử dụng kết hợp các giao thức sau:
 
 \begin{itemize}
-    \item \textbf{Cục bộ (Local IP):} Địa chỉ IP nội bộ của thiết bị.
-    \item \textbf{STUN (Session Traversal Utilities for NAT):} Giao thức giúp các thiết bị phát hiện địa chỉ IP công cộng (Public IP) và cổng (Port) mà NAT đã ánh xạ.
+    \item \textbf{Local IP:} Địa chỉ IP nội bộ của thiết bị.
+    \item \textbf{STUN (Session Traversal Utilities for NAT):} Giao thức giúp các thiết bị phát hiện địa chỉ IP công cộng và cổng mà NAT đã ánh xạ.
     \item \textbf{TURN (Traversal Using Relays around NAT):} Được sử dụng như một giải pháp cuối cùng khi STUN thất bại. TURN đóng vai trò là máy chủ chuyển tiếp (Relay Server), tất cả dữ liệu được gửi qua máy chủ này để tránh tường lửa nghiêm ngặt.
 \end{itemize}
 

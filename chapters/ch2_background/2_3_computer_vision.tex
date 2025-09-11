@@ -6,7 +6,7 @@ Phần này cung cấp kiến thức nền tảng và tổng quan về lĩnh v�
 \textbf{Thị giác Máy tính (Computer Vision, CV)} là một lĩnh vực liên ngành của Trí tuệ Nhân tạo (AI) cho phép máy tính thu nhận, xử lý, phân tích, và diễn giải hình ảnh hoặc video để đạt được khả năng "hiểu" nội dung ở cấp độ cao tương tự như thị giác con người. Mục tiêu chính là mô phỏng khả năng nhận thức thị giác của con người nhưng với tốc độ, độ chính xác và quy mô vượt trội.
 
 \subsection{Pipeline Cơ bản của Hệ thống CV}
-Một hệ thống Thị giác Máy tính điển hình hoạt động theo quy trình tuần tự sau:
+Một hệ thống Thị giác Máy tính điển hình hoạt động theo quy trình tuần tự như\ref{cv_pipeline} sau:
 
 
 \begin{figure}[h]
@@ -17,7 +17,7 @@ Một hệ thống Thị giác Máy tính điển hình hoạt động theo quy 
 \end{figure}
 
 \begin{enumerate}
-    \item \textbf{Thu nhận Dữ liệu (Data Acquisition)}: Thu thập hình ảnh tĩnh hoặc chuỗi video từ các thiết bị cảm biến camera, đảm bảo chất lượng và độ phân giải phù hợp.
+    \item \textbf{Thu nhận Dữ liệu}: Thu thập hình ảnh tĩnh hoặc chuỗi video từ các thiết bị cảm biến camera, đảm bảo chất lượng và độ phân giải phù hợp.
     \item \textbf{Tiền xử lý (Preprocessing)}: Áp dụng các kỹ thuật xử lý ảnh sơ cấp như chuẩn hóa kích thước, điều chỉnh độ sáng/tương phản, cân bằng màu sắc, và loại bỏ nhiễu (noise reduction).
     \item \textbf{Trích xuất Đặc trưng (Feature Extraction)}: Biểu diễn thông tin thị giác thô (pixel) thành các dạng đặc trưng trừu tượng và có ý nghĩa (ví dụ: cạnh, góc, kết cấu, hoặc các đặc trưng phân cấp sâu được học qua mạng nơ-ron).
     \item \textbf{Phân tích và Ra quyết định (Analysis and Decision Making)}: Dựa trên các đặc trưng đã trích xuất, mô hình thực hiện nhiệm vụ cụ thể như phân loại, nhận dạng, theo dõi, hoặc ước lượng tư thế, sau đó đưa ra kết quả cuối cùng.
@@ -27,26 +27,26 @@ Một hệ thống Thị giác Máy tính điển hình hoạt động theo quy 
 Các bài toán trong CV được phân loại dựa trên mức độ chi tiết của thông tin đầu ra:
 
 \begin{itemize}
-    \item \textbf{Phân loại Ảnh (Image Classification)}: Gán một nhãn duy nhất cho toàn bộ hình ảnh. (Ví dụ: "Xe hơi", "Người", "Phong cảnh").
-    \item \textbf{Phát hiện Đối tượng (Object Detection)}: Xác định vị trí của nhiều đối tượng trong ảnh bằng các \textbf{hộp giới hạn (bounding box)} và gán nhãn cho từng đối tượng.
-    \item \textbf{Phân đoạn Ảnh (Image Segmentation)}:
+    \item \textbf{Phân loại Ảnh}: Gán một nhãn duy nhất cho toàn bộ hình ảnh. (Ví dụ: "Xe hơi", "Người", "Phong cảnh").
+    \item \textbf{Phát hiện Đối tượng }: Xác định vị trí của nhiều đối tượng trong ảnh bằng các \textbf{hộp giới hạn (bounding box)} và gán nhãn cho từng đối tượng.
+    \item \textbf{Phân đoạn Ảnh}:
     \begin{itemize}
-        \item \textbf{Phân đoạn Ngữ nghĩa (Semantic Segmentation)}: Phân loại từng pixel trong ảnh, gán nhãn lớp cho các vùng (VD: Đường, Bầu trời, Cây cối).
-        \item \textbf{Phân đoạn Thể hiện (Instance Segmentation)}: Phân loại từng pixel đồng thời phân biệt các cá thể cùng lớp (VD: Người 1, Người 2).
+        \item \textbf{Phân đoạn Ngữ nghĩa}: Phân loại từng pixel trong ảnh, gán nhãn lớp cho các vùng (VD: Đường, Bầu trời, Cây cối).
+        \item \textbf{Phân đoạn Thể hiện}: Phân loại từng pixel đồng thời phân biệt các cá thể cùng lớp (VD: Người 1, Người 2).
     \end{itemize}
-    \item \textbf{Ước lượng Tư thế Người (Human Pose Estimation - HPE)}: Một dạng bài toán chuyên biệt nhằm xác định vị trí tọa độ chính xác của các \textbf{khớp (keypoints)} quan trọng trên cơ thể người, là nền tảng để "hiểu" chuyển động và hành vi của con người trong video/ảnh.
+    \item \textbf{Ước lượng Tư thế Người}: Một dạng bài toán chuyên biệt nhằm xác định vị trí tọa độ chính xác của các \textbf{khớp keypoint} quan trọng trên cơ thể người, là nền tảng để "hiểu" chuyển động và hành vi của con người trong video/ảnh.
 \end{itemize}
 
 \subsection{Các Mô hình Học sâu Cốt lõi trong CV Hiện đại}
 \subsubsection{Mạng Nơ-ron Tích chập (Convolutional Neural Networks - CNN)}
-CNN là kiến trúc học sâu chủ đạo để xử lý dữ liệu hình ảnh, tận dụng các lớp tích chập (Convolutional) và gộp (Pooling) để tự động học các đặc trưng phân cấp từ thô đến trừu tượng.
+CNN là kiến trúc học sâu chủ đạo để xử lý dữ liệu hình ảnh, tận dụng các lớp tích chập và gộp để tự động học các đặc trưng phân cấp từ thô đến trừu tượng.
 
 \begin{itemize}
-    \item \textbf{Phép Tích chập (Convolution)}: Trích xuất các đặc trưng cục bộ bằng cách áp dụng bộ lọc (kernel) $K$ lên ảnh đầu vào $I$:
+    \item \textbf{Phép Tích chập}: Trích xuất các đặc trưng cục bộ bằng cách áp dụng bộ lọc (kernel) $K$ lên ảnh đầu vào $I$:
     \begin{equation}
     (I * K)(i, j) = \sum_{m} \sum_{n} I(i-m, j-n) K(m, n)
     \end{equation}
-    \item \textbf{Phép Gộp (Pooling)}: Giảm kích thước không gian, giảm số lượng tham số và tăng tính bền vững (robustness) của đặc trưng. Ví dụ, \textbf{Max Pooling} trên cửa sổ $2 \times 2$:
+    \item \textbf{Phép Gộp}: Giảm kích thước không gian, giảm số lượng tham số và tăng tính bền vững của đặc trưng. Ví dụ, \textbf{Max Pooling} trên cửa sổ $2 \times 2$:
     \begin{equation}
     O_{i,j} = \max \left( I_{2i, 2j}, I_{2i+1, 2j}, I_{2i, 2j+1}, I_{2i+1, 2j+1} \right)
     \end{equation}
@@ -71,7 +71,7 @@ Trong đó, $Q, K, V$ lần lượt là các ma trận Query, Key và Value.
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.9\textwidth]{visual_transformer.png}
-    \caption{Kiến trúc Vision Transformer (ViT) chuyển đổi hình ảnh thành chuỗi token.}
+    \caption{Kiến trúc Vision Transformer chuyển đổi hình ảnh thành chuỗi token.}
     \label{fig:vit_arch}
 \end{figure}
 
@@ -79,7 +79,7 @@ Trong đó, $Q, K, V$ lần lượt là các ma trận Query, Key và Value.
 Để đảm bảo tính khách quan, hiệu quả mô hình CV được đánh giá dựa trên các tập dữ liệu chuẩn hóa và metrics chuyên biệt.
 
 \begin{itemize}
-    \item \textbf{Các Tập dữ liệu Lớn (Benchmark Datasets)}:
+    \item \textbf{Các Tập dữ liệu Lớn}:
     \begin{itemize}
         \item \textbf{ImageNet} \cite{deng2009imagenet}: Tiêu chuẩn cho Phân loại ảnh (hơn 14 triệu ảnh thuộc 20,000 lớp).
         \item \textbf{COCO} \cite{lin2014microsoft}: Tiêu chuẩn cho Phát hiện và Phân đoạn đối tượng.

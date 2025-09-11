@@ -1,15 +1,15 @@
 \section{Nhận diện Tư thế Người và Phát hiện Té ngã}
 \label{sec:pose_fall_system}
 
-Mục này trình bày tổng quan về nhận diện tư thế người (Human Pose Estimation - HPE), giải pháp thời gian thực MediaPipe Pose, xây dựng thuật toán phát hiện té ngã dựa trên đặc trưng động học (kinematic) và tư thế (postural), cùng mô tả chi tiết hệ thống tích hợp.
+Mục này trình bày tổng quan về nhận diện tư thế người, giải pháp thời gian thực MediaPipe Pose, xây dựng thuật toán phát hiện té ngã dựa trên đặc trưng động học và tư thế, cùng mô tả chi tiết hệ thống tích hợp.
 
 \subsection{Nhận diện Tư thế Người (Human Pose Estimation)}
 
-Nhận diện tư thế người là một lĩnh vực then chốt trong thị giác máy tính, nhằm xác định vị trí và hướng các khớp (joints) và bộ phận cơ thể từ hình ảnh hoặc chuỗi video. Khả năng này là nền tảng cho các ứng dụng giám sát an toàn, phân tích chuyển động, và nhận diện hành vi bất thường (như té ngã).
+Nhận diện tư thế người là một lĩnh vực then chốt trong thị giác máy tính, nhằm xác định vị trí và hướng các khớp và bộ phận cơ thể từ hình ảnh hoặc chuỗi video. Khả năng này là nền tảng cho các ứng dụng giám sát an toàn, phân tích chuyển động, và nhận diện hành vi bất thường (như té ngã).
 
 \subsubsection{Khái niệm và Định nghĩa}
 
-Pose Estimation ước lượng vị trí của các bộ phận cơ thể trong không gian 2D hoặc 3D, được biểu diễn qua tập hợp các \textbf{keypoints} (khớp/điểm mốc):
+Pose Estimation ước lượng vị trí của các bộ phận cơ thể trong không gian 2D hoặc 3D, được biểu diễn qua tập hợp các \textbf{keypoints}:
 \begin{equation}
 \mathcal{K} = \{k_1, k_2, ..., k_n\}, \quad k_i = (x_i, y_i, z_i, c_i)
 \end{equation}
@@ -24,14 +24,14 @@ trong đó $(x_i, y_i, z_i)$ là tọa độ không gian (với $z_i$ là tọa 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{MediaPipe Pose Estimation cho Ứng dụng Thời gian thực}
 
-MediaPipe Pose, dựa trên mô hình **BlazePose** của Google, được tối ưu hóa để cung cấp giải pháp HPE 3D nhanh và chính xác trong môi trường thời gian thực trên nhiều nền tảng (Mobile, Web, Desktop).
+MediaPipe Pose, dựa trên mô hình BlazePose của Google, được tối ưu hóa để cung cấp giải pháp HPE 3D nhanh và chính xác trong môi trường thời gian thực trên nhiều nền tảng (Mobile, Web, Desktop).
 
 \subsubsection{Kiến trúc xử lý Graph-based}
 
-MediaPipe sử dụng kiến trúc xử lý dữ liệu dựa trên đồ thị (Graph-based Processing), nơi các nhiệm vụ được tổ chức thành một chuỗi các module:
+MediaPipe sử dụng kiến trúc xử lý dữ liệu dựa trên đồ thị, nơi các nhiệm vụ được tổ chức thành một chuỗi các module:
 \begin{itemize}
-    \item \textbf{Nodes (Calculator):} Các module xử lý độc lập thực hiện các nhiệm vụ cụ thể (VD: Phát hiện đối tượng, Ước lượng điểm mốc).
-    \item \textbf{Edges (Packet Stream):} Các luồng dữ liệu (packets) được truyền tải giữa các Nodes, đảm bảo đồng bộ hóa và nhất quán dữ liệu giữa các bước.
+    \item \textbf{Nodes:} Các module xử lý độc lập thực hiện các nhiệm vụ cụ thể (VD: Phát hiện đối tượng, Ước lượng điểm mốc).
+    \item \textbf{Edges (Packet Stream):} Các luồng dữ liệu được truyền tải giữa các Nodes, đảm bảo đồng bộ hóa và nhất quán dữ liệu giữa các bước.
 \end{itemize}
 
 \subsubsection{Các thành phần Mô hình Chính}
@@ -59,10 +59,9 @@ MediaPipe sử dụng kiến trúc xử lý dữ liệu dựa trên đồ thị 
 
 \paragraph{3D Coordinate Estimation:} Chiều sâu tương đối $z$ được chuẩn hóa dựa trên kích thước cơ thể (thường là khoảng cách giữa hông).
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Thuật toán Phát hiện Té ngã Multi-stage}
 
-Hệ thống phát hiện té ngã sử dụng các đặc trưng động học (Kinematic) và tư thế (Postural) được trích xuất từ dữ liệu keypoints 3D (từ MediaPipe) để đưa ra quyết định qua nhiều giai đoạn. $\Delta t$ được định nghĩa là thời gian trôi qua giữa hai khung hình liên tiếp ($1/FPS$).
+Hệ thống phát hiện té ngã sử dụng các đặc trưng động học và tư thế được trích xuất từ dữ liệu keypoints 3D (từ MediaPipe) để đưa ra quyết định qua nhiều giai đoạn. $\Delta t$ được định nghĩa là thời gian trôi qua giữa hai khung hình liên tiếp ($1/FPS$).
 
 \subsubsection{Trích xuất Đặc trưng Sinh học (Feature Engineering)}
 
@@ -78,25 +77,25 @@ Hệ thống phát hiện té ngã sử dụng các đặc trưng động học 
 
 \paragraph{Postural Features (Đặc trưng Tư thế):} Phản ánh hình dạng cơ thể và độ cao sau khi té ngã.
 \begin{itemize}
-    \item \textbf{Tỷ lệ Khía cạnh (Aspect Ratio - AR):} Tỷ lệ giữa chiều rộng và chiều cao của hộp giới hạn người, tăng vọt khi người nằm ngang.
+    \item \textbf{Tỷ lệ cạnh (Aspect Ratio - AR):} Tỷ lệ giữa chiều rộng và chiều cao của hộp giới hạn người, tăng vọt khi người nằm ngang.
     \item \textbf{Góc Nghiêng Cơ thể ($\theta_{\text{body}}$):} Góc tạo bởi trục cơ thể (vai-hông) so với phương thẳng đứng.
     \item \textbf{Độ giảm chiều cao ($\Delta h_{\text{head}}$):} Sự thay đổi vị trí của đầu so với trạng thái ban đầu.
 \end{itemize}
 
 \subsubsection{Thuật toán Phát hiện Té ngã Ba Giai đoạn}
 
-\paragraph{Stage 1: Pre-fall Detection (Phát hiện Sớm)}
+\paragraph{Stage 1: Phát hiện Sớm}
 Kiểm tra các dấu hiệu ban đầu của sự mất kiểm soát, chủ yếu dựa vào tốc độ và gia tốc của Trung tâm Khối lượng (COM).
 
-\paragraph{Stage 2: Fall Event Verification (Xác nhận Sự kiện Té ngã)}
+\paragraph{Stage 2: Xác nhận Sự kiện Té ngã}
 Nếu Stage 1 là True, kiểm tra các đặc trưng tư thế (AR, $\theta_{\text{body}}$) để xác nhận trạng thái cơ thể chuyển từ đứng/đi sang nằm ngang.
 
-\paragraph{Stage 3: Post-fall Inactivity Check (Kiểm tra Bất động sau té ngã)}
+\paragraph{Stage 3: Kiểm tra Bất động sau té ngã}
 Sau khi té ngã được xác nhận (Stage 2 là True), hệ thống theo dõi mức độ chuyển động trong một khoảng thời gian ($T_{\text{window}}$). Nếu sự chuyển động thấp hơn ngưỡng $M_{th}$ trong thời gian dài, cảnh báo được kích hoạt, loại trừ các trường hợp ngồi hoặc nằm chủ động.
 
 \subsection{Triển khai và Tối ưu hóa Hệ thống Tích hợp}
 
-\subsubsection{Chuỗi Xử lý Dữ liệu (Data Flow Pipeline)}
+\subsubsection{Chuỗi Xử lý Dữ liệu}
 Hệ thống được thiết kế theo kiến trúc module để dễ dàng tích hợp và tối ưu hóa hiệu suất:
 \begin{equation}
 \text{Video Stream} \xrightarrow{\text{MediaPipe}} \text{Keypoints} 
@@ -105,5 +104,5 @@ Hệ thống được thiết kế theo kiến trúc module để dễ dàng tí
 \xrightarrow{\text{Alert System}} \text{Response}
 \end{equation}
 
-\subsubsection{Tối ưu hóa Tham số (Parameter Tuning)}
+\subsubsection{Tối ưu hóa Tham số}
 Việc điều chỉnh các ngưỡng ($V_{th}, A_{th}, AR_{th}, \dots$) là rất quan trọng. Việc sử dụng \textbf{Ngưỡng Thích ứng (Adaptive Thresholds)} $V_{th}^{adaptive}(t)$ (phụ thuộc vào độ tin cậy của keypoints $c_i$) có thể cải thiện độ chính xác trong các môi trường nhiễu hoặc ánh sáng yếu.
