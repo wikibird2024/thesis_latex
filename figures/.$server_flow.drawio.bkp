@@ -1,0 +1,85 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/28.0.6 Chrome/138.0.7204.100 Electron/37.2.3 Safari/537.36" version="28.0.6">
+  <diagram name="Page-1" id="OwMrUbBi_byrGWBYKhBa">
+    <mxGraphModel dx="1026" dy="679" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="rXD96nUe1-gEZBoH83iY-22" value="Cảm biến ESP32&#xa;(Con quay hồi chuyển, Gia tốc kế, GPS)" style="whiteSpace=wrap;strokeWidth=2;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="494" y="291" width="260" height="77" as="geometry" />
+        </mxCell>
+        <mxCell id="rXD96nUe1-gEZBoH83iY-23" value="Camera IP&#xa;(Luồng video)" style="whiteSpace=wrap;strokeWidth=2;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="170" y="60" width="270" height="54" as="geometry" />
+        </mxCell>
+        <mxCell id="rXD96nUe1-gEZBoH83iY-24" value="MQTT Client&#xa;(mqtt_client.py)" style="whiteSpace=wrap;strokeWidth=2;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="494" y="420" width="260" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="rXD96nUe1-gEZBoH83iY-25" value="Phát hiện người&#xa;(human_detector.py)" style="whiteSpace=wrap;strokeWidth=2;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="170" y="177" width="270" height="78" as="geometry" />
+        </mxCell>
+        <mxCell id="rXD96nUe1-gEZBoH83iY-26" value="Theo dõi khung xương&#xa;(skeleton_tracker.py)" style="whiteSpace=wrap;strokeWidth=2;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="171" y="420" width="272" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="rXD96nUe1-gEZBoH83iY-27" value="Theo dõi người&#xa;(person_tracker.py)" style="whiteSpace=wrap;strokeWidth=2;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="174" y="290" width="260" height="78" as="geometry" />
+        </mxCell>
+        <mxCell id="rXD96nUe1-gEZBoH83iY-28" value="Bộ xử lý nhiều nguồn&#xa;(detection_processor.py)" style="whiteSpace=wrap;strokeWidth=2;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="306" y="540" width="284" height="78" as="geometry" />
+        </mxCell>
+        <mxCell id="rXD96nUe1-gEZBoH83iY-29" value="Phát hiện té ngã&#xa;(fall_detector.py)" style="whiteSpace=wrap;strokeWidth=2;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="303" y="640" width="290" height="78" as="geometry" />
+        </mxCell>
+        <mxCell id="rXD96nUe1-gEZBoH83iY-30" value=" Kích hoạt AMI&#xa;(ami_trigger.py)" style="whiteSpace=wrap;strokeWidth=2;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="30" y="790" width="260" height="78" as="geometry" />
+        </mxCell>
+        <mxCell id="rXD96nUe1-gEZBoH83iY-31" value="Bot Telegram&#xa;(telegram_bot.py)" style="whiteSpace=wrap;strokeWidth=2;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="312.5" y="790" width="271" height="78" as="geometry" />
+        </mxCell>
+        <mxCell id="rXD96nUe1-gEZBoH83iY-32" value="Cơ sở dữ liệu&#xa;(fall_events.db)" style="whiteSpace=wrap;strokeWidth=2;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="600" y="790" width="220" height="78" as="geometry" />
+        </mxCell>
+        <mxCell id="rXD96nUe1-gEZBoH83iY-33" value="JSON MQTT" style="curved=1;startArrow=none;endArrow=block;exitX=0.5;exitY=1;entryX=0.5;entryY=0;rounded=0;" edge="1" parent="1" source="rXD96nUe1-gEZBoH83iY-22" target="rXD96nUe1-gEZBoH83iY-24">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rXD96nUe1-gEZBoH83iY-34" value="Khung hình video" style="curved=1;startArrow=none;endArrow=block;exitX=0.5;exitY=1;entryX=0.5;entryY=0;rounded=0;" edge="1" parent="1" source="rXD96nUe1-gEZBoH83iY-23" target="rXD96nUe1-gEZBoH83iY-25">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rXD96nUe1-gEZBoH83iY-35" value="" style="curved=1;startArrow=none;endArrow=block;exitX=0.5;exitY=1;entryX=0.5;entryY=0;rounded=0;" edge="1" parent="1" source="rXD96nUe1-gEZBoH83iY-25" target="rXD96nUe1-gEZBoH83iY-27">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rXD96nUe1-gEZBoH83iY-36" value="" style="curved=1;startArrow=none;endArrow=block;exitX=0.5;exitY=1;entryX=0.5;entryY=0;rounded=0;" edge="1" parent="1" source="rXD96nUe1-gEZBoH83iY-27" target="rXD96nUe1-gEZBoH83iY-26">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rXD96nUe1-gEZBoH83iY-37" value="" style="startArrow=none;endArrow=block;exitX=0.5;exitY=1;entryX=0.16;entryY=0;rounded=0;" edge="1" parent="1" source="rXD96nUe1-gEZBoH83iY-26" target="rXD96nUe1-gEZBoH83iY-28">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rXD96nUe1-gEZBoH83iY-38" value="" style="startArrow=none;endArrow=block;exitX=0.5;exitY=1;entryX=0.84;entryY=0;rounded=0;" edge="1" parent="1" source="rXD96nUe1-gEZBoH83iY-24" target="rXD96nUe1-gEZBoH83iY-28">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rXD96nUe1-gEZBoH83iY-39" value="" style="curved=1;startArrow=none;endArrow=block;exitX=0.5;exitY=1;entryX=0.5;entryY=0;rounded=0;" edge="1" parent="1" source="rXD96nUe1-gEZBoH83iY-28" target="rXD96nUe1-gEZBoH83iY-29">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rXD96nUe1-gEZBoH83iY-40" value="Phát hiện té ngã" style="startArrow=none;endArrow=block;exitX=0;exitY=0.9;entryX=0.5;entryY=0;rounded=0;" edge="1" parent="1" source="rXD96nUe1-gEZBoH83iY-29" target="rXD96nUe1-gEZBoH83iY-30">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rXD96nUe1-gEZBoH83iY-41" value="Phát hiện té ngã" style="curved=1;startArrow=none;endArrow=block;exitX=0.5;exitY=1;entryX=0.5;entryY=0;rounded=0;" edge="1" parent="1" source="rXD96nUe1-gEZBoH83iY-29" target="rXD96nUe1-gEZBoH83iY-31">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rXD96nUe1-gEZBoH83iY-42" value="" style="startArrow=none;endArrow=block;exitX=1;exitY=0.9;entryX=0.5;entryY=0;rounded=0;" edge="1" parent="1" source="rXD96nUe1-gEZBoH83iY-29" target="rXD96nUe1-gEZBoH83iY-32">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

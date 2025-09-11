@@ -22,8 +22,8 @@ Trên thế giới, phát hiện té ngã đã trở thành lĩnh vực nghiên 
 Các hệ thống dựa trên camera tập trung vào kỹ thuật ước lượng tư thế người (human pose estimation), với các framework nổi bật như OpenPose, MediaPipe và MoveNet. 
 
 \begin{itemize}
-    \item \textbf{MediaPipe Pose Estimation}: Bugarin và cộng sự~\cite{bugarin2022} phát triển hệ thống phát hiện té ngã thời gian thực trên thiết bị di động, sử dụng MediaPipe để phân tích các điểm khớp xương chính (keypoints) của cơ thể. Hệ thống đạt F1-score 91.4\% trên tập dữ liệu MCFD, tích hợp giám sát và cảnh báo qua IoT. Tuy nhiên, độ chính xác bị ảnh hưởng khi điều kiện ánh sáng yếu hoặc cơ thể bị che khuất. Tương tự, Saraswat và Malathi~\cite{saraswat2024} cũng sử dụng MediaPipe để trích xuất đặc trưng từ chuỗi video, giúp giảm chi phí tính toán so với các phương pháp truyền thống.  
-    \item \textbf{Kết hợp YOLO và Deep Learning}: Một số nghiên cứu tích hợp mô hình nhận dạng vật thể YOLO với Pose Estimation. Han và cộng sự~\cite{han2024} kết hợp YOLOv5 cải tiến với MediaPipe, đạt mAP 98.6\%. Chen và cộng sự~\cite{chen2022} đạt 92.7\% nhờ tích hợp đặc trưng đa quy mô. Để triển khai trên thiết bị biên (edge devices), nhiều mô hình nhẹ hơn như LFD-YOLO~\cite{lfdyolo2025} và SDES-YOLO~\cite{sdesyolo2025} được phát triển, cân bằng giữa hiệu suất và khả năng tính toán. Các nghiên cứu mới (2024) sử dụng vision-based với ML để phân tích hiệu suất, thách thức và ràng buộc, đạt độ chính xác cao hơn trong môi trường chăm sóc sức khỏe~\cite{mlvision2024}.
+    \item \textbf{MediaPipe Pose Estimation}: Nghiên cứu~\cite{bugarin2022} phát triển hệ thống phát hiện té ngã thời gian thực trên thiết bị di động, sử dụng MediaPipe để phân tích các điểm khớp xương chính (keypoints) của cơ thể. Hệ thống đạt F1-score 91.4\% trên tập dữ liệu MCFD, tích hợp giám sát và cảnh báo qua IoT. Tuy nhiên, độ chính xác bị ảnh hưởng khi điều kiện ánh sáng yếu hoặc cơ thể bị che khuất. Tương tự~\cite{saraswat2024} cũng sử dụng MediaPipe để trích xuất đặc trưng từ chuỗi video, giúp giảm chi phí tính toán so với các phương pháp truyền thống.  
+    \item \textbf{Kết hợp YOLO và Deep Learning}: Một số nghiên cứu tích hợp mô hình nhận dạng vật thể YOLO với Pose Estimation. nghiên cứu~\cite{han2024} kết hợp YOLOv5 cải tiến với MediaPipe, đạt mAP 98.6\%. nghiên cứu~\cite{chen2022} đạt 92.7\% nhờ tích hợp đặc trưng đa quy mô. Để triển khai trên thiết bị biên (edge devices), nhiều mô hình nhẹ hơn như LFD-YOLO~\cite{lfdyolo2025} và SDES-YOLO~\cite{sdesyolo2025} được phát triển, cân bằng giữa hiệu suất và khả năng tính toán. Các nghiên cứu mới (2024) sử dụng vision-based với ML để phân tích hiệu suất, thách thức và ràng buộc, đạt độ chính xác cao hơn trong môi trường chăm sóc sức khỏe~\cite{mlvision2024}.
     \item \textbf{Ứng dụng Transformer và Pose Estimation}: Các nghiên cứu gần đây~\cite{stylios2024, zhang2022, pmc2024} áp dụng kiến trúc Transformer kết hợp MediaPipe để học mối quan hệ phức tạp giữa các keypoints theo thời gian, giúp nâng cao độ chính xác. Phương pháp này yêu cầu phần cứng mạnh để xử lý, nhưng đạt hiệu suất nhận diện vượt trội trong các tập dữ liệu lớn và phức tạp. Công nghệ mới như sàn thông minh và AI giảm false alarm lên 35\%~\cite{smartfloor2024}.
 \end{itemize}
 
@@ -32,9 +32,9 @@ Các hệ thống dựa trên camera tập trung vào kỹ thuật ước lượ
 Các hệ thống wearable thường sử dụng IMU như MPU6050, được tích hợp trong đồng hồ thông minh, vòng đeo tay hoặc dây đeo cơ thể. 
 
 \begin{itemize}
-    \item Xu và cộng sự~\cite{xu2023} phát triển hệ thống kết hợp loa thông minh và IoT, xác minh tình trạng té ngã, giảm false alarm.  
-    \item Hussain và cộng sự~\cite{hussain2019} sử dụng MPU6050 kết hợp LSTM, đạt 94.1\%.  
-    \item Alarifi và Alwadain~\cite{alarifi2021} sử dụng bộ ba cảm biến, đạt 93.5\%.  
+    \item ~\cite{xu2023} phát triển hệ thống kết hợp loa thông minh và IoT, xác minh tình trạng té ngã, giảm false alarm.  
+    \item ~\cite{hussain2019} sử dụng MPU6050 kết hợp LSTM, đạt 94.1\%.  
+    \item ~\cite{alarifi2021} sử dụng bộ ba cảm biến, đạt 93.5\%.  
 \end{itemize}
 
 Các hệ thống này vẫn gặp hạn chế khi người dùng thực hiện các hoạt động sinh hoạt nhanh, dẫn tới cảnh báo sai (false alarm). Các nghiên cứu hiện đại đã thử nghiệm các thuật toán học sâu nhẹ (lightweight deep learning) để giảm tải trên thiết bị di động. Từ 2015--2024, cảm biến đeo tăng độ chính xác cao với ML và DL, tập trung vào ngăn ngừa rủi ro~\cite{wearable20152024}. Sáng tạo 2025 bao gồm áo airbag kích hoạt trong 0.18 giây~\cite{airbag2025}, và mmWave sensors như MR60FDA2 cho phát hiện té~\cite{mmwave2025}.
@@ -44,9 +44,9 @@ Các hệ thống này vẫn gặp hạn chế khi người dùng thực hiện 
 Để khắc phục nhược điểm của từng phương pháp, nhiều nghiên cứu kết hợp dữ liệu từ camera và cảm biến IMU:
 
 \begin{itemize}
-    \item Rougier và cộng sự~\cite{rougier2011} kết hợp camera và cảm biến gia tốc, đạt độ chính xác 95.2\% và giảm tỷ lệ false alarm 4.1\%.  
-    \item Liu và cộng sự~\cite{liu2018} tích hợp IMU và camera RGB-D, đạt 95.6\%.  
-    \item Keskes và Noumeir~\cite{keskes2021} sử dụng mạng ST-GCN xử lý đồng thời dữ liệu skeleton từ OpenPose và tín hiệu IMU, đạt F1-score 93.2\%.  
+    \item ~\cite{rougier2011} kết hợp camera và cảm biến gia tốc, đạt độ chính xác 95.2\% và giảm tỷ lệ false alarm 4.1\%.  
+    \item ~\cite{liu2018} tích hợp IMU và camera RGB-D, đạt 95.6\%.  
+    \item ~\cite{keskes2021} sử dụng mạng ST-GCN xử lý đồng thời dữ liệu skeleton từ OpenPose và tín hiệu IMU, đạt F1-score 93.2\%.  
 \end{itemize}
 
 Các hệ thống multi-modal hiện đại còn thử nghiệm các phương pháp sensor fusion phức tạp, adaptive threshold, và các mô hình học sâu để tối ưu độ chính xác, giảm độ trễ và tăng tính ổn định khi triển khai thực tế. Các tiến bộ 2024 kết hợp cảm biến đơn/đa, ML để phát hiện và cứu hộ, giảm ER visits 80\%~\cite{multimodal2024}.
@@ -58,11 +58,11 @@ Tại Việt Nam, các nghiên cứu chủ yếu được thực hiện tại c�
 % Listing notable domestic studies
 Một số nghiên cứu đáng chú ý:
 \begin{itemize}
-    \item Nguyễn Thành Luân và cộng sự~\cite{nguyen2024} xây dựng mô hình dự báo nguy cơ té ngã tại bệnh viện TP.HCM, xác định 18 yếu tố liên quan qua hồi quy Logistic, độ chính xác cao qua Bootstrap.  
-    \item Trần Công Án và cộng sự~\cite{tran2017} phát hiện té ngã bằng gia tốc kế và LSTM, đạt độ chính xác 93.9\%.  
-    \item Phan Thị Huyền Trang và cộng sự~\cite{phan2022} khảo sát nguy cơ té ngã tại Bệnh viện Đa khoa vùng Tây Nguyên, tỷ lệ cao 43.58\%.  
-    \item Nguyễn Thanh Huân và cộng sự~\cite{nguyen2023} nghiên cứu té ngã hậu COVID-19 ở người cao tuổi, tỷ lệ 10.8\%, liên quan đến nhẹ cân và yếu cơ.  
-    \item Trịnh Thị Bích Hà và cộng sự~\cite{trinh2023} khảo sát té ngã ngoại viện, tỷ lệ 21.6\%, yếu tố rủi ro như đái tháo đường.
+    \item ~\cite{nguyen2024} xây dựng mô hình dự báo nguy cơ té ngã tại bệnh viện TP.HCM, xác định 18 yếu tố liên quan qua hồi quy Logistic, độ chính xác cao qua Bootstrap.  
+    \item ~\cite{tran2017} phát hiện té ngã bằng gia tốc kế và LSTM, đạt độ chính xác 93.9\%.  
+    \item ~\cite{phan2022} khảo sát nguy cơ té ngã tại Bệnh viện Đa khoa vùng Tây Nguyên, tỷ lệ cao 43.58\%.  
+    \item ~\cite{nguyen2023} nghiên cứu té ngã hậu COVID-19 ở người cao tuổi, tỷ lệ 10.8\%, liên quan đến nhẹ cân và yếu cơ.  
+    \item ~\cite{trinh2023} khảo sát té ngã ngoại viện, tỷ lệ 21.6\%, yếu tố rủi ro như đái tháo đường.
 \end{itemize}
 
 % Highlighting limitations

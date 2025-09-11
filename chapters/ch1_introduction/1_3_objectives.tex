@@ -1,29 +1,29 @@
 
 \section{Mục tiêu và nhiệm vụ Luận Văn}
 
-Đề tài hướng đến việc xây dựng một hệ thống giám sát và cảnh báo té ngã thông minh cho người cao tuổi, bệnh nhân, có khả năng phát hiện sự kiện thời gian thực, xử lý dữ liệu cảm biến và hình ảnh, đồng thời truyền thông cảnh báo qua nhiều kênh khác nhau Hệ thống được thiết kế với kiến trúc phân lớp, kết hợp mạng nội bộ \textbf{Linux SIP Server (Asterisk)} để xử lý cảnh báo cục bộ và \textbf{mạng Internet MQTT} để giám sát từ xa ngoài tầm nhìn. Mục tiêu tổng thể là tạo ra giải pháp ổn định, chi phí thấp, mở rộng dễ dàng, phù hợp với điều kiện triển khai thực tế tại gia đình hoặc cơ sở chăm sóc y tế.
+Đề tài hướng đến việc xây dựng một hệ thống giám sát và cảnh báo té ngã thông minh cho người cao tuổi, bệnh nhân, có khả năng phát hiện sự kiện thời gian thực, xử lý dữ liệu cảm biến và hình ảnh, đồng thời truyền thông cảnh báo qua nhiều kênh khác nhau Hệ thống được thiết kế với kiến trúc phân lớp, kết hợp mạng nội bộ \textbf{Linux SIP Server (Asterisk)} để xử lý cảnh báo cục bộ và \textbf{mạng Internet MQTT} để giám sát từ xa ngoài tầm nhìn. Mục tiêu tổng thể là tạo ra giải pháp ổn định, chi phí thấp, mở rộng dễ dàng, phù hợp với điều kiện triển khai thực tế tại gia đình hoặc cơ sở chăm sóc y tế tập trung.
 
 \subsection{Tìm hiểu nguyên lý kỹ thuật, phát triển hệ thống phân tích hình ảnh thời gian thực bằng Python}
 
 Khai thác các thư viện xử lý hình ảnh mã nguồn mở MediaPipe, OpenCV, YOLO để phân tích tư thế người từ luồng video thời gian thực và phát hiện hành vi té ngã dựa trên đặc trưng chuyển động. Hệ thống triển khai pipeline xử lý ảnh trích xuất keypoints cơ thể người, phân tích góc nghiêng, vận tốc và tỉ lệ khung xương để nhận diện té ngã.
 
-Tập dữ liệu tư thế được xây dựng gồm các tình huống té ngã và hoạt động bình thường, huấn luyện mô hình học máy SVM hoặc Decision Tree. Dữ liệu được tích hợp với cảm biến ESP32 thông qua đồng bộ thời gian và thuật toán kết hợp dữ liệu (sensor fusion) để tăng độ chính xác và giảm cảnh báo sai. Kết quả đầu ra là phần mềm Python xử lý hình ảnh và phân loại tư thế real-time với giao diện giám sát trực quan luồng ảnh và dữ liệu cảm biến.
+Tập dữ liệu tư thế được xây dựng gồm các tình huống té ngã và hoạt động bình thường, huấn luyện mô hình học máy SVM hoặc Decision Tree. Kết quả đầu ra là phần mềm Python xử lý hình ảnh và phân loại tư thế real-time với giao diện giám sát trực quan luồng ảnh và dữ liệu cảm biến.
 
 \subsection{Phát triển hệ thống nhúng ESP32 xử lý dữ liệu cảm biến và cảnh báo tại chỗ}
 
-Xây dựng module nhúng tích hợp cảm biến chuyển động MPU6050 và module định vị GPS EC800K, có khả năng phát hiện té ngã bằng thuật toán xử lý dữ liệu tại thiết bị. Hệ thống gửi cảnh báo theo hai hướng: \textbf{truyền thông nội bộ qua mạng LAN} đến server SIP Asterisk để thực hiện cuộc gọi cảnh báo, và \textbf{truyền thông ngoài tầm nhìn qua Internet} gửi bản tin MQTT chứa dữ liệu sự kiện và tọa độ GPS đến server giám sát từ xa.
+Xây dựng module nhúng tích hợp cảm biến chuyển động MPU6050 và module định vị GPS EC800K, có khả năng phát hiện té ngã bằng thuật toán xử lý dữ liệu tại thiết bị. Hệ thống gửi cảnh báo theo hai hướng: \textbf{truyền thông nội bộ qua mạng LAN} đến server SIP Asterisk để thực hiện cuộc gọi cảnh báo, và \textbf{Internet} gửi bản tin MQTT chứa dữ liệu sự kiện và tọa độ GPS đến server giám sát từ xa.
 
-Phần mềm nhúng được thiết kế với giao tiếp I2C/UART để thu thập tín hiệu, thuật toán phát hiện té ngã theo ngưỡng động học (gia tốc, góc nghiêng, bất động), và cơ chế gửi cảnh báo linh hoạt qua wifi hoặc mạng 4g về máy linxux Asterisk thông qua qua MQTT để giám sát từ xa. Kết quả đầu ra là thiết bị cảm biến nhúng hoạt động độc lập, tiết kiệm năng lượng và có thể mở rộng.
+Phần mềm nhúng được thiết kế với giao tiếp I2C/UART để thu thập tín hiệu, thuật toán phát hiện té ngã theo ngưỡng động học (gia tốc, bất động), và cơ chế gửi cảnh báo linh hoạt qua wifi hoặc mạng 4g về máy chủ xử lý linxux Asterisk thông qua qua MQTT để giám sát từ xa. Kết quả đầu ra là thiết bị cảm biến nhúng hoạt động độc lập, tiết kiệm năng lượng và có thể mở rộng.
 
 \subsection{Tìm hiểu nguyên lý thiết lập hệ thống truyền thông cảnh báo nội bộ và internet}
 
-Phát triển hệ thống truyền thông song song bao gồm \textbf{mạng nội bộ LAN} dùng giao thức SIP/Asterisk chạy trên Linux server để xử lý cảnh báo khẩn cấp tại chỗ, và \textbf{mạng Internet} dùng giao thức MQTT để gửi dữ liệu cảm biến ra môi trường giám sát từ xa.
+Phát triển hệ thống truyền thông song song bao gồm \textbf{mạng nội bộ LAN} dùng giao thức SIP/Asterisk chạy trên Linux server để xử lý cảnh báo khẩn cấp tại chỗ, và \textbf{mạng Internet} dùng giao thức MQTT để gửi dữ liệu thu được từ cảm biến gia tốc, góc ở môi trường giám sát từ xa.
 
-Asterisk SIP Server được cấu hình với tài khoản SIP, dialplan, softphone/IP phone, kết nối UART với ESP32 để nhận tín hiệu và thực hiện cuộc gọi cảnh báo nội bộ không phụ thuộc Internet. Hạ tầng MQTT Internet sử dụng MQTT Broker Mosquitto, kết nối ESP32 qua 4G/Wi-Fi để gửi dữ liệu ra cloud hoặc dashboard từ xa.
+Asterisk SIP Server được cấu hình với tài khoản SIP, dialplan, softphone/IP phone để nhận tín hiệu và thực hiện cuộc gọi cảnh báo nội bộ không phụ thuộc Internet. Hạ tầng MQTT Internet sử dụng MQTT Broker Adafruid.io, kết nối ESP32 qua 4G/Wi-Fi để gửi dữ liệu ra cloud hoặc dashboard hiển thị trực quan.
 
 
-\subsection{Đánh giá hiệu năng và giới hạn hệ thống}
+\subsection{hiệu năng và giới hạn hệ thống}
 
-Hệ thống được thiết kế đạt các chỉ số: tổng độ trễ dưới 5 giây, tỷ lệ phát hiện chính xác trên 90\% với false alarm dưới 8\%, uptime truyền thông SIP/MQTT trên 99\%, hỗ trợ  nhiều node cảm biến , đánh giá tính kinh tế và thực tiễn.
+Hệ thống được thiết kế hướng tới mục tiêu đạt các chỉ số: tổng độ trễ dưới 5 giây, tỷ lệ phát hiện chính xác trên 90\% với false alarm dưới 8\%, uptime truyền thông SIP/MQTT trên 99\%, hỗ trợ  nhiều node cảm biến, đánh giá tính kinh tế và thực tiễn.
 
-Giới hạn hệ thống bao gồm hoạt động tốt trong môi trường ánh sáng đầy đủ và kết nối ổn định, chỉ thử nghiệm trên thiết bị nhúng nhỏ gọn ESP32 chưa triển khai học sâu toàn phần tại thiết bị, không phát triển app di động chuyên biệt. Sử dụng và thiết lập mạng nội bộ bằng linux và các hệ thống mã nguồn mở và đã được chứng minh tính ổn định, sử dung broker MQTT sẵn có cung cấp miễn phí để test tính khả thi của hệ thống.
+Giới hạn hệ thống bao gồm hoạt động tốt trong môi trường ánh sáng đầy đủ và kết nối ổn định đối với xử lý hình ảnh video thời gian thực, thử nghiệm trên thiết bị nhúng prototype nhỏ gọn ESP32 chưa triển khai học sâu toàn phần tại thiết bị, không phát triển app di động chuyên biệt, sử dụng app mã nguồn mở. Sử dụng và thiết lập mạng nội bộ bằng linux và các hệ thống mã nguồn mở và đã được chứng minh tính ổn định, sử dung broker MQTT sẵn có test tính khả thi của hệ thống.

@@ -5,9 +5,9 @@ Luận văn này tập trung vào việc thiết kế và xây dựng một hệ
 
 \subsection{Mục tiêu và Giới hạn}
 \begin{enumerate}
-    \item \textbf{Mục tiêu chính:} Xây dựng một hệ thống \textbf{thời gian thực (real-time)} có khả năng phát hiện té ngã với độ chính tương đối, dựa trên việc kết hợp dữ liệu từ nhiều nguồn. Hệ thống hướng tới cung cấp giải pháp cảnh báo tức thì, tính khả thi trong thực tế.
+    \item \textbf{Mục tiêu chính:} Xây dựng một hệ thống \textbf{thời gian thực (real-time)} có khả năng phát hiện té ngã với độ chính tương đối, dựa trên việc kết hợp dữ liệu từ nhiều nguồn, phạm vi linh hoạt. Hướng tới cung cấp giải pháp cảnh báo tức thì, tính khả thi trong thực tế.
     
-    \item \textbf{Giới hạn nghiên cứu:} Đây là một \textbf{mô hình thử nghiệm (proof-of-concept)}, tập trung vào chứng minh hiệu quả thuật toán và tích hợp các công nghệ. Nghiên cứu không đi sâu vào tối ưu hóa chi tiết thuật toán cảnh báo té ngã ở mức độ sản xuất hay thiết kế sản phẩm thương mại, nhưng có cân nhắc tới tối ưu hóa chi phí.
+    \item \textbf{Giới hạn nghiên cứu:} Đây là một \textbf{mô hình thử nghiệm (proof-of-concept)}, tập trung vào chứng minh hiệu quả thuật toán và tích hợp các công nghệ, giao thức truyền thông và phương thức truyền dẫn xây dựng hệ thống hoàn chỉnh. Nghiên cứu không đi sâu vào tối ưu hóa chi tiết thuật toán cảnh báo té ngã ở mức độ sản xuất hay thiết kế sản phẩm thương mại, nhưng có cân nhắc tới tối ưu hóa chi phí.
 \end{enumerate}
 
 \subsection{Phạm vi Kỹ thuật và Công nghệ}
@@ -15,17 +15,17 @@ Luận văn này tập trung vào việc thiết kế và xây dựng một hệ
 \begin{itemize}
     \item \textbf{Phần cứng:} Sử dụng module \textbf{ESP32} làm bộ vi điều khiển trung tâm cho thiết bị cảm biến,tích hợp cảm biến chuyển động \textbf{MPU6050} và module \textbf{GPS EC800K} để thu thập dữ liệu và gửi cảnh báo qua \textbf{SMS}.
     
-    \item \textbf{Phần mềm và thuật toán:} Ứng dụng thư viện mã nguồn mở \textbf{MediaPipe} và \textbf{OpenCV} để thực hiện ước lượng tư thế người (human pose estimation). Luận văn \textbf{không} phát triển các mô hình học sâu phức tạp từ đầu, ưu tiên sử dụng các thư viện mã nguồn mở có sẵn để xem xét về mặt chi phí đồng thời tập trung vào kết hợp hệ thống.
+    \item \textbf{Phần mềm và thuật toán:} Ứng dụng thư viện  Python\textbf{MediaPipe} và \textbf{OpenCV} để thực hiện ước lượng tư thế người (human pose estimation). Luận văn \textbf{không} phát triển các mô hình học sâu phức tạp từ đầu, tập trung vào kết hợp hệ thống.
     
-    \item \textbf{Giao thức truyền thông:} Sử dụng \textbf{MQTT} để kết nối Internet, mạng gsm gửi thông báo sms và \textbf{SIP Asterisk} để thiết lập các cuộc gọi nội bộ trong mạng LAN, cung cấp kênh cảnh báo độc lập và tức thì.
+    \item \textbf{Giao thức truyền thông:} Sử dụng \textbf{MQTT} để gửi dữ liệu và kết nối Internet, mạng gsm gửi thông báo sms cảnh báo và \textbf{SIP Asterisk} để thiết lập các cuộc gọi nội bộ trong mạng LAN, cung cấp kênh cảnh báo độc lập và tức thời.
 \end{itemize}
 
 \subsection{Phạm vi Chức năng và Tính năng}
 Hệ thống được phát triển với các chức năng cốt lõi sau:
 \begin{itemize}
-    \item \textbf{Phát hiện té ngã:} Sử dụng thuật toán kết hợp dữ liệu từ cảm biến chuyển động phát hiện sự kiện té ngã theo thơi gian thực xử lý biên và gửi tín hiệu đã xử lý về máy chủ. Sử dụng phân tích hình ảnh để xác định sự kiện té ngã qua dữ liệu camera.
+    \item \textbf{Phát hiện té ngã:} Sử dụng thuật toán kết hợp dữ liệu từ cảm biến chuyển động phát hiện sự kiện té ngã theo thơi gian thực xử lý tại biên và gửi tín hiệu đã xử lý về máy chủ. Sử dụng phân tích hình ảnh để xác định sự kiện té ngã qua dữ liệu camera.
     
-    \item \textbf{Hệ thống cảnh báo đa kênh:} Gửi cảnh báo tức thì qua nhiều kênh, bao gồm \textbf{cuộc gọi SIP nội bộ}, \textbf{SMS} và \textbf{thông báo Telegram}.
+    \item \textbf{Hệ thống cảnh báo đa kênh:} Gửi cảnh báo thời gian thực qua nhiều kênh, bao gồm \textbf{cuộc gọi SIP nội bộ}, \textbf{SMS} và \textbf{thông báo Telegram}.
     
     \item \textbf{Giới hạn chức năng:} Nghiên cứu \textbf{không} xây dựng giao diện người dùng phức tạp trên web hay ứng dụng di động để quản lý và giám sát từ xa mà sử dụng các giải pháp sẵn có.
 \end{itemize}
