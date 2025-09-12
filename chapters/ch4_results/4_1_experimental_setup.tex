@@ -1,1 +1,24 @@
-\section{1 Fall Detection Results}
+
+\section{Thiết lập thực nghiệm}
+\label{sec:experimental_setup}
+Trong mục này, chúng tôi trình bày các thành phần \textbf{phần cứng}, \textbf{phần mềm} và \textbf{môi trường thử nghiệm} được sử dụng để triển khai hệ thống phát hiện té ngã.  
+Mục tiêu là cung cấp một cái nhìn tổng thể về cách thức xây dựng hệ thống, nhằm đảm bảo quá trình đánh giá hiệu năng ở các mục tiếp theo có cơ sở rõ ràng và có thể tái lập.  
+
+Dữ liệu được thu thập từ cảm biến tại thiết bị đầu cuối, xử lý sơ bộ trên vi điều khiển ESP32 và truyền về máy chủ xử lý trung tâm thông qua giao thức MQTT hoặc kênh SMS khẩn cấp.  
+Sơ đồ tổng quan của hệ thống thử nghiệm được minh họa trong Hình~\ref{fig:system_structure}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]{figures/resuilt_structure_diagram.pdf}
+    \caption{Kiến trúc tổng quan của hệ thống thử nghiệm phát hiện té ngã.}
+    \label{fig:system_structure}
+\end{figure}
+
+\subsection{Môi trường thử nghiệm}
+Các thử nghiệm được thực hiện trong môi trường trong nhà, với nhiều kịch bản té ngã và hoạt động sinh hoạt bình thường. Dữ liệu được ghi nhận để đánh giá:
+\begin{itemize}
+    \item \textbf{Độ chính xác}: Xác suất hệ thống phát hiện đúng té ngã.
+    \item \textbf{Độ trễ}: Thời gian từ khi xảy ra sự kiện đến khi người dùng nhận cảnh báo.
+    \item \textbf{Độ ổn định}: Khả năng vận hành liên tục và độ tin cậy trong quá trình thử nghiệm.
+\end{itemize}
+

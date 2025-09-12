@@ -73,7 +73,7 @@ Khi $a_{total}$ giảm dưới ngưỡng (\texttt{FALL\_THRESHOLD}), hệ thốn
 \begin{enumerate}
     \item Đọc dữ liệu từ \texttt{mpu6050}.  
     \item Tính toán gia tốc tổng hợp và so sánh với ngưỡng.  
-    \item Nếu vượt ngưỡng, gửi \texttt{EVENT\_FALL\_DETECTED} tới \texttt{event\_handler}.  
+    \item Nếu vượt ngưỡng so sánh tương ứng với 3 gian đoạn của té ngã, gửi \texttt{EVENT\_FALL\_DETECTED} tới \texttt{event\_handler}.  
     \item Đặt cờ trạng thái (\texttt{s\_fall\_detected}) để tránh cảnh báo trùng lặp, reset qua \texttt{fall\_logic\_reset\_fall\_status()}.
 \end{enumerate}
 

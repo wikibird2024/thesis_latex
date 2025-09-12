@@ -70,8 +70,7 @@ type=aor
 max_contacts=1
 \end{minted}
 
-Trong đó, endpoint \textbf{\texttt{[6001]}} đại diện cho thiết bị phát hiện ngã, được đặt trong context \textbf{\texttt{internal}} và sử dụng codec âm thanh \textbf{\texttt{ulaw}}. Endpoint \textbf{\texttt{[server]}} được tạo ra để cho phép Asterisk gửi và nhận các tin nhắn SIP, đóng vai trò là cầu nối với máy chủ xử lý dữ liệu.
-
+Trong đó, endpoint \textbf{\texttt{[6001]}} đại diện cho thiết bị cuối nhận tin báo, được đặt trong context \textbf{\texttt{internal}} và sử dụng codec âm thanh \textbf{\texttt{ulaw}}. Endpoint \textbf{\texttt{[server]}} được tạo ra để cho phép Asterisk điều phối gửi và nhận các tin nhắn SIP cảnh báo
 \subsubsection{Cấu hình Dial Plan}
 
 \textbf{Dial Plan} là "kịch bản" xử lý cuộc gọi của Asterisk, định nghĩa luồng xử lý chi tiết cho từng cuộc gọi hoặc tin nhắn SIP. Cấu hình dưới đây cho thấy cách Asterisk xử lý các sự kiện ngã mà không cần can thiệp trực tiếp vào logic xử lý dữ liệu.
