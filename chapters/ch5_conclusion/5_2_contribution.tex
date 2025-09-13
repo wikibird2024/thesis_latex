@@ -1,1 +1,29 @@
-\section{Contribution}
+
+\section{Đóng góp của luận văn}
+\label{sec:contribution}
+
+Trong phạm vi nghiên cứu, luận văn đã triển khai và kiểm chứng một hệ thống phát hiện té ngã kết hợp cảm biến đeo và xử lý hình ảnh. Các đóng góp có thể được tóm lược như sau:
+
+\subsection*{Đóng góp về mặt lý thuyết}
+\begin{itemize}
+    \item Trình bày và hệ thống hoá một số phương pháp phát hiện té ngã, tập trung vào hai hướng chính: sử dụng dữ liệu cảm biến và sử dụng xử lý hình ảnh.
+    \item Xác định được một số chỉ báo cảm biến (như \textit{Accel Mag}, \textit{Gyro Mag}) có sự khác biệt rõ rệt giữa trạng thái bình thường và té ngã, làm cơ sở cho việc xây dựng ngưỡng phát hiện.
+    \item Phân tích sự khác biệt giữa phương pháp cảm biến và phương pháp xử lý ảnh, từ đó chỉ ra khả năng bổ sung lẫn nhau nhằm nâng cao tính tin cậy.
+\end{itemize}
+
+\subsection*{Đóng góp kỹ thuật – thực nghiệm}
+\begin{itemize}
+    \item Xây dựng một nguyên mẫu phần cứng bao gồm ESP32, MPU6050, module 4G/GPS EC800K, buzzer, LED và ESP32-CAM, bảo đảm kết nối cơ bản và hoạt động ổn định.
+    \item Triển khai phần mềm nhúng trên ESP-IDF theo hướng module hoá, sử dụng FreeRTOS để quản lý tiến trình và hỗ trợ nhiều giao tiếp phần cứng.
+    \item Phát triển một chương trình Python cho xử lý hình ảnh, sử dụng TensorFlow Lite để trích xuất skeleton và tích hợp với MQTT, SQLite và Telegram.
+    \item Thực hiện kiểm thử chức năng từng thành phần, ghi nhận rằng phần lớn các module hoạt động như mong đợi trong điều kiện thử nghiệm.
+\end{itemize}
+
+\subsection*{Đóng góp ứng dụng thực tiễn}
+\begin{itemize}
+    \item Đưa ra một mô hình tích hợp cảm biến và xử lý hình ảnh trong phát hiện té ngã, có thể tham khảo cho các nghiên cứu và ứng dụng tiếp theo trong lĩnh vực hỗ trợ chăm sóc sức khoẻ.
+    \item Cung cấp dữ liệu cảm biến và log thử nghiệm thực tế, có thể sử dụng để đối chiếu hoặc làm nền tảng cho việc cải tiến thuật toán trong tương lai.
+    \item Minh hoạ tính khả thi của việc triển khai hệ thống trên nền tảng phần cứng phổ thông với chi phí thấp.
+\end{itemize}
+
+\textit{Kết luận:} Các kết quả đạt được tuy còn hạn chế nhưng đã cho thấy hướng tiếp cận của luận văn có tính khả thi. Đây có thể xem là bước khởi đầu để tiếp tục nghiên cứu, hoàn thiện thuật toán và mở rộng ứng dụng trong các hệ thống giám sát sức khỏe thông minh.

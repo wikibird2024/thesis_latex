@@ -31,27 +31,27 @@ Hệ thống máy chủ được thiết kế theo mô hình phân tầng và m�
 \label{tab:server_modules}
 \begin{tabular}{|l|l|p{7cm}|}
 \hline
-\textbf{Module} & \textbf{Layer} & \textbf{Role and Function} \\
+\textbf{Module} & \textbf{Lớp (Layer)} & \textbf{Vai trò và chức năng} \\
 \hline
-\texttt{comm/} & ESP32 Input & Receive MQTT from ESP32, Telegram Bot, and AMI for alerts \\
+\texttt{comm/} & ESP32 Input & Nhận dữ liệu MQTT từ ESP32, Telegram Bot, và AMI để gửi cảnh báo \\
 \hline
-\texttt{detection/} & Vision Input & Process IP camera frames, human detection, tracking, pose estimation \\
+\texttt{detection/} & Vision Input & Xử lý khung hình từ camera IP, phát hiện con người, theo dõi, ước lượng tư thế \\
 \hline
-\texttt{fall/} & Processing & Fall detection algorithm, fuse ESP32 and vision data \\
+\texttt{fall/} & Processing & Thuật toán phát hiện té ngã, kết hợp dữ liệu từ ESP32 và camera \\
 \hline
-\texttt{processing/} & Processing & \texttt{DetectionProcessor} handles synchronization, preprocessing pipeline, data fusion \\
+\texttt{processing/} & Processing & \texttt{DetectionProcessor} xử lý đồng bộ, pipeline tiền xử lý, kết hợp dữ liệu \\
 \hline
-\texttt{database/} & Storage & Log events into \texttt{fall\_events.db}, manage history \\
+\texttt{database/} & Storage & Ghi lại các sự kiện vào \texttt{fall\_events.db}, quản lý lịch sử \\
 \hline
-\texttt{config/} & Support & Configuration for MQTT, AI, DB, AMI, Telegram \\
+\texttt{config/} & Support & Cấu hình MQTT, AI, cơ sở dữ liệu, AMI, Telegram \\
 \hline
-\texttt{models/} & Support & Store YOLOv8n model and weights \\
+\texttt{models/} & Support & Lưu trữ mô hình YOLOv8n và trọng số (weights) \\
 \hline
-\texttt{utils/} & Support & Visualization tools, skeleton overlay, debug utilities \\
+\texttt{utils/} & Support & Công cụ trực quan hóa, overlay skeleton, tiện ích debug \\
 \hline
-\texttt{tests/} & Testing & Scripts to test fall detection logic \\
+\texttt{tests/} & Testing & Script để kiểm tra logic phát hiện té ngã \\
 \hline
-\texttt{main.py} & Entry point & Main loop, receive ESP32 and camera data, fuse, make decision \\
+\texttt{main.py} & Entry point & Vòng lặp chính, nhận dữ liệu ESP32 và camera, kết hợp, đưa ra quyết định \\
 \hline
 \end{tabular}
 \end{table}

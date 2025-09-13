@@ -1,3 +1,4 @@
+
 \section{Kết quả kiểm thử từng thành phần}
 \label{sec:component_testing}
 
@@ -5,11 +6,11 @@ Trước khi tiến hành phân tích hiệu năng, các thử nghiệm chức n
 Các log tiêu biểu và hình ảnh minh họa dưới đây cho thấy quá trình khởi tạo, kết nối, truyền dữ liệu định kỳ, phát hiện té ngã, xử lý cảnh báo và truyền hình ảnh.
 
 \subsection{Module cảm biến đeo}
-Module Quectel EC800K là thành phần thuộc module cảm biến đeo được kiểm tra để xác nhận khả năng giao tiếp AT command, thiết lập kết nối 4G và thu nhận dữ liệu GPS.  
+Module Quectel EC800K thuộc phần cứng cảm biến đeo được kiểm tra để xác nhận khả năng giao tiếp AT command, thiết lập kết nối 4G và thu nhận dữ liệu GPS.  
 
-Các bước kiểm thử bao gồm: khởi tạo UART, kiểm tra thông tin modem và SIM, đánh giá chất lượng sóng, cấu hình APN, kích hoạt PDP context, bật GPS và truy vấn tọa độ, sau đó tắt GPS và ngắt kết nối dữ liệu để tiết kiệm năng lượng.  
+Quy trình kiểm thử bao gồm: khởi tạo UART, kiểm tra thông tin modem và SIM, đánh giá chất lượng sóng, cấu hình APN, kích hoạt PDP context, bật GPS và truy vấn tọa độ, sau đó tắt GPS và ngắt kết nối dữ liệu để tiết kiệm năng lượng.  
 
-Kết quả cho thấy mô-đun hoạt động ổn định: thiết bị nhận diện đúng (EC800K), SIM sẵn sàng, tín hiệu mạnh (\texttt{+CSQ: 31,99}), kết nối dữ liệu thành công và thu được tọa độ GPS hợp lệ.
+Kết quả cho thấy module hoạt động ổn định: thiết bị nhận diện đúng (EC800K), SIM sẵn sàng, tín hiệu mạnh (\texttt{+CSQ: 31,99}), kết nối dữ liệu thành công và thu được tọa độ GPS hợp lệ.
 
 \textbf{Log tiêu biểu:}
 \begin{minted}[fontsize=\footnotesize,breaklines]{text}
@@ -23,10 +24,10 @@ I (34349) SIM_4G: Received: +QGPSLOC: 10.88862,106.77975
 OK
 \end{minted}
 
-\textit{Kết luận:} Mô-đun 4G/GPS đã hoạt động đúng chức năng, đảm bảo hệ thống có thể gửi cảnh báo và thông tin định vị qua SMS/MQTT.
+\textit{Kết luận:} Module 4G/GPS đã hoạt động đúng chức năng, đảm bảo hệ thống có thể gửi cảnh báo và thông tin định vị qua SMS/MQTT.
 
 \subsection{Khởi tạo hệ thống và kết nối mạng}
-Quá trình khởi tạo xác nhận rằng các mô-đun SIM4G-GPS, Wi-Fi và các tác vụ chính đều hoạt động bình thường, đảm bảo thiết bị sẵn sàng tham gia vào quá trình truyền thông và giám sát.
+Quá trình khởi tạo xác nhận rằng các module SIM4G-GPS, Wi-Fi và các tác vụ chính đều hoạt động bình thường, đảm bảo thiết bị sẵn sàng tham gia vào quá trình truyền thông và giám sát.
 
 \begin{minted}[fontsize=\footnotesize,breaklines]{text}
 I (9961) SIM4G_AT: Initializing SIM4G AT driver...
@@ -69,18 +70,17 @@ I (159881) SIM4G_AT: SMS sent successfully.
 I (175241) EVENT_HANDLER: Alert sequence completed.
 \end{minted}
 
-Dưới đây là hình ảnh \ref{fig:module2_real_log}thực tế module cảm biến đeo hoạt động cảnh báo và log ra monitor
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{figures/module2_real_log.jpg}
-    \caption{Dashboard hiển thị bản tin MQTT từ thiết bị ESP32.}
+    \caption{Log thực tế của module cảm biến đeo khi phát hiện té ngã và kích hoạt cảnh báo.}
     \label{fig:module2_real_log}
 \end{figure}
 
 \textit{Kết luận:} Hệ thống phát hiện và xử lý cảnh báo té ngã thành công, kích hoạt đồng thời nhiều kênh cảnh báo.
 
 \subsection{Module Camera và truyền hình ảnh}
-Mô-đun ESP32-CAM được kiểm tra để xác nhận khả năng kết nối Wi-Fi và phát luồng hình ảnh qua HTTP.  
+Module ESP32-CAM được kiểm tra để xác nhận khả năng kết nối Wi-Fi và phát luồng hình ảnh qua HTTP.  
 Kết quả log cho thấy camera được nhận diện đúng (OV5640), server HTTP đã khởi động và tốc độ khung hình trung bình dao động trong khoảng 3.5–5 FPS.
 
 \begin{minted}[fontsize=\footnotesize,breaklines]{text}
@@ -94,13 +94,34 @@ I (40006) esp32cam: Frames sent: 146, FPS: 4.46
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{figures/module1_stream_example.jpg}
-    \caption{Luồng hình ảnh phát từ mô-đun ESP32-CAM qua HTTP.}
+    \caption{Luồng hình ảnh phát từ module ESP32-CAM qua HTTP.}
     \label{fig:camera_stream}
 \end{figure}
 
-\textit{Kết luận:} Mô-đun camera hoạt động ổn định, cho phép giám sát hình ảnh trực tiếp phục vụ xác minh sự kiện té ngã.
+\textit{Kết luận:} Module camera hoạt động ổn định, cho phép giám sát hình ảnh trực tiếp phục vụ xác minh sự kiện té ngã.
 
-\subsection{Đánh giá thực nghiệm cảm biến và dữ liệu thu thập}
+\subsection{Xử lý hình ảnh Python}
+Module xử lý hình ảnh bằng Python nhận luồng video từ camera ESP32-CAM hoặc webcam, sau đó sử dụng TensorFlow Lite để phát hiện người và trích xuất các điểm khớp (skeleton) theo thời gian thực.  
+
+Quy trình xử lý bao gồm:
+\begin{itemize}
+    \item Khởi tạo pipeline nhận luồng video từ camera.  
+    \item Tiền xử lý khung hình (chuẩn hóa kích thước, màu sắc).  
+    \item Chạy mô hình học máy TensorFlow Lite để phát hiện và trích xuất các điểm khớp của cơ thể người.  
+    \item Vẽ skeleton trực quan trên khung hình để theo dõi trạng thái và chuyển động.  
+\end{itemize}
+
+Kết quả thực nghiệm cho thấy module hoạt động ổn định, xử lý khung hình theo thời gian thực với tốc độ trung bình 3--5 FPS.  
+Hình~\ref{fig:python_skeleton} minh họa giao diện theo dõi người và skeleton được module xử lý hình ảnh tạo ra trong quá trình chạy thử nghiệm.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{figures/fall_detection_screen_shoot.png}
+    \caption{Module Python xử lý hình ảnh: phát hiện người và vẽ skeleton theo thời gian thực.}
+    \label{fig:python_skeleton}
+\end{figure}
+
+\subsection{Đánh giá thực nghiệm cảm biến mpu,gps và dữ liệu thu thập}
 \subsubsection*{Quy trình thử nghiệm}
 Để đánh giá hiệu quả hoạt động của hệ thống trong thực tế, quy trình thử nghiệm được tiến hành theo các bước:
 \begin{enumerate}
@@ -113,7 +134,7 @@ I (40006) esp32cam: Frames sent: 146, FPS: 4.46
 
 \subsubsection*{Phân tích dữ liệu cảm biến}
 Trong quá trình thử nghiệm, dữ liệu MPU6050 được thu thập cho hai trạng thái: \textbf{té ngã} và \textbf{bình thường}.  
-Các bảng dưới đây trình bày toàn bộ dữ liệu đã ghi nhận.
+Các bảng dưới đây trình bày dữ liệu đã ghi nhận.
 
 \begin{table}[h]
 \centering
@@ -154,11 +175,9 @@ Các bảng dưới đây trình bày toàn bộ dữ liệu đã ghi nhận.
 \end{tabular}
 \end{table}
 
-Ngoài ra, dữ liệu GPS thu được từ mô-đun 4G/GPS trong các lần thử nghiệm ngoài trời cũng được ghi lại:
-
 \begin{table}[h]
 \centering
-\caption{Dữ liệu GPS thu được từ mô-đun 4G/GPS}
+\caption{Bảng kết quả thu được từ log test của mô-đun 4G/GPS}
 \label{tab:gps_data}
 \begin{tabular}{|c|c|c|c|c|c|c|}
 \hline
@@ -173,75 +192,45 @@ Ngoài ra, dữ liệu GPS thu được từ mô-đun 4G/GPS trong các lần th
 \hline
 \end{tabular}
 \end{table}
-
-\subsubsection*{So sánh dữ liệu}
-Để đánh giá sự khác biệt rõ rệt giữa hai trạng thái, dữ liệu được tổng hợp thành các giá trị trung bình:
-
-\begin{table}[h]
-\centering
-\caption{So sánh dữ liệu té ngã và bình thường}
-\label{tab:comparison}
-\begin{tabular}{|l|c|c|}
-\hline
-\textbf{Thông số} & \textbf{Trung bình té ngã} & \textbf{Trung bình bình thường} \\
-\hline
-Gyro X (deg/s) & 22.06 & 1.10 \\
-Gyro Y (deg/s) & 34.33 & -1.03 \\
-Gyro Z (deg/s) & 5.84  & 0.57 \\
-Gyro Mag (deg/s) & 325.78 & 1.63 \\
-Accel X (g)   & 0.02  & -0.03 \\
-Accel Y (g)   & 0.87  & 0.01 \\
-Accel Z (g)   & -0.20 & -0.97 \\
-Accel Mag (g) & 2.48  & 0.97 \\
-\hline
-\end{tabular}
-\end{table}
+% Bảng dữ liệu té ngã
+% Bảng dữ liệu bình thường
+% Bảng dữ liệu GPS
+% Bảng so sánh
 
 \textit{Kết luận:} Dữ liệu cảm biến cho thấy sự khác biệt rõ rệt giữa hai trạng thái. Đặc biệt, \textbf{Accel Mag} và \textbf{Gyro Mag} là chỉ báo hiệu quả để phát hiện té ngã, cung cấp cơ sở thực nghiệm cho việc tinh chỉnh ngưỡng phát hiện và giảm thiểu cảnh báo sai.
 
-\subsection{Mô-đun nhận diện hình ảnh (Python)}
+Bên cạnh dữ liệu cảm biến, hệ thống còn khai thác kênh xử lý hình ảnh độc lập để tăng cường khả năng phát hiện té ngã. Phần tiếp theo trình bày kết quả kiểm thử module xử lý hình ảnh Python.
+
+\subsection{Module nhận diện hình ảnh (Python)}
 \label{sec:python_vision}
 
-Mô-đun nhận diện hình ảnh được xây dựng bằng Python nhằm thực hiện các chức năng: thu nhận luồng dữ liệu từ camera, triển khai mô hình học sâu để dựng khung xương (skeleton), đồng thời tích hợp với hệ thống gửi cảnh báo qua MQTT và Telegram. Ngoài ra, mô-đun còn ghi log vào cơ sở dữ liệu SQLite và duy trì kết nối với Asterisk Management Interface (AMI).  
+Module máy chủ xử lý được xây dựng bằng Python nhằm thực hiện các chức năng: thu nhận luồng dữ liệu từ camera, triển khai mô hình học sâu để dựng khung xương (skeleton), đồng thời tích hợp với hệ thống gửi cảnh báo qua MQTT và Telegram. Ngoài ra, module còn ghi log vào cơ sở dữ liệu SQLite và duy trì kết nối với Asterisk Management Interface (AMI).  
 
-Trong quá trình thử nghiệm, hệ thống được khởi động trực tiếp từ môi trường ảo Python. Các tiến trình chính được khởi tạo bao gồm: \texttt{mqtt\_listener}, \texttt{mqtt\_processor}, \texttt{camera\_processing} và \texttt{heartbeat}. Log tiêu biểu minh họa kết quả thử nghiệm được trình bày dưới đây.
-
-Dưới đây là hình ảnh \ref{fig:python_runing_log}thực tế Python xử lý ảnh và điều phối các tác vụ log ra monitor
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{figures/python_runing_log.png}
-    \caption{Dashboard hiển thị bản tin MQTT từ thiết bị ESP32.}
+    \caption{Log thực nghiệm: Python xử lý ảnh và điều phối các tác vụ.}
     \label{fig:python_runing_log}
 \end{figure}
 
-\subsubsection*{Log thực nghiệm}
-\begin{minted}[fontsize=\footnotesize,breaklines]{text}
-[SYSTEM] 🚀 Starting Fall Detection System...
-[SYSTEM] Initializing modules...
-INFO: Created TensorFlow Lite XNNPACK delegate for CPU.
-[TELEGRAM] Bot initialized.
-[DB] Database and table created successfully.
-[MQTT] 🔄 Starting MQTT client for io.adafruit.com:1883, topic=tranhao/feeds/json_data
-[MQTT] ✅ MQTT client connected.
-[AMI] ✅ Connected to AMI server.
-[CAMERA] Starting camera processing task...
-[SYSTEM] ✅ Starting 4 concurrent tasks...
-[CAMERA] ✅ Successfully opened camera: 0
-/home/hx/.pyenv/versions/.intergrate_venv/lib/python3.10/site-packages/torch/cuda/__init__.py:138:
-UserWarning: CUDA initialization: The NVIDIA driver on your system is too old (found version 9010)...
-\end{minted}
+\textbf{Kết luận:} Module Python đã hoạt động đúng chức năng, bảo đảm khả năng thu nhận dữ liệu camera, chạy nhận diện hình ảnh, đồng bộ dữ liệu qua MQTT, và kích hoạt các kênh cảnh báo. Hệ thống tuy có hạn chế về hỗ trợ CUDA (do phiên bản driver cũ) nhưng không ảnh hưởng đến quá trình thực thi trên CPU.
 
-\subsubsection*{Phân tích kết quả}
-Từ log trên có thể rút ra các nhận xét sau:
-\begin{itemize}
-    \item \textbf{Khởi tạo hệ thống:} Các mô-đun cốt lõi (MQTT, cơ sở dữ liệu, Telegram bot, AMI) đều được khởi tạo thành công. Điều này chứng minh khả năng tích hợp của hệ thống Python với hạ tầng dịch vụ bên ngoài.
-    \item \textbf{Xử lý camera:} Camera nội bộ được mở thành công (\texttt{Successfully opened camera: 0}), khẳng định rằng mô-đun xử lý hình ảnh đã sẵn sàng cho tác vụ nhận diện skeleton.
-    \item \textbf{Mô hình học máy:} TensorFlow Lite XNNPACK delegate cho CPU được khởi động thành công. Cảnh báo từ thư viện CUDA cho thấy driver GPU không tương thích, tuy nhiên hệ thống vẫn hoạt động bình thường trên nền tảng CPU.
-    \item \textbf{Đa nhiệm đồng thời:} Bốn tác vụ chính (\texttt{mqtt\_listener}, \texttt{mqtt\_processor}, \texttt{camera\_processing}, \texttt{heartbeat}) được khởi chạy song song, thể hiện tính ổn định của pipeline xử lý.
-\end{itemize}
+\subsection{Thử nghiệm Asterisk Call/SMS Gateway}
+\label{sec:asterisk_test}
 
-\subsubsection*{} 
-Kết quả thử nghiệm chứng minh rằng mô-đun Python đã hoạt động đúng chức năng, bảo đảm khả năng thu nhận dữ liệu camera, chạy nhận diện hình ảnh, đồng bộ dữ liệu qua MQTT, và kích hoạt các kênh cảnh báo. Hệ thống tuy có hạn chế về hỗ trợ CUDA (do phiên bản driver cũ) nhưng không ảnh hưởng đến quá trình thực thi trên CPU. Đây là minh chứng cho tính ổn định và khả năng triển khai của giải pháp trong điều kiện phần cứng phổ thông.
+Trong hệ thống, Asterisk được sử dụng như một cổng trung gian để gửi cảnh báo bằng SMS và có tiềm năng mở rộng sang chức năng gọi điện tự động.  
+Trong quá trình thử nghiệm, việc kích hoạt nhắn tin SMS qua Asterisk hoạt động thành công, cho phép hệ thống gửi cảnh báo đến số điện thoại đã đăng ký.  
+
+Tuy nhiên, chức năng gọi thoại chưa được triển khai ổn định. Khi thay đổi máy chủ Asterisk, cấu hình giữ nguyên nhưng khả năng khởi tạo và duy trì cuộc gọi không đồng nhất. Điều này cho thấy còn tồn tại sự phụ thuộc vào môi trường triển khai, cần được nghiên cứu và tối ưu thêm trong tương lai.  
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/ast_call_sms_test.png}
+    \caption{Thử nghiệm gửi SMS cảnh báo qua Asterisk.}
+    \label{fig:ast_call_sms_test}
+\end{figure}
+
+\textit{Kết luận:} Module Asterisk đã hỗ trợ thành công chức năng nhắn tin SMS trong hệ thống. Chức năng gọi thoại vẫn còn hạn chế và sẽ cần nghiên cứu bổ sung để đảm bảo tính ổn định khi triển khai thực tế.
 
 \subsection{Kênh cảnh báo Telegram}
 \label{sec:telegram_alert}
@@ -249,44 +238,22 @@ Kết quả thử nghiệm chứng minh rằng mô-đun Python đã hoạt độ
 Hệ thống Telegram Bot đóng vai trò là kênh cảnh báo trực quan, giúp gửi thông báo đến người dùng ngay khi phát hiện té ngã.  
 Cơ chế hoạt động được chia thành hai hướng:
 \begin{itemize}
-    \item \textbf{Từ mô-đun phần cứng (ESP32 + 4G/GPS):} Khi xảy ra sự kiện té ngã, bản tin MQTT hoặc SMS được phát ra từ thiết bị. Hệ thống trung tâm sau đó chuyển tiếp nội dung này đến người dùng thông qua Telegram.
-    \item \textbf{Từ mô-đun xử lý hình ảnh (Python):} Khi nhận diện được té ngã qua camera và skeleton, hệ thống Python trực tiếp gửi cảnh báo đến Telegram, kèm thông tin chi tiết.
-\end{itemize}
-
-\subsubsection*{Log minh họa}
-\begin{minted}[fontsize=\footnotesize,breaklines]{text}
-[TELEGRAM] Bot initialized.
-2025-09-12 12:55:17,594 - INFO - HTTP Request: POST
-https://api.telegram.org/botXXXX/sendMessage "HTTP/1.1 200 OK"
-[TELEGRAM] Test message sent successfully.
-I (159151) SIM4G_GPS: SMS request queued successfully
-I (159191) SIM4G_GPS: MQTT alert published successfully.
-I (159881) SIM4G_AT: SMS sent successfully.
-\end{minted}
-
-\subsubsection*{Kết quả thử nghiệm}
-Trong quá trình chạy thử, Telegram Bot đã nhận thành công cảnh báo từ cả hai nguồn:
-\begin{itemize}
-    \item \textbf{Mô-đun phần cứng:} gửi cảnh báo khi hệ thống ESP32 phát hiện té ngã và kích hoạt chuỗi xử lý SMS/MQTT.
-    \item \textbf{Mô-đun Python:} gửi cảnh báo trực tiếp khi nhận diện té ngã qua camera và skeleton tracking.
+    \item \textbf{Từ module phần cứng (ESP32 + 4G/GPS):} Khi xảy ra sự kiện té ngã, bản tin MQTT hoặc SMS được phát ra từ thiết bị. Hệ thống trung tâm sau đó chuyển tiếp nội dung này đến người dùng thông qua Telegram.
+    \item \textbf{Từ module xử lý hình ảnh (Python):} Khi nhận diện được té ngã qua camera và skeleton, hệ thống Python trực tiếp gửi cảnh báo đến Telegram, kèm thông tin chi tiết.
 \end{itemize}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{figures/telegram_fall_module1_send.png}
-    \caption{Thông báo cảnh báo té ngã từ mô-đun phần cứng (ESP32) qua Telegram.}
+    \caption{Thông báo cảnh báo té ngã từ module phần cứng (ESP32) qua Telegram.}
     \label{fig:telegram_hw}
 \end{figure}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{figures/telegram_python_fall_send.png}
-    \caption{Thông báo cảnh báo té ngã từ mô-đun xử lý hình ảnh Python qua Telegram.}
+    \caption{Thông báo cảnh báo té ngã từ module xử lý hình ảnh Python qua Telegram.}
     \label{fig:telegram_python}
 \end{figure}
 
-\subsubsection*{Nhận xét}
-Kết quả chứng minh rằng Telegram Bot đã hoạt động ổn định, đóng vai trò là cầu nối quan trọng giữa hệ thống phát hiện té ngã và người dùng cuối.  
-Việc kết hợp cả hai nguồn cảnh báo (thiết bị phần cứng và mô-đun xử lý hình ảnh) giúp tăng độ tin cậy và giảm thiểu khả năng bỏ sót sự kiện.
-\paragraph{}  
-Các thử nghiệm chức năng trên khẳng định rằng từng thành phần của hệ thống đã hoạt động đúng theo hướng mong muốn.
+\textit{Kết luận:} Kênh Telegram đã hoạt động ổn định, đóng vai trò cầu nối giữa hệ thống phát hiện té ngã và người dùng cuối. Việc kết hợp cả hai nguồn cảnh báo (thiết bị phần cứng và module xử lý hình ảnh) giúp tăng độ tin cậy và giảm thiểu khả năng bỏ sót sự kiện.
