@@ -72,9 +72,9 @@ I (175241) EVENT_HANDLER: Alert sequence completed.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{figures/module2_real_log.jpg}
+    \includegraphics[width=0.8\textwidth]{figures/module1_real_log.jpg}
     \caption{Log thực tế của module cảm biến đeo khi phát hiện té ngã và kích hoạt cảnh báo.}
-    \label{fig:module2_real_log}
+    \label{fig:module1_real_log}
 \end{figure}
 
 \textit{Kết luận:} Hệ thống phát hiện và xử lý cảnh báo té ngã thành công, kích hoạt đồng thời nhiều kênh cảnh báo.
@@ -82,6 +82,13 @@ I (175241) EVENT_HANDLER: Alert sequence completed.
 \subsection{Module Camera và truyền hình ảnh}
 Module ESP32-CAM được kiểm tra để xác nhận khả năng kết nối Wi-Fi và phát luồng hình ảnh qua HTTP.  
 Kết quả log cho thấy camera được nhận diện đúng (OV5640), server HTTP đã khởi động và tốc độ khung hình trung bình dao động trong khoảng 3.5–5 FPS.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/module2_real_log.jpg}
+    \caption{Log thực tế của module esp-camera.}
+    \label{fig:module2_real_log}
+\end{figure}
+
 
 \begin{minted}[fontsize=\footnotesize,breaklines]{text}
 I (8936) esp32cam: Got IP: 10.110.87.85
@@ -93,7 +100,7 @@ I (40006) esp32cam: Frames sent: 146, FPS: 4.46
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{figures/module1_stream_example.jpg}
+    \includegraphics[width=0.8\textwidth]{figures/module2_stream_example.jpg}
     \caption{Luồng hình ảnh phát từ module ESP32-CAM qua HTTP.}
     \label{fig:camera_stream}
 \end{figure}
@@ -199,21 +206,6 @@ Các bảng dưới đây trình bày dữ liệu đã ghi nhận.
 
 \textit{Kết luận:} Dữ liệu cảm biến cho thấy sự khác biệt rõ rệt giữa hai trạng thái. Đặc biệt, \textbf{Accel Mag} và \textbf{Gyro Mag} là chỉ báo hiệu quả để phát hiện té ngã, cung cấp cơ sở thực nghiệm cho việc tinh chỉnh ngưỡng phát hiện và giảm thiểu cảnh báo sai.
 
-Bên cạnh dữ liệu cảm biến, hệ thống còn khai thác kênh xử lý hình ảnh độc lập để tăng cường khả năng phát hiện té ngã. Phần tiếp theo trình bày kết quả kiểm thử module xử lý hình ảnh Python.
-
-\subsection{Module nhận diện hình ảnh (Python)}
-\label{sec:python_vision}
-
-Module máy chủ xử lý được xây dựng bằng Python nhằm thực hiện các chức năng: thu nhận luồng dữ liệu từ camera, triển khai mô hình học sâu để dựng khung xương (skeleton), đồng thời tích hợp với hệ thống gửi cảnh báo qua MQTT và Telegram. Ngoài ra, module còn ghi log vào cơ sở dữ liệu SQLite và duy trì kết nối với Asterisk Management Interface (AMI).  
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.8\textwidth]{figures/python_runing_log.png}
-    \caption{Log thực nghiệm: Python xử lý ảnh và điều phối các tác vụ.}
-    \label{fig:python_runing_log}
-\end{figure}
-
-\textbf{Kết luận:} Module Python đã hoạt động đúng chức năng, bảo đảm khả năng thu nhận dữ liệu camera, chạy nhận diện hình ảnh, đồng bộ dữ liệu qua MQTT, và kích hoạt các kênh cảnh báo. Hệ thống tuy có hạn chế về hỗ trợ CUDA (do phiên bản driver cũ) nhưng không ảnh hưởng đến quá trình thực thi trên CPU.
 
 \subsection{Thử nghiệm Asterisk Call/SMS Gateway}
 \label{sec:asterisk_test}
