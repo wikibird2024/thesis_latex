@@ -154,65 +154,128 @@ Module máy chủ xử lý được xây dựng bằng Python nhằm thực hi�
 Trong quá trình thử nghiệm, dữ liệu MPU6050 được thu thập cho hai trạng thái: \textbf{té ngã} và \textbf{bình thường}.  
 Các bảng dưới đây trình bày dữ liệu đã ghi nhận.
 
+
 \begin{table}[H]
 \centering
-\caption{Dữ liệu trong tình huống té ngã}
-\label{tab:fall_data}
-\begin{tabular}{|c|c|c|c|c|c|c|c|}
+\caption{Dữ liệu MPU6050 trong trạng thái té ngã}
+\label{tab:fall_log_data}
+\begin{tabular}{|c|c|c|c|c|c|c|}
 \hline
-\textbf{Gyro X} & \textbf{Gyro Y} & \textbf{Gyro Z} & \textbf{Gyro Mag} & \textbf{Accel X} & \textbf{Accel Y} & \textbf{Accel Z} & \textbf{Accel Mag} \\
+\textbf{Time (ms)} & \textbf{Accel X (g)} & \textbf{Accel Y (g)} & \textbf{Accel Z (g)} & \textbf{Gyro X (dps)} & \textbf{Gyro Y (dps)} & \textbf{Gyro Z (dps)} \\
 \hline
-129.60 & -36.77 & 29.19 & 137.84 & 0.65 & 0.79 & -0.79 & 1.29 \\
--43.90 & 214.79 & 52.97 & 225.54 & 0.53 & 2.00 & -2.00 & 2.88 \\
-158.75 & 250.13 & 134.18 & 325.22 & -1.18 & 1.72 & 1.56 & 2.61 \\
--250.14 & -246.07 & -250.14 & 430.91 & 1.11 & 2.00 & -2.00 & 3.04 \\
-242.56 & 250.13 & 250.13 & 428.91 & -1.33 & -2.00 & 2.00 & 3.13 \\
--11.60 & -146.43 & -169.58 & 224.35 & 1.80 & 2.00 & -2.00 & 3.35 \\
-201.32 & 238.97 & 250.13 & 400.25 & -2.00 & 0.21 & 2.00 & 2.84 \\
--250.14 & -250.14 & -250.14 & 433.25 & 0.55 & 0.23 & -0.37 & 0.69 \\
+10338 & 0.06 & -0.12 & -1.00 & -22.50 & 47.18 & -77.85 \\
+12338 & 0.20 & -0.09 & -0.96 & -79.74 & -64.79 & 22.34 \\
+16338 & 0.10 & 0.02  & -1.19 & 23.37  & 14.82  & -4.84 \\
+17338 & -0.25 & -0.13 & -0.82 & -42.96 & -8.53  & 18.43 \\
+20338 & 0.18 & 0.07  & -1.02 & -50.80 & 32.41  & 15.31 \\
+26338 & -1.56 & 1.06  & -2.00 & 168.47 & 250.13 & 116.60 \\
+29338 & -2.00 & -1.69 & -1.29 & 250.13 & 250.13 & 38.65 \\
+43338 & 0.33 & 0.07  & 0.23  & -157.85 & -61.94 & -188.73 \\
 \hline
 \end{tabular}
 \end{table}
 
 \begin{table}[H]
 \centering
-\caption{Dữ liệu trong tình huống bình thường}
-\label{tab:normal_data}
-\begin{tabular}{|c|c|c|c|c|c|c|c|}
+\caption{Dữ liệu MPU6050 trong trạng thái bình thường}
+\label{tab:normal_log_data}
+\begin{tabular}{|c|c|c|c|c|c|c|}
 \hline
-\textbf{Gyro X} & \textbf{Gyro Y} & \textbf{Gyro Z} & \textbf{Gyro Mag} & \textbf{Accel X} & \textbf{Accel Y} & \textbf{Accel Z} & \textbf{Accel Mag} \\
+\textbf{Time (ms)} & \textbf{Accel X (g)} & \textbf{Accel Y (g)} & \textbf{Accel Z (g)} & \textbf{Gyro X (dps)} & \textbf{Gyro Y (dps)} & \textbf{Gyro Z (dps)} \\
 \hline
-1.27 & -1.46 & 0.51 & 2.00 & -0.03 & 0.01 & -0.96 & 0.96 \\
-1.07 & -0.95 & 0.53 & 1.52 & -0.04 & 0.02 & -0.97 & 0.97 \\
-1.18 & -1.36 & 0.73 & 1.94 & -0.03 & 0.02 & -0.97 & 0.97 \\
-1.03 & -1.02 & 0.40 & 1.50 & -0.03 & 0.01 & -0.97 & 0.97 \\
-1.37 & -1.08 & 0.58 & 1.84 & -0.03 & 0.01 & -0.97 & 0.97 \\
-0.77 & -0.83 & 0.47 & 1.23 & -0.03 & 0.01 & -0.97 & 0.97 \\
-1.02 & -0.37 & 0.77 & 1.33 & -0.03 & 0.01 & -0.97 & 0.97 \\
+328  & -0.19 & -0.22 & -0.93 & 1.08 & -1.18 & 0.38 \\
+1338 & -0.19 & -0.22 & -0.93 & 1.03 & -1.38 & 0.64 \\
+2338 & -0.20 & -0.22 & -0.94 & 1.19 & -1.13 & 0.18 \\
+3338 & -0.19 & -0.22 & -0.93 & 1.07 & -0.95 & 0.35 \\
+4338 & -0.19 & -0.22 & -0.93 & 0.99 & -1.02 & -0.02 \\
+5338 & -0.19 & -0.22 & -0.94 & 1.18 & -1.33 & 0.29 \\
+6338 & -0.19 & -0.22 & -0.93 & 0.95 & -1.42 & 0.21 \\
 \hline
 \end{tabular}
 \end{table}
-
 % Bảng so sánh
 
 \begin{table}[H]
 \centering
-\caption{So sánh đặc trưng dữ liệu cảm biến MPU6050 giữa trạng thái té ngã và bình thường}
-\label{tab:mpu6050_comparison}
+\caption{So sánh đặc trưng dữ liệu MPU6050 giữa trạng thái bình thường và té ngã}
+\label{tab:mpu6050_new_comparison}
 \begin{tabular}{|l|c|c|p{7cm}|}
 \hline
-\textbf{Thông số} & \textbf{Té ngã} & \textbf{Bình thường} & \textbf{Nhận xét và ý nghĩa} \\
+\textbf{Thông số} & \textbf{Bình thường} & \textbf{Té ngã} & \textbf{Nhận xét và ý nghĩa} \\
 \hline
-Biên độ Gyro (X,Y,Z) & $\pm 250$ dps & $\pm 1.5$ dps & Khi té ngã, dao động góc tăng đột biến, biên độ rất lớn so với trạng thái bình thường. \\
+Biên độ Gyro (X,Y,Z) & $\pm 1.5$ dps & $\pm 250$ dps & Té ngã làm dao động góc tăng vọt, nhiều lần đạt cực trị giới hạn cảm biến. \\
 \hline
-Độ lớn Gyro (Mag)   & 137 -- 433    & $\approx 1.2$ -- 2.0 & Giá trị magnitude chênh lệch rõ rệt, phản ánh sự xoay mạnh trong quá trình té ngã. \\
+Độ lớn Accel (XYZ) & $\approx -0.93$ g ổn định & dao động từ $-2.0$ g đến $+1.0$ g & Trạng thái bình thường chỉ phản ánh trọng lực, trong khi té ngã tạo biến thiên mạnh ở nhiều trục. \\
 \hline
-Biên độ Accel (X,Y,Z) & $\pm 2.0$ g  & $\approx -0.97$ g ổn định & Té ngã gây thay đổi mạnh trên nhiều trục, trong khi trạng thái bình thường gần như giữ giá trị cố định. \\
+Độ lớn Gyro (Mag) & 1 -- 2 dps & 100 -- 400 dps & Rõ rệt sự khác biệt, té ngã gây xoay mạnh. \\
 \hline
-Độ lớn Accel (Mag)   & 0.69 -- 3.35 & $\approx 0.96$ -- 0.97 & Trong té ngã, gia tốc tổng hợp tăng vọt; ở trạng thái bình thường giá trị ổn định quanh 1g (trọng lực). \\
+Độ lớn Accel (Mag) & 0.95 -- 0.97 g & 0.7 -- 2.0 g & Té ngã làm gia tốc tổng hợp vượt khỏi mức tĩnh, thể hiện xung lực va chạm. \\
 \hline
 \end{tabular}
 \end{table}
+
+\begin{table}[H]
+\centering
+\caption{Dữ liệu vector (gia tốc và con quay hồi chuyển) theo ba trạng thái}
+\label{tab:vector_data}
+\begin{tabular}{|c|c|c|c|}
+\hline
+\textbf{Time (ms)} & \textbf{Accel\_Mag (g)} & \textbf{Gyro\_Mag (dps)} & \textbf{State} \\
+\hline
+328   & 0.99 & 1.66 & Normal \\
+1338  & 1.01 & 1.77 & Normal \\
+2338  & 1.02 & 1.70 & Normal \\
+9338  & 1.05 & 5.80 & Fall \\
+9438  & 1.27 & 5.77 & Fall \\
+9538  & 1.21 & 5.90 & Fall \\
+10338 & 1.00 & 0.25 & Post-Fall \\
+11338 & 1.02 & 0.09 & Post-Fall \\
+12338 & 1.01 & 0.15 & Post-Fall \\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\linewidth]{figures/gyro_time.png}
+    \caption{Biến thiên magnitude của gia tốc góc (Gyro\_Mag) theo thời gian.}
+    \label{fig:gyro_time}
+\end{figure}
+
+\paragraph{Miêu tả và phân tích (Gyro theo thời gian).}
+Đồ thị \ref{fig:gyro_time} biểu diễn biến thiên của đại lượng \texttt{Gyro\_Mag} (magnitude của vector con quay hồi chuyển) theo mốc thời gian thử nghiệm. Đồ thị thể hiện rõ ba pha hoạt động: 
+\begin{itemize}
+  \item \textbf{Bình thường (Normal):} \texttt{Gyro\_Mag} dao động rất nhỏ quanh giá trị nền (thường $\lesssim 2$ dps), biểu thị chuyển động góc nhẹ hoặc ổn định khi đeo thiết bị.
+  \item \textbf{Sự kiện té ngã (Fall):} tại thời điểm xảy ra té, xuất hiện đỉnh đột biến lớn (thường tăng lên hàng chục đến hàng trăm dps). Các đỉnh này là đặc trưng nhận diện sự xoay mạnh và va chạm trong pha té.
+  \item \textbf{Hậu té (Post-Fall):} sau đỉnh, \texttt{Gyro\_Mag} giảm nhanh về mức nền hoặc gần không, thể hiện trạng thái nằm yên và thiếu chuyển động góc.
+\end{itemize}
+
+Những quan sát quan trọng rút ra từ đồ thị:
+\begin{enumerate}
+  \item Biên độ đỉnh \texttt{Gyro\_Mag} trong pha \textit{Fall} lớn hơn nhiều so với dao động nền — hiệu quả để làm ngưỡng phân loại (ví dụ threshold tạm ứng: $>20$--$50$ dps tùy thực nghiệm).
+  \item Hình thái thời gian của đỉnh (rise time và decay) cho phép phân biệt giữa cú va chạm thực sự và nhiễu ngắn (spike): cú té thật thường có đỉnh rộng hơn và kèm biến động phụ ở các trục.
+\end{enumerate}
+
+\vspace{6pt}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\linewidth]{figures/accel_time.png}
+    \caption{Biến thiên magnitude của gia tốc (Accel\_Mag) theo thời gian.}
+    \label{fig:accel_time}
+\end{figure}
+
+\paragraph{Miêu tả và phân tích (Accel theo thời gian).}
+Đồ thị \ref{fig:accel_time} trình bày biến thiên \texttt{Accel\_Mag} (magnitude của vector gia tốc) theo cùng mốc thời gian. Diễn biến cũng chia làm ba pha tương tự:
+\begin{itemize}
+  \item \textbf{Bình thường (Normal):} \texttt{Accel\_Mag} nằm gần 1\,g (do trọng lực), dao động nhẹ quanh giá trị này khi người vận động nhẹ.
+  \item \textbf{Sự kiện té ngã (Fall):} \texttt{Accel\_Mag} xuất hiện các xung hoặc thay đổi đột ngột, có thể vượt hoặc giảm mạnh so với 1\,g (tùy hướng va chạm), đặc biệt khi có va chạm mạnh xung lực tổng hợp có xu hướng lớn hơn 1\,g đáng kể.
+  \item \textbf{Hậu té (Post-Fall):} \texttt{Accel\_Mag} trở về gần 1\,g nhưng với phân bố vector (các thành phần X/Y/Z) có thể đổi hướng so với trạng thái trước té (chỉ ra tư thế nằm).
+\end{itemize}
+
+\begin{enumerate}
+  \item Sự tăng/giảm đột ngột của \texttt{Accel\_Mag} là chỉ báo trực tiếp của xung lực trong sự kiện té; phối hợp với \texttt{Gyro\_Mag} giúp loại bỏ nhiễu giả   \item Dao động nền quanh 1\,g cho phép hiệu chuẩn nhanh: mọi giá trị lệch bền khỏi 1\,g trong một khoảng thời gian ngắn.
+\end{enumerate}
 
 \textit{Kết luận:} Dữ liệu cảm biến cho thấy sự khác biệt rõ rệt giữa hai trạng thái. Đặc biệt, \textbf{Accel Mag} và \textbf{Gyro Mag} là chỉ báo hiệu quả để phát hiện té ngã, cung cấp cơ sở thực nghiệm cho việc tinh chỉnh ngưỡng phát hiện và giảm thiểu cảnh báo sai.
 

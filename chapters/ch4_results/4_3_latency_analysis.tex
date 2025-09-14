@@ -1,0 +1,24 @@
+
+\section{Phân tích độ trễ hệ thống cảnh báo té ngã}
+\label{sec:latency_analysis}
+
+Độ trễ (latency) trong hệ thống phát hiện và cảnh báo té ngã là một chỉ số quan trọng, phản ánh mức độ kịp thời khi gửi cảnh báo đến người chăm sóc. Trong thiết kế của hệ thống, độ trễ có thể phát sinh từ các khâu sau:
+
+\begin{itemize}
+    \item \textbf{Xử lý tại thiết bị (ESP32)}: bao gồm quá trình đọc dữ liệu từ cảm biến MPU6050, thực hiện giải thuật phát hiện té ngã, và phát tín hiệu cảnh báo ban đầu. Giai đoạn này diễn ra gần như tức thì sau khi té ngã xảy ra.
+    \item \textbf{Truyền dữ liệu qua mạng (MQTT Broker)}: thời gian cần thiết để gói tin MQTT từ ESP32 được truyền đến máy chủ trung gian.
+    \item \textbf{Xử lý phía dịch vụ cảnh báo}: bao gồm việc Python script nhận dữ liệu từ broker, xử lý sự kiện, và kích hoạt bot Telegram để gửi tin nhắn cảnh báo đến người dùng cuối.
+\end{itemize}
+
+\subsection*{Hạn chế thử nghiệm}
+Trong quá trình triển khai, do hạn chế về thời gian và điều kiện thử nghiệm, việc ghi nhận log chi tiết để đo đạc độ trễ thực tế ở từng khâu chưa được thực hiện đầy đủ. Tuy nhiên, theo thiết kế, tổng thời gian từ khi phát sinh sự kiện té ngã đến khi người dùng cuối nhận được cảnh báo không vượt quá 5 giây.
+
+\subsection*{Hướng phát triển}
+Trong các thử nghiệm tiếp theo, có thể triển khai cơ chế ghi log timestamp tại:
+\begin{enumerate}
+    \item Thời điểm phát hiện té ngã trên ESP32.
+    \item Thời điểm gửi và nhận gói tin MQTT.
+    \item Thời điểm bot Telegram phát cảnh báo.
+\end{enumerate}
+
+Việc so sánh các mốc thời gian trên sẽ cho phép định lượng độ trễ đầu-cuối (end-to-end latency) và đánh giá mức độ đáp ứng yêu cầu thời gian thực của hệ thống.

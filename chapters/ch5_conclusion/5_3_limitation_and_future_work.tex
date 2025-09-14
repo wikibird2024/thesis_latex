@@ -1,0 +1,25 @@
+
+\section{Hạn chế và Hướng phát triển}
+\label{sec:limitation_future_work}
+
+Mặc dù hệ thống đã chứng minh được tính khả thi, song nghiên cứu vẫn tồn tại một số hạn chế nhất định:
+
+\begin{itemize}
+    \item \textbf{Quy mô thử nghiệm còn giới hạn}: Hệ thống mới dừng ở mức kiểm chứng nguyên mẫu, chưa triển khai trên phạm vi rộng hoặc trong điều kiện thực tế đa dạng.
+    \item \textbf{Số lượng thiết bị cảm biến và kênh tiếp nhận thông tin còn hạn chế}: Hệ thống chưa đủ để kiểm tra tính ổn định trong môi trường nhiều người dùng.
+    \item \textbf{Thuật toán nhận diện té ngã chưa hoàn toàn ổn định}: Vẫn tồn tại khả năng xảy ra cảnh báo sai (\textit{false alarm}) hoặc bỏ sót (\textit{missed detection}).
+    \item \textbf{Thiết bị đeo chưa được tối ưu}: Kích thước còn cồng kềnh, thiếu các tính năng tiện ích quan trọng như nút bấm báo khẩn cấp.
+    \item \textbf{Kết nối mạng 4G chưa hoạt động hoàn chỉnh}: Mặc dù đã cấu hình được các tham số mạng nhưng chức năng truyền dữ liệu qua mạng di động vẫn chưa khai thác được.
+    \item \textbf{Định vị GPS còn hạn chế}: Thiết bị có thể lấy vị trí ngoài trời, nhưng trong quá trình kích hoạt cảnh báo thực tế chưa thu thập và gửi được vị trí thành công.
+\end{itemize}
+
+Để khắc phục các hạn chế nêu trên và nâng cao khả năng ứng dụng, một số hướng phát triển được đề xuất như sau:
+
+\begin{enumerate}
+    \item \textbf{Mở rộng quy mô thử nghiệm}: Triển khai hệ thống cho nhiều người dùng, trong các bối cảnh sinh hoạt và điều kiện môi trường khác nhau để đánh giá độ tin cậy.
+    \item \textbf{Cải thiện thuật toán phát hiện té ngã}: Ứng dụng các kỹ thuật học máy (\textit{machine learning}) hoặc học sâu (\textit{deep learning}) nhằm tăng độ chính xác, giảm cảnh báo sai và bỏ sót.
+    \item \textbf{Tối ưu thiết bị đeo}: Thiết kế mạch phần cứng nhỏ gọn hơn, nâng cao tính tiện dụng, bổ sung nút bấm khẩn cấp hoặc cảm biến bổ trợ.
+    \item \textbf{Hoàn thiện kết nối truyền thông}: Tích hợp đầy đủ chức năng kết nối 4G để đảm bảo truyền dữ liệu theo thời gian thực mà không phụ thuộc vào Wi-Fi.
+    \item \textbf{Nâng cao chức năng định vị}: Tối ưu việc lấy dữ liệu GPS trong cả điều kiện ngoài trời và trong nhà (kết hợp thêm định vị Wi-Fi hoặc công nghệ khác).
+    \item \textbf{Tích hợp nền tảng IoT}: Kết nối với hệ thống giám sát từ xa, ứng dụng di động hoặc nền tảng đám mây để quản lý, lưu trữ và phân tích dữ liệu dài hạn.
+\end{enumerate}

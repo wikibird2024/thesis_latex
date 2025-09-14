@@ -1,0 +1,16 @@
+\section{Tóm tắt kết quả nghiên cứu}
+\label{sec:summary}
+
+Phần này tóm lược các kết quả chính đã đạt được trong luận văn. 
+Hệ thống phát hiện và cảnh báo té ngã dựa trên công nghệ IoT đã được xây dựng và kiểm chứng thực nghiệm. 
+Cụ thể, luận văn đã hoàn thành các nội dung sau: 
+
+\begin{itemize}
+    \item \textbf{Xây dựng kiến trúc hệ thống} bao gồm cả phần cứng (ESP32, MPU6050, mô-đun SIM4G--GPS, còi cảnh báo) và phần mềm (FreeRTOS, giao tiếp UART/I\textsuperscript{2}C, MQTT, dịch vụ cảnh báo qua Telegram).
+    \item \textbf{Phát triển thuật toán phát hiện té ngã} dựa trên dữ liệu cảm biến gia tốc và con quay hồi chuyển, tích hợp trong ESP32 để xử lý theo thời gian thực.
+    \item \textbf{Triển khai cơ chế cảnh báo} thông qua buzzer, LED, tin nhắn SMS và dịch vụ MQTT--Telegram, SIP giúp thông tin đến người giám sát kịp thời.
+    \item \textbf{Thực nghiệm và kiểm chứng} chức năng hệ thống trong môi trường thực tế, đánh giá tính khả thi và độ tin cậy của giải pháp.
+\end{itemize}
+
+Các kết quả này cho thấy hệ thống được đề xuất có tính ứng dụng cao trong việc giám sát sức khỏe từ xa, đặc biệt đối với người cao tuổi và bệnh nhân cần theo dõi an toàn.
+
