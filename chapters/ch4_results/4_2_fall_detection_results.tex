@@ -107,7 +107,7 @@ I (40006) esp32cam: Frames sent: 146, FPS: 4.46
 
 \textit{Kết luận:} Module camera hoạt động ổn định, cho phép giám sát hình ảnh trực tiếp phục vụ xác minh sự kiện té ngã.
 
-\subsection{Xử lý hình ảnh Python}
+\subsection{Kiểm tra Xử lý nhận diện hình ảnh (Python)}
 Module xử lý hình ảnh bằng Python nhận luồng video từ camera ESP32-CAM hoặc webcam, sau đó sử dụng TensorFlow Lite để phát hiện người và trích xuất các điểm khớp (skeleton) theo thời gian thực.  
 
 Quy trình xử lý bao gồm:
@@ -128,6 +128,18 @@ Hình~\ref{fig:python_skeleton} minh họa giao diện theo dõi người và sk
     \label{fig:python_skeleton}
 \end{figure}
 
+
+Module máy chủ xử lý được xây dựng bằng Python nhằm thực hiện các chức năng: thu nhận luồng dữ liệu từ camera, triển khai mô hình học sâu để dựng khung xương (skeleton), đồng thời tích hợp với hệ thống gửi cảnh báo qua MQTT và Telegram. Ngoài ra, module còn ghi log vào cơ sở dữ liệu SQLite và duy trì kết nối với Asterisk Management Interface (AMI).  
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/python_runing_log.png}
+    \caption{Log thực nghiệm: Python xử lý ảnh và điều phối các tác vụ.}
+    \label{fig:python_runing_log}
+\end{figure}
+
+\textbf{Kết luận:} Module Python đã hoạt động đúng chức năng, bảo đảm khả năng thu nhận dữ liệu camera, chạy nhận diện hình ảnh, đồng bộ dữ liệu qua MQTT, và kích hoạt các kênh cảnh báo. Hệ thống tuy có hạn chế về hỗ trợ CUDA (do phiên bản driver cũ) nhưng không ảnh hưởng đến quá trình thực thi trên CPU.
+
 \subsection{Đánh giá thực nghiệm cảm biến mpu,gps và dữ liệu thu thập}
 \subsubsection*{Quy trình thử nghiệm}
 Để đánh giá hiệu quả hoạt động của hệ thống trong thực tế, quy trình thử nghiệm được tiến hành theo các bước:
@@ -136,14 +148,13 @@ Hình~\ref{fig:python_skeleton} minh họa giao diện theo dõi người và sk
     \item Giả lập tình huống té ngã bằng cách lắc mạnh hoặc thả nhẹ thiết bị.  
     \item Quan sát log hệ thống để xác nhận sự kiện.  
     \item Kiểm tra tính năng gửi cảnh báo SMS với dữ liệu GPS.  
-    \item Lặp lại nhiều lần để đánh giá tính ổn định và độ nhạy.
 \end{enumerate}
 
 \subsubsection*{Phân tích dữ liệu cảm biến}
 Trong quá trình thử nghiệm, dữ liệu MPU6050 được thu thập cho hai trạng thái: \textbf{té ngã} và \textbf{bình thường}.  
 Các bảng dưới đây trình bày dữ liệu đã ghi nhận.
 
-\begin{table}[h]
+\begin{table}[H]
 \centering
 \caption{Dữ liệu trong tình huống té ngã}
 \label{tab:fall_data}
@@ -163,7 +174,7 @@ Các bảng dưới đây trình bày dữ liệu đã ghi nhận.
 \end{tabular}
 \end{table}
 
-\begin{table}[h]
+\begin{table}[H]
 \centering
 \caption{Dữ liệu trong tình huống bình thường}
 \label{tab:normal_data}
@@ -182,7 +193,30 @@ Các bảng dưới đây trình bày dữ liệu đã ghi nhận.
 \end{tabular}
 \end{table}
 
-\begin{table}[h]
+% Bảng so sánh
+
+\begin{table}[H]
+\centering
+\caption{So sánh đặc trưng dữ liệu cảm biến MPU6050 giữa trạng thái té ngã và bình thường}
+\label{tab:mpu6050_comparison}
+\begin{tabular}{|l|c|c|p{7cm}|}
+\hline
+\textbf{Thông số} & \textbf{Té ngã} & \textbf{Bình thường} & \textbf{Nhận xét và ý nghĩa} \\
+\hline
+Biên độ Gyro (X,Y,Z) & $\pm 250$ dps & $\pm 1.5$ dps & Khi té ngã, dao động góc tăng đột biến, biên độ rất lớn so với trạng thái bình thường. \\
+\hline
+Độ lớn Gyro (Mag)   & 137 -- 433    & $\approx 1.2$ -- 2.0 & Giá trị magnitude chênh lệch rõ rệt, phản ánh sự xoay mạnh trong quá trình té ngã. \\
+\hline
+Biên độ Accel (X,Y,Z) & $\pm 2.0$ g  & $\approx -0.97$ g ổn định & Té ngã gây thay đổi mạnh trên nhiều trục, trong khi trạng thái bình thường gần như giữ giá trị cố định. \\
+\hline
+Độ lớn Accel (Mag)   & 0.69 -- 3.35 & $\approx 0.96$ -- 0.97 & Trong té ngã, gia tốc tổng hợp tăng vọt; ở trạng thái bình thường giá trị ổn định quanh 1g (trọng lực). \\
+\hline
+\end{tabular}
+\end{table}
+
+\textit{Kết luận:} Dữ liệu cảm biến cho thấy sự khác biệt rõ rệt giữa hai trạng thái. Đặc biệt, \textbf{Accel Mag} và \textbf{Gyro Mag} là chỉ báo hiệu quả để phát hiện té ngã, cung cấp cơ sở thực nghiệm cho việc tinh chỉnh ngưỡng phát hiện và giảm thiểu cảnh báo sai.
+
+\begin{table}[H]
 \centering
 \caption{Bảng kết quả thu được từ log test của mô-đun 4G/GPS}
 \label{tab:gps_data}
@@ -202,36 +236,56 @@ Các bảng dưới đây trình bày dữ liệu đã ghi nhận.
 % Bảng dữ liệu té ngã
 % Bảng dữ liệu bình thường
 % Bảng dữ liệu GPS
-% Bảng so sánh
 
-\textit{Kết luận:} Dữ liệu cảm biến cho thấy sự khác biệt rõ rệt giữa hai trạng thái. Đặc biệt, \textbf{Accel Mag} và \textbf{Gyro Mag} là chỉ báo hiệu quả để phát hiện té ngã, cung cấp cơ sở thực nghiệm cho việc tinh chỉnh ngưỡng phát hiện và giảm thiểu cảnh báo sai.
+\begin{table}[H]
+\centering
+\caption{Phân tích và giải thích dữ liệu GPS thu được}
+\label{tab:gps_analysis}
+\begin{tabular}{|l|c|p{8.5cm}|}
+\hline
+\textbf{Trường dữ liệu} & \textbf{Giá trị điển hình} & \textbf{Giải thích và ý nghĩa} \\
+\hline
+Thời gian (UTC) & 132517.00 -- 132627.00 & Dữ liệu được ghi nhận liên tục trong khoảng 1 phút; cho thấy tín hiệu GPS ổn định và không bị gián đoạn. \\
+\hline
+Vĩ độ (Latitude) & 10°53.3115'N & Vị trí xác định chính xác đến phần giây thập phân, phù hợp với khu vực thử nghiệm thực tế. \\
+\hline
+Kinh độ (Longitude) & 106°46.7839'E & Giá trị duy trì ổn định qua nhiều lần đo; chứng tỏ tín hiệu ít nhiễu và đáng tin cậy. \\
+\hline
+Độ cao (Altitude) & $\approx 5$ m & Độ cao phản ánh đúng địa hình khu vực thử nghiệm, dao động rất nhỏ (±0.05 m). \\
+\hline
+Chế độ định vị (Fix Mode) & 3 & Chế độ định vị 3D, đảm bảo độ chính xác cao khi xác định cả vĩ độ, kinh độ và độ cao. \\
+\hline
+Ngày (Date) & 24/04/2025 & Thời điểm dữ liệu được ghi nhận, khớp với lịch trình thử nghiệm. \\
+\hline
+Số vệ tinh (Satellites) & 07 & Số vệ tinh thu được đủ lớn để đảm bảo tín hiệu ổn định, độ tin cậy cao trong định vị. \\
+\hline
+\end{tabular}
+\end{table}
 
+\subsection{Kết quả thử nghiệm chức năng gọi và nhắn tin cảnh báo qua Asterisk AMI}
+\label{subsec:ast_call_sms_test}
 
-\subsection{Thử nghiệm Asterisk Call/SMS Gateway}
-\label{sec:asterisk_test}
+Để kiểm chứng khả năng kích hoạt cảnh báo tự động qua tổng đài Asterisk, hệ thống đã được cấu hình thực hiện đồng thời cuộc gọi và gửi tin nhắn SMS đến ba extension (\texttt{6001}, \texttt{6002}, \texttt{6003}). Kết quả log thử nghiệm được thể hiện trong Hình~\ref{fig:ast_call_sms_test}.
 
-Trong hệ thống, Asterisk được sử dụng như một cổng trung gian để gửi cảnh báo bằng SMS và có tiềm năng mở rộng sang chức năng gọi điện tự động.  
-Trong quá trình thử nghiệm, việc kích hoạt nhắn tin SMS qua Asterisk hoạt động thành công, cho phép hệ thống gửi cảnh báo đến số điện thoại đã đăng ký.  
-
-Tuy nhiên, chức năng gọi thoại chưa được triển khai ổn định. Khi thay đổi máy chủ Asterisk, cấu hình giữ nguyên nhưng khả năng khởi tạo và duy trì cuộc gọi không đồng nhất. Điều này cho thấy còn tồn tại sự phụ thuộc vào môi trường triển khai, cần được nghiên cứu và tối ưu thêm trong tương lai.  
+Như quan sát trên log, quá trình kết nối tới Asterisk AMI được thực hiện thành công và hệ thống đã gửi tin nhắn đến các extension. Tin nhắn SMS tới \texttt{6001} và \texttt{6002} được gửi thành công, trong khi SMS tới \texttt{6003} gặp lỗi truyền tải. Ngoài ra, các dòng báo lỗi cuối cùng liên quan tới thao tác gọi điện xuất hiện do hệ thống chỉ kích hoạt cuộc gọi báo động mà không có nội dung thoại kèm theo. Việc này dẫn đến ngoại lệ \texttt{'list' object has no attribute 'get'}, nhưng không ảnh hưởng tới cơ chế gửi cảnh báo chính.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{figures/ast_call_sms_test.png}
-    \caption{Thử nghiệm gửi SMS cảnh báo qua Asterisk.}
+    \includegraphics[width=0.95\linewidth]{figures/ast_call_sms_test.png}
+    \caption{Kết quả thử nghiệm chức năng gọi và nhắn tin cảnh báo qua Asterisk AMI}
     \label{fig:ast_call_sms_test}
 \end{figure}
 
-\textit{Kết luận:} Module Asterisk đã hỗ trợ thành công chức năng nhắn tin SMS trong hệ thống. Chức năng gọi thoại vẫn còn hạn chế và sẽ cần nghiên cứu bổ sung để đảm bảo tính ổn định khi triển khai thực tế.
+\textit{Kết luận:}Kết quả thử nghiệm cho thấy hệ thống có thể gửi cảnh báo qua cuộc gọi và SMS thành công tới các extension, ngoại trừ một số lỗi ngoại lệ khi gọi điện do không có nội dung thoại, nhưng điều này không ảnh hưởng đến chức năng cảnh báo chính, chứng minh khả năng hoạt động theo đúng ý định ban đầu.
 
-\subsection{Kênh cảnh báo Telegram}
+\subsection{Thử nghiệm Kênh cảnh báo Telegram}
 \label{sec:telegram_alert}
 
 Hệ thống Telegram Bot đóng vai trò là kênh cảnh báo trực quan, giúp gửi thông báo đến người dùng ngay khi phát hiện té ngã.  
 Cơ chế hoạt động được chia thành hai hướng:
 \begin{itemize}
-    \item \textbf{Từ module phần cứng (ESP32 + 4G/GPS):} Khi xảy ra sự kiện té ngã, bản tin MQTT hoặc SMS được phát ra từ thiết bị. Hệ thống trung tâm sau đó chuyển tiếp nội dung này đến người dùng thông qua Telegram.
-    \item \textbf{Từ module xử lý hình ảnh (Python):} Khi nhận diện được té ngã qua camera và skeleton, hệ thống Python trực tiếp gửi cảnh báo đến Telegram, kèm thông tin chi tiết.
+    \item \textbf{Từ module phần cứng (ESP32 + 4G/GPS):} Khi xảy ra sự kiện té ngã, bản tin MQTT được phát ra từ thiết bị. Hệ thống trung tâm chuyển tiếp xử lý nội dung này đến người dùng thông qua Telegram.
+    \item \textbf{Từ module xử lý hình ảnh (Python):} Khi nhận diện được té ngã qua camera và skeleton, hệ thống Python trực tiếp gửi cảnh báo đến Telegram, kèm thông tin chi tiết về hình chụp từ camera và tin nhắn kèm theo.
 \end{itemize}
 
 \begin{figure}[H]

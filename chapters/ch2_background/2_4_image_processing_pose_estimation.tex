@@ -21,7 +21,6 @@ trong đó $(x_i, y_i, z_i)$ là tọa độ không gian (với $z_i$ là tọa 
     \item \textbf{Bottom-up Approach:} Đầu tiên phát hiện tất cả các keypoints, sau đó nhóm chúng lại để tạo thành tư thế của từng người. (VD: OpenPose).
 \end{itemize}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{MediaPipe Pose Estimation cho Ứng dụng Thời gian thực}
 
 MediaPipe Pose, dựa trên mô hình BlazePose của Google, được tối ưu hóa để cung cấp giải pháp HPE 3D nhanh và chính xác trong môi trường thời gian thực trên nhiều nền tảng (Mobile, Web, Desktop).
@@ -93,16 +92,4 @@ Nếu Stage 1 là True, kiểm tra các đặc trưng tư thế (AR, $\theta_{\t
 \paragraph{Stage 3: Kiểm tra Bất động sau té ngã}
 Sau khi té ngã được xác nhận (Stage 2 là True), hệ thống theo dõi mức độ chuyển động trong một khoảng thời gian ($T_{\text{window}}$). Nếu sự chuyển động thấp hơn ngưỡng $M_{th}$ trong thời gian dài, cảnh báo được kích hoạt, loại trừ các trường hợp ngồi hoặc nằm chủ động.
 
-\subsection{Triển khai và Tối ưu hóa Hệ thống Tích hợp}
 
-\subsubsection{Chuỗi Xử lý Dữ liệu}
-Hệ thống được thiết kế theo kiến trúc module để dễ dàng tích hợp và tối ưu hóa hiệu suất:
-\begin{equation}
-\text{Video Stream} \xrightarrow{\text{MediaPipe}} \text{Keypoints} 
-\xrightarrow[\text{Kinematic/Postural}]{3\text{D/Temporal Filtering}} \text{Feature Extraction} 
-\xrightarrow{\text{Multi-stage Logic}} \text{Decision Engine} 
-\xrightarrow{\text{Alert System}} \text{Response}
-\end{equation}
-
-\subsubsection{Tối ưu hóa Tham số}
-Việc điều chỉnh các ngưỡng ($V_{th}, A_{th}, AR_{th}, \dots$) là rất quan trọng. Việc sử dụng \textbf{Ngưỡng Thích ứng (Adaptive Thresholds)} $V_{th}^{adaptive}(t)$ (phụ thuộc vào độ tin cậy của keypoints $c_i$) có thể cải thiện độ chính xác trong các môi trường nhiễu hoặc ánh sáng yếu.

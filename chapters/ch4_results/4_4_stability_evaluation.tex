@@ -1,0 +1,9 @@
+\section{Đánh giá độ ổn định}
+\label{sec:stability_evaluation}
+
+Trong quá trình thử nghiệm, thiết bị cảm biến đeo được bật liên tục và thực hiện nhiều lần mô phỏng té ngã. Thiết bị được kết nối với máy tính để theo dõi log hệ thống, từ đó giám sát các lỗi tiềm ẩn. Các vấn đề liên quan đến tràn bộ nhớ, lỗi dẫn đến watchdog reset hoặc panic hệ thống đã được xử lý trong giai đoạn phát triển. Kết quả cho thấy trong toàn bộ quá trình thử nghiệm, thiết bị hoạt động ổn định, không xuất hiện lỗi gây dừng hoặc gián đoạn hoạt động.
+
+Song song đó, phần mềm Python được triển khai và chạy liên tục nhằm kiểm thử các chức năng của hệ thống. Nhờ việc xử lý ngoại lệ và tổ chức các module hợp lý, chương trình không xảy ra hiện tượng crash hoặc dừng đột ngột. Các luồng dữ liệu được phối hợp ổn định và chính xác trong suốt quá trình chạy. Mặc dù khi xử lý khung hình liên tục xuất hiện hiện tượng giật, lag do giới hạn hiệu năng của phần cứng máy tính, nhưng điều này không ảnh hưởng đến tính ổn định tổng thể của hệ thống.
+
+Kết quả trên cho thấy cả thiết bị phần cứng và phần mềm điều khiển đều đạt mức ổn định cao trong điều kiện thử nghiệm liên tục, chứng minh được khả năng vận hành của hệ thống trong môi trường thực tế.
+
