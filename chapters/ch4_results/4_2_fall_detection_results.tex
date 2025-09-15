@@ -194,12 +194,11 @@ Các bảng dưới đây trình bày dữ liệu đã ghi nhận.
 \end{tabular}
 \end{table}
 % Bảng so sánh
-
 \begin{table}[H]
 \centering
 \caption{So sánh đặc trưng dữ liệu MPU6050 giữa trạng thái bình thường và té ngã}
 \label{tab:mpu6050_new_comparison}
-\begin{tabular}{|l|c|c|p{7cm}|}
+\begin{tabularx}{\textwidth}{|l|p{2.5cm}|p{2.5cm}|X|}
 \hline
 \textbf{Thông số} & \textbf{Bình thường} & \textbf{Té ngã} & \textbf{Nhận xét và ý nghĩa} \\
 \hline
@@ -211,7 +210,7 @@ Biên độ Gyro (X,Y,Z) & $\pm 1.5$ dps & $\pm 250$ dps & Té ngã làm dao đ�
 \hline
 Độ lớn Accel (Mag) & 0.95 -- 0.97 g & 0.7 -- 2.0 g & Té ngã làm gia tốc tổng hợp vượt khỏi mức tĩnh, thể hiện xung lực va chạm. \\
 \hline
-\end{tabular}
+\end{tabularx}
 \end{table}
 
 \begin{table}[H]
