@@ -7,6 +7,13 @@ Mục này trình bày tổng quan về nhận diện tư thế người, giải
 
 Nhận diện tư thế người là một lĩnh vực then chốt trong thị giác máy tính, nhằm xác định vị trí và hướng các khớp và bộ phận cơ thể từ hình ảnh hoặc chuỗi video. Khả năng này là nền tảng cho các ứng dụng giám sát an toàn, phân tích chuyển động, và nhận diện hành vi bất thường (như té ngã).
 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{pose_landmarks_index.png}
+    \caption{Minh họa 33 điểm mốc (keypoints) tiêu chuẩn trong nhận diện tư thế người.}
+\end{figure}
+
 \subsubsection{Khái niệm và Định nghĩa}
 
 Pose Estimation ước lượng vị trí của các bộ phận cơ thể trong không gian 2D hoặc 3D, được biểu diễn qua tập hợp các \textbf{keypoints}:
@@ -91,5 +98,3 @@ Nếu Stage 1 là True, kiểm tra các đặc trưng tư thế (AR, $\theta_{\t
 
 \paragraph{Stage 3: Kiểm tra Bất động sau té ngã}
 Sau khi té ngã được xác nhận (Stage 2 là True), hệ thống theo dõi mức độ chuyển động trong một khoảng thời gian ($T_{\text{window}}$). Nếu sự chuyển động thấp hơn ngưỡng $M_{th}$ trong thời gian dài, cảnh báo được kích hoạt, loại trừ các trường hợp ngồi hoặc nằm chủ động.
-
-
