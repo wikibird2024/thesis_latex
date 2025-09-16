@@ -1,20 +1,25 @@
+
 \chapter{Phụ lục A: Mã nguồn hệ thống}
 
-Phụ lục này cung cấp các liên kết tới mã nguồn đầy đủ của toàn bộ hệ thống phát hiện và cảnh báo té ngã. Mã nguồn được quản lý và phát triển trên nền tảng GitHub cá nhân của tác giả.
+Phụ lục này liệt kê các liên kết tới mã nguồn đầy đủ của hệ thống phát hiện và cảnh báo té ngã, được quản lý trên GitHub cá nhân của tác giả.
 
-\section{Mã nguồn ESP32 (cảm biến đeo)}
-Mã nguồn chương trình nhúng trên vi điều khiển ESP32, bao gồm các mô-đun cảm biến (MPU6050), xử lý logic té ngã, mô-đun SIM4G-GPS, giao tiếp MQTT và Wi-Fi. Đây là phần firmware cốt lõi của thiết bị đeo tay.
-
+\section{ESP32 (thiết bị đeo)}
+Firmware trên ESP32 quản lý cảm biến \textbf{MPU6050}, logic phát hiện té ngã, mô-đun \textbf{SIM4G-GPS}, và giao tiếp \textbf{MQTT}/\textbf{Wi-Fi}.
 \begin{itemize}
-    \item \textbf{Link truy cập:} \url{https://github.com/wikibird2024/mainproject.git}
+    \item \textbf{Link:} \url{https://github.com/wikibird2024/mainproject.git}
 \end{itemize}
 
-\section{Mã nguồn Python (intergrate\_fall)}
-Mã nguồn hệ thống trên máy chủ, chịu trách nhiệm xử lý dữ liệu từ camera (phát hiện té ngã bằng xử lý ảnh), nhận dữ liệu từ MQTT, quản lý cơ sở dữ liệu và gửi các cảnh báo đa kênh (Telegram, tin nhắn, cuộc gọi).
-
+\section{ESP32-S3 Camera (ESP camera module)}
+Firmware trên ESP32-S3 dùng mô-đun camera \textbf{OV5640} để lấy khung hình và truyền dữ liệu tới dịch vụ xử lý.
 \begin{itemize}
-    \item \textbf{Link truy cập:} \url{https://github.com/wikibird2024/intergrate_fall.git}
+    \item \textbf{Link:} \url{https://github.com/wikibird2024/esp_cam.git}
+\end{itemize}
+
+\section{Python (intergrate\_fall)}
+Mã nguồn máy chủ xử lý dữ liệu camera, nhận MQTT, quản lý cơ sở dữ liệu và gửi cảnh báo qua Telegram, SMS, cuộc gọi.
+\begin{itemize}
+    \item \textbf{Link:} \url{https://github.com/wikibird2024/intergrate_fall.git}
 \end{itemize}
 
 \vspace{1cm}
-Toàn bộ mã nguồn trên do tác giả \TENTACGIA{} trực tiếp xây dựng và phát triển, được công bố nhằm phục vụ cho việc tham khảo, đánh giá và tái sử dụng trong các nghiên cứu tiếp theo.
+Toàn bộ mã nguồn trên do tác giả \TENTACGIA{} xây dựng và phát triển, phục vụ tham khảo, đánh giá và tái sử dụng cho nghiên cứu tiếp theo.

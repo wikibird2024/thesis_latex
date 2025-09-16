@@ -114,6 +114,32 @@ async def process_person(frame, person_id, box, landmarks, mqtt_msg):
             await telegram_bot.send_photo(img_encoded.tobytes(), alert_msg)
 \end{minted}
 
+
+\subsubsection{Thuật toán phát hiện té ngã bằng Python}
+
+Thuật toán phát hiện té ngã được cài đặt bằng Python nhằm phân tích chuyển động và góc thân người (\textit{torso angle}) dựa trên các tọa độ landmarks thu được từ mô hình nhận diện. 
+Quy trình xử lý được mô tả trong Hình~\ref{fig:python_fall_diagram}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{python_fall_diagram.pdf}
+    \caption{Lưu đồ giải thuật phát hiện té ngã trong Python}
+    \label{fig:python_fall_diagram}
+\end{figure}
+
+Thuật toán hoạt động theo các bước sau:
+\begin{itemize}
+    \item \textbf{Kiểm tra landmarks:} Nếu dữ liệu landmarks không hợp lệ, hệ thống reset bộ đếm và kết thúc vòng lặp mà không báo té ngã.
+    \item \textbf{Tính toán góc và vận tốc:} Dựa trên các điểm vai và hông, thuật toán tính góc thân người so với phương thẳng đứng và vận tốc chuyển động.
+    \item \textbf{Xác định trạng thái:} 
+    \begin{itemize}
+        \item \textit{Falling}: Khi góc vượt ngưỡng và vận tốc lớn hơn ngưỡng cho phép.
+        \item \textit{Lying}: Khi góc vượt ngưỡng nằm ngang trong một khoảng thời gian nhất định.
+    \end{itemize}
+    \item \textbf{Cập nhật bộ đếm:} Mỗi trạng thái có bộ đếm riêng được cập nhật theo từng khung hình.
+    \item \textbf{Ra quyết định:} Nếu một trong hai bộ đếm vượt quá ngưỡng thời gian định trước, thuật toán kết luận có sự kiện té ngã, sau đó reset các bộ đếm để tránh lặp lại.
+\end{itemize}
+
 \subsubsection{Lưu trữ và Cảnh báo}
 \label{subsubsec:data_storage_alerts}
 
@@ -154,7 +180,8 @@ while system_is_running:
 \subsubsection{Cấu trúc thư mục dự án (phiên bản rút gọn)}
 \label{subsubsec:project_structure}
 
-To illustrate in the report, auxiliary files and \texttt{\_\_pycache\_\_} are omitted:
+
+Nhằm tập trung vào cấu trúc mã nguồn chính, các tệp phụ trợ và thư mục \texttt{\_\_pycache\_\_} được lược bỏ trong phần minh họa của báo cáo này.
 
 \begin{minted}[fontsize=\footnotesize, breaklines, frame=single, linenos]{text}
 intergrate_fall/

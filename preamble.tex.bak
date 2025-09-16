@@ -95,7 +95,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newcommand{\TENLUANVAN}{Hệ thống phát hiện và cảnh báo té ngã thời gian thực tích hợp cảm biến, xử lý ảnh và định vị}
 \newcommand{\THESISNAME}{Real-time fall detection and alert system integrating sensors, image processing, and positioning}
-\newcommand{\TENTACGIA}{Tran Hao}
+\newcommand{\TENTACGIA}{Trần Đức Hảo}
 \newcommand{\MASOSV}{173401}
 \newcommand{\KHOA}{Điện - Điện tử}
 \newcommand{\BOMON}{Viễn thông}
