@@ -3,11 +3,10 @@
 Phần này cung cấp kiến thức nền tảng và tổng quan về lĩnh vực Thị giác Máy tính, bao gồm định nghĩa, quy trình làm việc cơ bản (pipeline), các mô hình học sâu cốt lõi và phương pháp đánh giá hiệu suất. Những kiến thức này là cơ sở lý thuyết quan trọng, sẽ được tham chiếu trực tiếp trong phần ứng dụng về Ước lượng Tư thế Người (HPE) và nền tảng MediaPipe ở phần tiếp theo.
 
 \subsection{Định nghĩa và Mục tiêu}
-\textbf{Thị giác Máy tính (Computer Vision, CV)} là một lĩnh vực liên ngành của Trí tuệ Nhân tạo (AI) cho phép máy tính thu nhận, xử lý, phân tích, và diễn giải hình ảnh hoặc video để đạt được khả năng "hiểu" nội dung ở cấp độ cao tương tự như thị giác con người. Mục tiêu chính là mô phỏng khả năng nhận thức thị giác của con người nhưng với tốc độ, độ chính xác và quy mô vượt trội.
+\textbf{Thị giác Máy tính (Computer Vision, CV)} là một lĩnh vực liên ngành của Trí tuệ Nhân tạo (AI) cho phép máy tính thu nhận, xử lý, phân tích, và diễn giải hình ảnh hoặc video để đạt được khả năng ``hiểu'' nội dung ở cấp độ cao, tương tự thị giác con người. Mục tiêu chính là mô phỏng và vượt qua khả năng nhận thức thị giác của con người về tốc độ, độ chính xác, và quy mô.\autocite{szeliski2010} Hình ảnh kỹ thuật số là ma trận số: ảnh xám là ma trận 2D với giá trị cường độ từ 0 đến 255, còn ảnh màu là ma trận 3D (chiều cao $\times$ chiều rộng $\times$ 3 kênh RGB). Thông tin ý nghĩa (như vật thể, cạnh, hoặc vùng) nằm trong cách sắp xếp và biến đổi gradient của các giá trị pixel này.\autocite{lowe1999} Ví dụ, từ dữ liệu pixel, hệ thống có thể tái tạo mô hình 3D hoặc phân tích chuyển động.
 
 \subsection{Pipeline Cơ bản của Hệ thống CV}
-Một hệ thống Thị giác Máy tính điển hình hoạt động theo quy trình tuần tự như\ref{cv_pipeline} sau:
-
+Một hệ thống Thị giác Máy tính điển hình hoạt động theo quy trình tuần tự như Hình~\ref{fig:cv_pipeline}:
 
 \begin{figure}[h]
     \centering
@@ -17,39 +16,39 @@ Một hệ thống Thị giác Máy tính điển hình hoạt động theo quy 
 \end{figure}
 
 \begin{enumerate}
-    \item \textbf{Thu nhận Dữ liệu}: Thu thập hình ảnh tĩnh hoặc chuỗi video từ các thiết bị cảm biến camera, đảm bảo chất lượng và độ phân giải phù hợp.
-    \item \textbf{Tiền xử lý (Preprocessing)}: Áp dụng các kỹ thuật xử lý ảnh sơ cấp như chuẩn hóa kích thước, điều chỉnh độ sáng/tương phản, cân bằng màu sắc, và loại bỏ nhiễu (noise reduction).
-    \item \textbf{Trích xuất Đặc trưng (Feature Extraction)}: Biểu diễn thông tin thị giác thô (pixel) thành các dạng đặc trưng trừu tượng và có ý nghĩa (ví dụ: cạnh, góc, kết cấu, hoặc các đặc trưng phân cấp sâu được học qua mạng nơ-ron).
-    \item \textbf{Phân tích và Ra quyết định (Analysis and Decision Making)}: Dựa trên các đặc trưng đã trích xuất, mô hình thực hiện nhiệm vụ cụ thể như phân loại, nhận dạng, theo dõi, hoặc ước lượng tư thế, sau đó đưa ra kết quả cuối cùng.
+    \item \textbf{Thu nhận Dữ liệu}: Thu thập hình ảnh tĩnh hoặc chuỗi video từ camera hoặc cảm biến (RGB, hồng ngoại, hoặc 3D), đảm bảo chất lượng và độ phân giải phù hợp.\autocite{szeliski2010}
+    \item \textbf{Tiền xử lý (Preprocessing)}: Chuẩn bị dữ liệu số để phân tích bằng cách giảm nhiễu (lọc Gaussian: $I_{\text{filtered}} = \text{Gaussian}(I, \sigma)$), chuẩn hóa giá trị pixel về [0,1], hoặc cân bằng độ sáng qua histogram equalization. Chuyển đổi không gian màu (RGB sang HSV hoặc thang xám) giúp tách màu, bão hòa, và giá trị sáng.\autocite{szeliski2010}
+    \item \textbf{Trích xuất Đặc trưng (Feature Extraction)}: Biến dữ liệu pixel thành đặc trưng có ý nghĩa:
+    \begin{itemize}
+        \item \textbf{Cạnh}: Phát hiện thay đổi cường độ đột ngột bằng gradient (Sobel: $G = \sqrt{G_x^2 + G_y^2}$, với $G_x = \partial I / \partial x$, $G_y = \partial I / \partial y$) hoặc thuật toán Canny (kết hợp lọc Gaussian, non-max suppression, và hysteresis).\autocite{sobel1968,canny1986}
+        \item \textbf{Điểm đặc trưng}: Harris dùng ma trận tự tương quan để tìm góc với eigenvalue $\lambda_1, \lambda_2$ lớn; SIFT tạo đặc trưng bất biến quy mô qua Difference of Gaussians (DoG).\autocite{lowe1999}
+        \item \textbf{Mô tả toàn cục}: Histogram hướng gradient (HOG) phân tích hướng cạnh; Local Binary Patterns (LBP) mã hóa nhị phân lân cận pixel.\autocite{dalal2005}
+    \end{itemize}
+    \item \textbf{Phân tích và Ra quyết định (Analysis and Decision Making)}: Dựa trên đặc trưng, mô hình thực hiện phân loại, nhận dạng, hoặc ước lượng tư thế, sau đó đưa ra kết quả như nhãn, hộp giới hạn, hoặc hành động (ví dụ, xe tự hành dừng khi phát hiện chướng ngại).\autocite{horn1981}
 \end{enumerate}
 
 \subsection{Phân loại các Bài toán CV Cốt lõi}
-Các bài toán trong CV được phân loại dựa trên mức độ chi tiết của thông tin đầu ra:
+Các bài toán trong CV được phân loại dựa trên mức độ chi tiết của đầu ra:
 
 \begin{itemize}
-    \item \textbf{Phân loại Ảnh}: Gán một nhãn duy nhất cho toàn bộ hình ảnh. (Ví dụ: "Xe hơi", "Người", "Phong cảnh").
-    \item \textbf{Phát hiện Đối tượng }: Xác định vị trí của nhiều đối tượng trong ảnh bằng các \textbf{hộp giới hạn (bounding box)} và gán nhãn cho từng đối tượng.
+    \item \textbf{Phân loại Ảnh}: Gán nhãn duy nhất cho toàn bộ hình ảnh (ví dụ: ``Xe hơi'', ``Người'').\autocite{krizhevsky2012}
+    \item \textbf{Phát hiện Đối tượng}: Xác định vị trí nhiều đối tượng bằng hộp giới hạn và gán nhãn.\autocite{redmon2016}
     \item \textbf{Phân đoạn Ảnh}:
     \begin{itemize}
-        \item \textbf{Phân đoạn Ngữ nghĩa}: Phân loại từng pixel trong ảnh, gán nhãn lớp cho các vùng (VD: Đường, Bầu trời, Cây cối).
-        \item \textbf{Phân đoạn Thể hiện}: Phân loại từng pixel đồng thời phân biệt các cá thể cùng lớp (VD: Người 1, Người 2).
+        \item \textbf{Phân đoạn Ngữ nghĩa}: Phân loại từng pixel (ví dụ: Đường, Bầu trời).\autocite{ronneberger2015}
+        \item \textbf{Phân đoạn Thể hiện}: Phân biệt các cá thể cùng lớp (ví dụ: Người 1, Người 2).\autocite{ronneberger2015}
     \end{itemize}
-    \item \textbf{Ước lượng Tư thế Người}: Một dạng bài toán chuyên biệt nhằm xác định vị trí tọa độ chính xác của các \textbf{khớp keypoint} quan trọng trên cơ thể người, là nền tảng để "hiểu" chuyển động và hành vi của con người trong video/ảnh.
+    \item \textbf{Ước lượng Tư thế Người}: Xác định tọa độ các khớp keypoint trên cơ thể, nền tảng cho phân tích chuyển động.\autocite{lin2014}
 \end{itemize}
 
 \subsection{Các Mô hình Học sâu Cốt lõi trong CV Hiện đại}
 \subsubsection{Mạng Nơ-ron Tích chập (Convolutional Neural Networks - CNN)}
-CNN là kiến trúc học sâu chủ đạo để xử lý dữ liệu hình ảnh, tận dụng các lớp tích chập và gộp để tự động học các đặc trưng phân cấp từ thô đến trừu tượng.
+CNN là kiến trúc chủ đạo, tự động học đặc trưng phân cấp qua các lớp tích chập và gộp:
 
 \begin{itemize}
-    \item \textbf{Phép Tích chập}: Trích xuất các đặc trưng cục bộ bằng cách áp dụng bộ lọc (kernel) $K$ lên ảnh đầu vào $I$:
-    \begin{equation}
-    (I * K)(i, j) = \sum_{m} \sum_{n} I(i-m, j-n) K(m, n)
-    \end{equation}
-    \item \textbf{Phép Gộp}: Giảm kích thước không gian, giảm số lượng tham số và tăng tính bền vững của đặc trưng. Ví dụ, \textbf{Max Pooling} trên cửa sổ $2 \times 2$:
-    \begin{equation}
-    O_{i,j} = \max \left( I_{2i, 2j}, I_{2i+1, 2j}, I_{2i, 2j+1}, I_{2i+1, 2j+1} \right)
-    \end{equation}
+    \item \textbf{Phép Tích chập}: Trích xuất đặc trưng cục bộ: $(I * K)(i, j) = \sum_{m} \sum_{n} I(i-m, j-n) K(m, n)$, với $K$ là kernel, $I$ là ảnh đầu vào.\autocite{lecun1998}
+    \item \textbf{Phép Gộp}: Giảm kích thước không gian, ví dụ Max Pooling: $O_{i,j} = \max \left( I_{2i, 2j}, I_{2i+1, 2j}, I_{2i, 2j+1}, I_{2i+1, 2j+1} \right)$.\autocite{lecun1998}
+    \item \textbf{Kiến trúc nổi bật}: AlexNet, VGG, ResNet (dùng Residual Block), YOLO (phát hiện thời gian thực).\autocite{krizhevsky2012,simonyan2014,he2016,redmon2016} Autoencoder nén dữ liệu để học biểu diễn ẩn.\autocite{szeliski2010}
 \end{itemize}
 
 \begin{figure}[h]
@@ -59,14 +58,8 @@ CNN là kiến trúc học sâu chủ đạo để xử lý dữ liệu hình �
     \label{fig:cnn_ops}
 \end{figure}
 
-Các kiến trúc CNN nổi bật: \textbf{AlexNet} \cite{krizhevsky2012imagenet}, \textbf{VGG} \cite{simonyan2014very}, \textbf{ResNet} \cite{he2016deep} (sử dụng Residual Block), \textbf{YOLO} \cite{redmon2016you} (phát hiện đối tượng thời gian thực).
-
 \subsubsection{Mô hình dựa trên Transformer}
-Transformer, đặc biệt là \textbf{Vision Transformer (ViT)} \cite{dosovitskiy2021image}, đại diện cho xu hướng mới. Nó xử lý hình ảnh bằng cách chia ảnh thành các \textbf{miếng vá (patches)} và coi chúng như chuỗi token, sử dụng cơ chế \textbf{Tự chú ý (Self-Attention)} để học mối quan hệ toàn cục giữa các vùng ảnh, vượt qua giới hạn cục bộ của CNN. Công thức cơ bản của cơ chế Attention là:
-\begin{equation}
-\text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V
-\end{equation}
-Trong đó, $Q, K, V$ lần lượt là các ma trận Query, Key và Value.
+Vision Transformer (ViT) chia ảnh thành các miếng vá (patches), xử lý như chuỗi token, sử dụng cơ chế Self-Attention: $\text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V$, với $Q, K, V$ là ma trận Query, Key, Value.\autocite{dosovitskiy2021} ViT vượt qua giới hạn cục bộ của CNN bằng cách học mối quan hệ toàn cục.
 
 \begin{figure}[h]
     \centering
@@ -75,22 +68,24 @@ Trong đó, $Q, K, V$ lần lượt là các ma trận Query, Key và Value.
     \label{fig:vit_arch}
 \end{figure}
 
-\subsection{Tập dữ liệu và Metrics Đánh giá}
-Để đảm bảo tính khách quan, hiệu quả mô hình CV được đánh giá dựa trên các tập dữ liệu chuẩn hóa và metrics chuyên biệt.
+\subsubsection{Mô hình Phân tích Cấp cao}
+U-Net dùng encoder-decoder cho phân đoạn pixel-wise.\autocite{ronneberger2015} Optical flow (Horn-Schunck) tính chuyển động: $I_x u + I_y v + I_t = 0$.\autocite{horn1981} Quyết định dựa trên SVM hoặc ngưỡng trên đặc trưng.\autocite{szeliski2010}
 
+\subsection{Các tập dữ liệu phổ biến và thước đo đánh giá mô hình}
 \begin{itemize}
-    \item \textbf{Các Tập dữ liệu Lớn}:
+    \item \textbf{Tập dữ liệu}:
     \begin{itemize}
-        \item \textbf{ImageNet} \cite{deng2009imagenet}: Tiêu chuẩn cho Phân loại ảnh (hơn 14 triệu ảnh thuộc 20,000 lớp).
-        \item \textbf{COCO} \cite{lin2014microsoft}: Tiêu chuẩn cho Phát hiện và Phân đoạn đối tượng.
-        \item \textbf{MPII, COCO Keypoints}: Tiêu chuẩn chuyên biệt cho bài toán Ước lượng Tư thế Người (HPE).
+        \item ImageNet: Hơn 14 triệu ảnh, 20,000 lớp.\autocite{deng2009}
+        \item COCO: Phát hiện và phân đoạn đối tượng.\autocite{lin2014}
+        \item MPII, COCO Keypoints: Ước lượng tư thế người.\autocite{lin2014}
     \end{itemize}
-    \item \textbf{Các Metrics Đánh giá Hiệu suất}: 
+    \item \textbf{Metrics}:
     \begin{itemize}
-        \item \textbf{IoU (Intersection over Union)}: Đo lường mức độ trùng khớp giữa hộp giới hạn dự đoán và ground truth, tiêu chuẩn cho bài toán Phát hiện đối tượng và Phân đoạn ảnh.
-        $$ IoU = \frac{\text{Area of Overlap}}{\text{Area of Union}} $$
-        \item \textbf{mAP (Mean Average Precision)}: Tiêu chuẩn chính cho bài toán Phát hiện đối tượng, tính trung bình của Average Precision (AP) trên tất cả các lớp.
-        \item \textbf{F1-score}: Trung bình điều hòa giữa Precision và Recall, phổ biến trong các bài toán Phân loại.
-        \item \textbf{OKS (Object Keypoint Similarity)}: Metric chuyên biệt được sử dụng để đánh giá độ chính xác trong bài toán **HPE**, đo lường khoảng cách giữa các khớp dự đoán và khớp ground truth, có tính đến kích thước đối tượng.
+        \item IoU: $\frac{\text{Area of Overlap}}{\text{Area of Union}}$.\autocite{lin2014}
+        \item mAP: Trung bình Average Precision trên các lớp.\autocite{lin2014}
+        \item F1-score: Trung bình điều hòa Precision và Recall.\autocite{szeliski2010}
+        \item OKS: Đo lường độ chính xác khớp trong HPE.\autocite{lin2014}
     \end{itemize}
 \end{itemize}
+
+Ví dụ thực tế: Hệ thống tự lái dùng CNN để nhận diện làn đường từ cạnh và gradient, kết hợp optical flow để dự đoán chuyển động.\autocite{redmon2016}
