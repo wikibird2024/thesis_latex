@@ -1,4 +1,5 @@
-\documentclass[12pt,openany]{report}
+
+\documentclass[12pt,oneside,a4paper]{report}
 
 % Load the unified preamble (all packages, fonts, macros)
 \input{preamble.tex}
@@ -12,57 +13,57 @@
 % Title page
 \input{frontmatter/titlepage.tex}
 
-% Faculty / Department info (thường sẽ được đặt ở đầu cùng)
-\cleardoublepage
+% Faculty / Department info
+\clearpage
 \input{frontmatter/faculty.tex}
 
 % Acknowledgements
-\cleardoublepage
+\clearpage
 \input{frontmatter/acknowledgements.tex}
 
-% Abstract vietnamsese
-\cleardoublepage
+% Abstract Vietnamese
+\clearpage
 \input{frontmatter/abstract.tex}
 
-% Abstract
-\cleardoublepage
+% Abstract English
+\clearpage
 \input{frontmatter/abstract_eng.tex}
 
 % Set the page style for the rest of the frontmatter
 \pagestyle{fancy}
 
 % Table of contents
-\cleardoublepage
+\clearpage
 \phantomsection
 \addcontentsline{toc}{chapter}{Mục lục}
 \tableofcontents
 
 % List of figures
-\cleardoublepage
+\clearpage
 \phantomsection
 \addcontentsline{toc}{chapter}{Danh mục hình ảnh}
 \listoffigures
 
 % List of tables
-\cleardoublepage
+\clearpage
 \phantomsection
 \addcontentsline{toc}{chapter}{Danh mục bảng biểu}
 \listoftables
 
 % --- MAINMATTER ---
-\cleardoublepage
+\clearpage
 \pagenumbering{arabic}
 \pagestyle{fancy}
 
-% Chapters (ensure each file exists in chapters/ folder)
-
+% Chapters
 \include{chapters/ch1_introduction/chapter1}
 \include{chapters/ch2_background/chapter2}
 \include{chapters/ch3_methodology/chapter3}
 \include{chapters/ch4_results/chapter4}
 \include{chapters/ch5_conclusion/chapter5}
+
 % --- BACKMATTER ---
-\cleardoublepage
+\clearpage
 \pagestyle{plain}
 
 % Appendices
@@ -70,7 +71,7 @@
 \include{backmatter/appendix_A_code}
 
 % References
-\cleardoublepage
+\clearpage
 \phantomsection
 \addcontentsline{toc}{chapter}{Tài liệu tham khảo}
 \printbibliography

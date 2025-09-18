@@ -16,27 +16,41 @@
 %                        FONT CONFIGURATION
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Main serif font: Cormorant Garamond (đẹp & thanh thoát)
-\setmainfont{Cormorant Garamond}[Ligatures=TeX, Scale=1.05]
-
-% Sans-serif: TeX Gyre Heros (heading, caption – hiện đại & học thuật)
-\setsansfont{TeX Gyre Heros}[Ligatures=TeX]
-
-% Monospaced / code font: Fira Code
-\setmonofont{Fira Code}[Scale=0.9, Ligatures=TeX]
-
-% Unicode math
 \usepackage{unicode-math}
+
+% Main serif font: TeX Gyre Termes (clone Times New Roman, rõ ràng, an toàn)
+\setmainfont{TeX Gyre Termes}[
+  Ligatures=TeX,
+  Scale=1.05 % hơi lớn hơn chút, dễ đọc khi in
+]
+
+% Sans-serif: TeX Gyre Heros (clone Helvetica – rõ, mạnh mẽ, hợp tiêu đề)
+\setsansfont{TeX Gyre Heros}[
+  Ligatures=TeX,
+  Scale=1.0
+]
+
+% Monospace: Fira Code (cho code block, hỗ trợ ligature đẹp)
+\setmonofont{Fira Code}[
+  Scale=0.9,
+  Contextuals={Alternate} % bật ligature code
+]
+
+% Math font: Latin Modern Math (ổn định, rõ ràng)
 \setmathfont{Latin Modern Math}
 
-% Microtype tối ưu: spacing và kerning đẹp
+% ============================
+% Micro-typography
+% ============================
 \usepackage[protrusion=true, expansion=true]{microtype}
 \microtypesetup{spacing=true, kerning=true}
 
-% Line spacing và paragraph
+% ============================
+% Line spacing & Paragraph
+% ============================
 \usepackage{setspace}
-\onehalfspacing
-\usepackage{indentfirst}
+\onehalfspacing           % 1.5 line spacing – chuẩn luận văn
+\usepackage{indentfirst}  % thụt đầu dòng đoạn đầu
 \setlength{\parindent}{1.2em}
 \setlength{\parskip}{0pt}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -107,6 +121,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \usepackage{geometry}
 \geometry{
+    a4paper,
     top=2.5cm,
     bottom=2.5cm,
     left=3.0cm,
@@ -116,7 +131,6 @@
     footskip=20pt
 }
 
-\usepackage{setspace}
 \onehalfspacing
 \usepackage{indentfirst}
 \setlength{\parindent}{1.2em}
