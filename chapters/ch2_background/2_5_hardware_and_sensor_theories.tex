@@ -73,10 +73,10 @@ Hệ thống vận hành theo nguyên lý tích hợp và dự phòng:
     \item \textbf{Kích hoạt Cảnh báo}: Nếu xác nhận té ngã, máy chủ ra lệnh cho ESP32 kích hoạt Module EC800K gửi cảnh báo (SMS/Cuộc gọi), hoàn tất chu trình cứu hộ.
 \end{enumerate}
 
-\subsubsection{Môi trường Phát triển Phần mềm Nhúng}
-Việc phát triển phần mềm cho các vi điều khiển như ESP32 đòi hỏi một framework chuyên biệt. \textbf{ESP-IDF (Espressif IoT Development Framework)} được chọn làm môi trường phát triển chính thay vì các IDE đơn giản hơn (như Arduino IDE) vì những lý do sau:
+\subsubsection{Môi trường Phát triển Phần mềm cho thiết bị Nhúng}
+Việc phát triển phần mềm cho các vi điều khiển như ESP32 đòi hỏi một framework chuyên biệt. \textbf{ESP-IDF (Espressif IoT Development Framework)} được chọn làm môi trường phát triển chính thay vì các IDE như Arduino IDE vì những lý do sau:
 \begin{itemize}
     \item \textbf{Hỗ trợ RTOS}: ESP-IDF tích hợp \textbf{FreeRTOS}, cho phép tận dụng tối đa kiến trúc lõi kép của ESP32 để thực hiện đa nhiệm (ví dụ: một tác vụ xử lý dữ liệu IMU thời gian thực, một tác vụ quản lý kết nối Wi-Fi).
-    \item \textbf{Truy cập Cấp thấp (Low-level Access)}: Cho phép truy cập trực tiếp và tối ưu hóa các thanh ghi phần cứng (Registers), cần thiết cho việc cấu hình cảm biến IMU (I2C/SPI) và tinh chỉnh các giao thức mạng phức tạp (MQTT/HTTP) ở mức độ chi tiết cao, đảm bảo hiệu suất thời gian thực.
+    \item \textbf{Truy cập Cấp thấp}: Cho phép truy cập trực tiếp và tối ưu hóa các thanh ghi phần cứng, cần thiết cho việc cấu hình cảm biến IMU (I2C/SPI) và tinh chỉnh các giao thức mạng phức tạp (MQTT/HTTP) ở mức độ chi tiết cao, đảm bảo hiệu suất thời gian thực.
 \end{itemize}
 Việc lựa chọn môi trường này là nền tảng để xây dựng các mô-đun phần mềm chuyên biệt, sẽ được trình bày chi tiết trong Chương 3.
