@@ -11,7 +11,7 @@ Hệ thống phát hiện té ngã hiện đại thường được phân loại
     \item \textbf{Hệ thống Truyền thông}: Đảm bảo luồng dữ liệu hai chiều và kích hoạt cảnh báo.
 \end{enumerate}
 
-\subsection{Cảm biến và Xử lý Dữ liệu Sơ cấp (Edge Processing)}
+\subsection{Cảm biến và Xử lý Dữ liệu Sơ cấp tại biên}
 
 \subsubsection{Vi điều khiển và Xử lý Cục bộ}
 \textbf{ESP32 (hoặc ESP32-S3)} được chọn làm bộ điều khiển trung tâm nhờ kiến trúc \textbf{lõi kép Xtensa LX6} (hoặc S3), cho phép xử lý song song. Một lõi được dành riêng cho các tác vụ thời gian thực như đọc và tiền xử lý dữ liệu cảm biến (ví dụ: \textbf{Kalman Filter} để ước tính hướng và trạng thái), trong khi lõi còn lại quản lý các giao tiếp không dây (Wi-Fi, Bluetooth) và giao thức \textbf{MQTT} hoặc \textbf{HTTP}, giảm thiểu độ trễ.
@@ -43,7 +43,7 @@ Tại tầng vi điều khiển, té ngã được phát hiện sơ bộ bằng 
 \subsubsection{Cảm biến Định vị Vị trí (GPS)}
 Module GPS (ví dụ: u-blox NEO-6M) sử dụng nguyên lý \textbf{Đo tam giác} để xác định vị trí địa lý của thiết bị dựa trên tín hiệu từ ít nhất bốn vệ tinh. Dữ liệu đầu ra là chuỗi \textbf{NMEA}, cung cấp tọa độ Kinh độ/Vĩ độ và độ cao, là thông tin quan trọng cho dịch vụ cứu hộ khẩn cấp.
 
-\subsection{Hệ thống Camera và Xử lý Máy chủ (Cloud/Host Processing)}
+\subsection{Hệ thống Camera và Xử lý Máy chủ}
 
 \subsubsection{Hệ thống Camera}
 Camera nhúng (\textbf{ESP32-S3 + OV5640 5MP}) cung cấp dữ liệu hình ảnh được nén theo chuẩn \textbf{JPEG}. Dữ liệu này là luồng byte được truyền tải qua Wi-Fi bằng các giao thức như \textbf{RTSP} hoặc \textbf{HTTP/MJPEG stream}, phục vụ cho việc \textbf{Xác minh Hình ảnh} trên máy chủ.

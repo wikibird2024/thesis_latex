@@ -42,16 +42,16 @@ MediaPipe sử dụng kiến trúc xử lý dữ liệu dựa trên đồ thị,
 
 \subsubsection{Các thành phần Mô hình Chính}
 
-\paragraph{Pose Detection Model (Localization):} Nhiệm vụ là phát hiện sự hiện diện và xác định \textbf{Vùng quan tâm (ROI)} chứa người trong khung hình.
+\paragraph{Pose Detection Model:} Nhiệm vụ là phát hiện sự hiện diện và xác định \textbf{Vùng quan tâm (ROI)} chứa người trong khung hình.
 \begin{itemize}
     \item Input: Khung hình RGB.
     \item Output: Bounding box và xác suất hiện diện của người.
 \end{itemize}
 
-\paragraph{Pose Landmark Model (BlazePose):} Mô hình ước lượng các điểm mốc chính xác trên ROI đã xác định.
+\paragraph{Pose Landmark Model:} Mô hình ước lượng các điểm mốc chính xác trên ROI đã xác định.
 \begin{itemize}
     \item Output: 33 keypoints 3D $(x, y, z, visibility)$.
-    \item Hàm mất mát (\textbf{Loss Function}) tổng hợp:
+    \item Hàm mất mát tổng hợp:
     \begin{equation}
     \mathcal{L}_{\text{total}} = \lambda_1 \mathcal{L}_{\text{coord}} + \lambda_2 \mathcal{L}_{\text{confidence}} + \lambda_3 \mathcal{L}_{\text{depth}}
     \end{equation}
@@ -69,9 +69,9 @@ MediaPipe sử dụng kiến trúc xử lý dữ liệu dựa trên đồ thị,
 
 Hệ thống phát hiện té ngã sử dụng các đặc trưng động học và tư thế được trích xuất từ dữ liệu keypoints 3D (từ MediaPipe) để đưa ra quyết định qua nhiều giai đoạn. $\Delta t$ được định nghĩa là thời gian trôi qua giữa hai khung hình liên tiếp ($1/FPS$).
 
-\subsubsection{Trích xuất Đặc trưng Sinh học (Feature Engineering)}
+\subsubsection{Trích xuất Đặc trưng Sinh học}
 
-\paragraph{Kinematic Features (Đặc trưng Động học):} Phản ánh tốc độ và gia tốc trong quá trình té ngã.
+\paragraph{Đặc trưng Động học:} Phản ánh tốc độ và gia tốc trong quá trình té ngã.
 \begin{itemize}
     \item \textbf{Vận tốc COM ($\vec{v}_{\text{COM}}$) và Gia tốc COM ($a_{\text{total}}$):}
     \begin{align}
