@@ -16,15 +16,46 @@ Một hệ thống Thị giác Máy tính điển hình hoạt động theo quy 
 \end{figure}
 
 \begin{enumerate}
-    \item \textbf{Thu nhận Dữ liệu}: Thu thập hình ảnh tĩnh hoặc chuỗi video từ camera hoặc cảm biến (RGB, hồng ngoại, hoặc 3D), đảm bảo chất lượng và độ phân giải phù hợp.\autocite{szeliski2010}
-    \item \textbf{Tiền xử lý}: Chuẩn bị dữ liệu số để phân tích bằng cách giảm nhiễu (lọc Gaussian: $I_{\text{filtered}} = \text{Gaussian}(I, \sigma)$), chuẩn hóa giá trị pixel về [0,1], hoặc cân bằng độ sáng qua histogram equalization. Chuyển đổi không gian màu (RGB sang HSV hoặc thang xám) giúp tách màu, bão hòa, và giá trị sáng.\autocite{szeliski2010}
-    \item \textbf{Trích xuất Đặc trưng}: Biến dữ liệu pixel thành đặc trưng có ý nghĩa:
+    \item \textbf{Thu nhận dữ liệu}  
+    Thu thập hình ảnh tĩnh hoặc chuỗi video từ camera/cảm biến (RGB, hồng ngoại hoặc 3D), đảm bảo chất lượng và độ phân giải phù hợp.\autocite{szeliski2010}
+    
+    \item \textbf{Tiền xử lý}  
+    Chuẩn bị dữ liệu số cho phân tích bằng các bước:
     \begin{itemize}
-        \item \textbf{Cạnh}: Phát hiện thay đổi cường độ đột ngột bằng gradient (Sobel: $G = \sqrt{G_x^2 + G_y^2}$, với $G_x = \partial I / \partial x$, $G_y = \partial I / \partial y$) hoặc thuật toán Canny (kết hợp lọc Gaussian, non-max suppression, và hysteresis).\autocite{sobel1968,canny1986}
-        \item \textbf{Điểm đặc trưng}: Harris dùng ma trận tự tương quan để tìm góc với eigenvalue $\lambda_1, \lambda_2$ lớn; SIFT tạo đặc trưng bất biến quy mô qua Difference of Gaussians (DoG).\autocite{lowe1999}
-        \item \textbf{Mô tả toàn cục}: Histogram hướng gradient (HOG) phân tích hướng cạnh; Local Binary Patterns (LBP) mã hóa nhị phân lân cận pixel.\autocite{dalal2005}
+        \item \emph{Giảm nhiễu}: Lọc Gaussian: 
+        \[
+            I_{\text{filtered}} = \text{Gaussian}(I, \sigma)
+        \]
+        \item \emph{Chuẩn hóa pixel}: giá trị pixel về [0,1] hoặc cân bằng histogram để điều chỉnh độ sáng.
+        \item \emph{Chuyển đổi không gian màu}: RGB $\to$ HSV hoặc thang xám để tách màu, độ bão hòa, và giá trị sáng.
+    \end{itemize}\autocite{szeliski2010}
+    
+    \item \textbf{Trích xuất đặc trưng}  
+    Biến dữ liệu pixel thành đặc trưng có ý nghĩa:
+    \begin{itemize}
+        \item \textbf{Cạnh}: Phát hiện thay đổi cường độ đột ngột bằng gradient:
+        \[
+            G = \sqrt{G_x^2 + G_y^2}, \quad
+            G_x = \frac{\partial I}{\partial x}, \quad
+            G_y = \frac{\partial I}{\partial y}
+        \]
+        Hoặc dùng thuật toán Canny (lọc Gaussian, non-max suppression, hysteresis).\autocite{sobel1968,canny1986}
+        
+        \item \textbf{Điểm đặc trưng}:  
+        \begin{itemize}
+            \item Harris: tìm góc dựa trên ma trận tự tương quan, eigenvalue $\lambda_1, \lambda_2$ lớn.
+            \item SIFT: đặc trưng bất biến theo quy mô qua Difference of Gaussians (DoG).\autocite{lowe1999}
+        \end{itemize}
+
+        \item \textbf{Mô tả toàn cục}:
+        \begin{itemize}
+            \item HOG: Histogram hướng gradient phân tích hướng cạnh.
+            \item LBP: Local Binary Patterns mã hóa nhị phân lân cận pixel.\autocite{dalal2005}
+        \end{itemize}
     \end{itemize}
-    \item \textbf{Phân tích và Ra quyết định}: Dựa trên đặc trưng, mô hình thực hiện phân loại, nhận dạng, hoặc ước lượng tư thế, sau đó đưa ra kết quả như nhãn, hộp giới hạn, hoặc hành động (ví dụ, xe tự hành dừng khi phát hiện chướng ngại).\autocite{horn1981}
+    
+    \item \textbf{Phân tích và ra quyết định}  
+    Dựa trên đặc trưng, mô hình thực hiện phân loại, nhận dạng hoặc ước lượng tư thế. Kết quả có thể là nhãn, hộp giới hạn, hoặc hành động (ví dụ: xe tự hành dừng khi phát hiện chướng ngại).\autocite{horn1981}
 \end{enumerate}
 
 \subsection{Phân loại các Bài toán CV Cốt lõi}
