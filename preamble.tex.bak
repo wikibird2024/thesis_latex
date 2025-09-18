@@ -35,7 +35,6 @@
 % --- Microtype for minor adjustments ---
 % Đã vô hiệu hóa expansion/protrusion để tránh lỗi Fatal Error với XeLaTeX
 \usepackage[protrusion=false, expansion=false]{microtype}
-% Tắt luôn spacing/kerning để tránh cảnh báo
 \microtypesetup{spacing=false, kerning=false}
 
 
