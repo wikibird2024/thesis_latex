@@ -1,0 +1,67 @@
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%   VIETNAMESE LATEX THESIS PREAMBLE - XeLaTeX + Cormorant Garamond
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% --- XeLaTeX + fontspec ---
+\usepackage{fontspec}
+\usepackage{pifont}
+
+% --- Polyglossia for Vietnamese and English ---
+\usepackage{polyglossia}
+\setmainlanguage{vietnamese}
+\setotherlanguage{english}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                        FONT CONFIGURATION
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% --- Font setup ---
+\usepackage{fontspec}
+
+% Main serif font: Cormorant Garamond (đẹp & thanh thoát)
+\setmainfont{Cormorant Garamond}[Ligatures=TeX, Scale=1.05]
+
+% Sans-serif: TeX Gyre Heros (heading, captions – hiện đại & học thuật)
+\setsansfont{TeX Gyre Heros}[Ligatures=TeX]
+
+% Monospaced / code font: Fira Code
+\setmonofont{Fira Code}[Scale=0.9, Ligatures=TeX]
+
+% Unicode math
+\usepackage{unicode-math}
+\setmathfont{Latin Modern Math}
+
+% Microtype tối ưu spacing và kerning
+\usepackage{microtype}
+\microtypesetup{protrusion=true, expansion=true, spacing=true, kerning=true}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                LINE SPACING & PARAGRAPH SETTINGS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{setspace}
+\onehalfspacing
+\usepackage{indentfirst}
+\setlength{\parindent}{1.2em}
+\setlength{\parskip}{0pt}
+\tolerance=2000
+\emergencystretch=0.5em
+\hyphenpenalty=5000
+\exhyphenpenalty=5000
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                     ADDITIONAL PACKAGES
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{xcolor}
+\usepackage{minted}
+\usepackage{graphicx}
+\graphicspath{{figures/}{chapters/ch2_background/}{chapters/ch3_methodology/}}
+\usepackage{calc}
+\usepackage{url}
+\usepackage{amsmath}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{tabularx}
+
+% For graphics/plots
+\usepackage{tikz}
+\usetik
