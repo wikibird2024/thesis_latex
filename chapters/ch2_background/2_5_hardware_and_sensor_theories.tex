@@ -45,7 +45,7 @@ Module GPS (ví dụ: u-blox NEO-6M) sử dụng nguyên lý \textbf{Đo tam gi�
 
 \subsection{Hệ thống Camera và Xử lý Máy chủ (Cloud/Host Processing)}
 
-\subsubsection{Hệ thống Camera (Vision Input)}
+\subsubsection{Hệ thống Camera}
 Camera nhúng (\textbf{ESP32-S3 + OV5640 5MP}) cung cấp dữ liệu hình ảnh được nén theo chuẩn \textbf{JPEG}. Dữ liệu này là luồng byte được truyền tải qua Wi-Fi bằng các giao thức như \textbf{RTSP} hoặc \textbf{HTTP/MJPEG stream}, phục vụ cho việc \textbf{Xác minh Hình ảnh} trên máy chủ.
 
 \subsubsection{Kiến trúc Máy chủ Xử lý}
@@ -73,7 +73,7 @@ Hệ thống vận hành theo nguyên lý tích hợp và dự phòng:
     \item \textbf{Kích hoạt Cảnh báo}: Nếu xác nhận té ngã, máy chủ ra lệnh cho ESP32 kích hoạt Module EC800K gửi cảnh báo (SMS/Cuộc gọi), hoàn tất chu trình cứu hộ.
 \end{enumerate}
 
-\subsubsection{Môi trường Phát triển Phần mềm Nhúng (Embedded Development Environment)}
+\subsubsection{Môi trường Phát triển Phần mềm Nhúng}
 Việc phát triển phần mềm cho các vi điều khiển như ESP32 đòi hỏi một framework chuyên biệt. \textbf{ESP-IDF (Espressif IoT Development Framework)} được chọn làm môi trường phát triển chính thay vì các IDE đơn giản hơn (như Arduino IDE) vì những lý do sau:
 \begin{itemize}
     \item \textbf{Hỗ trợ RTOS}: ESP-IDF tích hợp \textbf{FreeRTOS}, cho phép tận dụng tối đa kiến trúc lõi kép của ESP32 để thực hiện đa nhiệm (ví dụ: một tác vụ xử lý dữ liệu IMU thời gian thực, một tác vụ quản lý kết nối Wi-Fi).

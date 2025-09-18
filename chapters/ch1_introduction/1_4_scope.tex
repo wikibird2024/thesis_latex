@@ -1,19 +1,19 @@
 
-\section{Phạm vi Nghiên cứu}
+\section{Phạm vi tìm hiểu và thực hiện đề tài hệ thống cảnh báo té ngã}
 
 Luận văn này tập trung vào việc thiết kế và xây dựng một hệ thống phát hiện té ngã đa phương thức. Phạm vi thực hiện được xác định nhằm đảm bảo tính khả thi, tập trung vào các mục tiêu cốt lõi và hạn chế các yếu tố ngoài phạm vi. Cụ thể:
 
 \subsection{Mục tiêu và Giới hạn}
 \begin{enumerate}
-    \item \textbf{Mục tiêu chính:} Xây dựng một hệ thống \textbf{thời gian thực (real-time)} có khả năng phát hiện té ngã với độ chính tương đối, dựa trên việc kết hợp dữ liệu từ nhiều nguồn, phạm vi linh hoạt. Hướng tới cung cấp giải pháp cảnh báo tức thì, tính khả thi trong thực tế.
+    \item \textbf{Mục tiêu chính:} Xây dựng một hệ thống \textbf{thời gian thực} có khả năng phát hiện té ngã với độ chính tương đối, dựa trên việc kết hợp dữ liệu từ nhiều nguồn, phạm vi linh hoạt. Hướng tới cung cấp giải pháp cảnh báo tức thì, tính khả thi trong thực tế.
     
-    \item \textbf{Giới hạn nghiên cứu:} Đây là một \textbf{mô hình thử nghiệm (proof-of-concept)}, tập trung vào chứng minh hiệu quả thuật toán và tích hợp các công nghệ, giao thức truyền thông và phương thức truyền dẫn xây dựng hệ thống hoàn chỉnh. Nghiên cứu không đi sâu vào tối ưu hóa chi tiết thuật toán cảnh báo té ngã ở mức độ sản xuất hay thiết kế sản phẩm thương mại, nhưng có cân nhắc tới tối ưu hóa chi phí.
+    \item \textbf{Giới hạn nghiên cứu:} Đây là một \textbf{mô hình thử nghiệm}, tập trung vào chứng minh hiệu quả thuật toán và tích hợp các công nghệ, giao thức truyền thông và phương thức truyền dẫn xây dựng hệ thống hoàn chỉnh. Nghiên cứu không đi sâu vào tối ưu hóa chi tiết thuật toán cảnh báo té ngã ở mức độ sản xuất hay thiết kế sản phẩm thương mại, nhưng có cân nhắc tới tối ưu hóa chi phí.
 \end{enumerate}
 
 \subsection{Phạm vi Kỹ thuật và Công nghệ}
 Đề tài khai thác và tích hợp các công nghệ chính để xây dựng hệ thống đa phương thức:
 \begin{itemize}
-    \item \textbf{Phần cứng:} Sử dụng module \textbf{ESP32} làm bộ vi điều khiển trung tâm cho thiết bị cảm biến,tích hợp cảm biến chuyển động \textbf{MPU6050} và module \textbf{GPS EC800K} để thu thập dữ liệu và gửi cảnh báo qua \textbf{SMS}.
+    \item \textbf{Phần cứng:} Sử dụng module \textbf{ESP32} làm bộ vi điều khiển trung tâm cho thiết bị cảm biến biên,tích hợp cảm biến chuyển động \textbf{MPU6050} và module \textbf{GPS EC800K} để thu thập dữ liệu và gửi cảnh báo qua \textbf{SMS}.
     
     \item \textbf{Phần mềm và thuật toán:} Ứng dụng thư viện  Python\textbf{MediaPipe} và \textbf{OpenCV} để thực hiện ước lượng tư thế người (human pose estimation). Luận văn \textbf{không} phát triển các mô hình học sâu phức tạp từ đầu, tập trung vào kết hợp hệ thống.
     

@@ -3,7 +3,7 @@
 
 Mục này trình bày tổng quan về nhận diện tư thế người, giải pháp thời gian thực MediaPipe Pose, xây dựng thuật toán phát hiện té ngã dựa trên đặc trưng động học và tư thế, cùng mô tả chi tiết hệ thống tích hợp.
 
-\subsection{Nhận diện Tư thế Người (Human Pose Estimation)}
+\subsection{Nhận diện Tư thế Người}
 
 Nhận diện tư thế người là một lĩnh vực then chốt trong thị giác máy tính, nhằm xác định vị trí và hướng các khớp và bộ phận cơ thể từ hình ảnh hoặc chuỗi video. Khả năng này là nền tảng cho các ứng dụng giám sát an toàn, phân tích chuyển động, và nhận diện hành vi bất thường (như té ngã).
 
@@ -57,7 +57,7 @@ MediaPipe sử dụng kiến trúc xử lý dữ liệu dựa trên đồ thị,
     \end{equation}
 \end{itemize}
 
-\paragraph{Pose Tracking Model:} Dự đoán ROI cho khung hình tiếp theo dựa trên pose hiện tại. Việc này giúp giảm đáng kể chi phí tính toán (computational cost) bằng cách tránh chạy mô hình phát hiện đầy đủ ở mỗi khung hình.
+\paragraph{Pose Tracking Model:} Dự đoán ROI cho khung hình tiếp theo dựa trên pose hiện tại. Việc này giúp giảm đáng kể chi phí tính toán bằng cách tránh chạy mô hình phát hiện đầy đủ ở mỗi khung hình.
 
 \subsubsection{Thuật toán Hậu xử lý (Post-processing)}
 
@@ -81,7 +81,7 @@ Hệ thống phát hiện té ngã sử dụng các đặc trưng động học 
     \end{align}
 \end{itemize}
 
-\paragraph{Postural Features (Đặc trưng Tư thế):} Phản ánh hình dạng cơ thể và độ cao sau khi té ngã.
+\paragraph{Đặc trưng Tư thế:} Phản ánh hình dạng cơ thể và độ cao sau khi té ngã.
 \begin{itemize}
     \item \textbf{Tỷ lệ cạnh (Aspect Ratio - AR):} Tỷ lệ giữa chiều rộng và chiều cao của hộp giới hạn người, tăng vọt khi người nằm ngang.
     \item \textbf{Góc Nghiêng Cơ thể ($\theta_{\text{body}}$):} Góc tạo bởi trục cơ thể (vai-hông) so với phương thẳng đứng.

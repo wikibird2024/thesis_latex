@@ -1,6 +1,6 @@
 \section{Cơ sở lý thuyết về Thị giác Máy tính (Computer Vision - CV)}
 
-Phần này cung cấp kiến thức nền tảng và tổng quan về lĩnh vực Thị giác Máy tính, bao gồm định nghĩa, quy trình làm việc cơ bản (pipeline), các mô hình học sâu cốt lõi và phương pháp đánh giá hiệu suất. Những kiến thức này là cơ sở lý thuyết quan trọng, sẽ được tham chiếu trực tiếp trong phần ứng dụng về Ước lượng Tư thế Người (HPE) và nền tảng MediaPipe ở phần tiếp theo.
+Phần này cung cấp kiến thức nền tảng và tổng quan về lĩnh vực Thị giác Máy tính, bao gồm định nghĩa, quy trình làm việc cơ bản (pipeline), các mô hình học sâu cốt lõi và phương pháp đánh giá hiệu suất. Những kiến thức này là cơ sở lý thuyết quan trọng, sẽ được tham chiếu trực tiếp trong phần ứng dụng về Ước lượng Tư thế Người và nền tảng MediaPipe ở phần tiếp theo.
 
 \subsection{Định nghĩa và Mục tiêu}
 \textbf{Thị giác Máy tính (Computer Vision, CV)} là một lĩnh vực liên ngành của Trí tuệ Nhân tạo (AI) cho phép máy tính thu nhận, xử lý, phân tích, và diễn giải hình ảnh hoặc video để đạt được khả năng ``hiểu'' nội dung ở cấp độ cao, tương tự thị giác con người. Mục tiêu chính là mô phỏng và vượt qua khả năng nhận thức thị giác của con người về tốc độ, độ chính xác, và quy mô.\autocite{szeliski2010} Hình ảnh kỹ thuật số là ma trận số: ảnh xám là ma trận 2D với giá trị cường độ từ 0 đến 255, còn ảnh màu là ma trận 3D (chiều cao $\times$ chiều rộng $\times$ 3 kênh RGB). Thông tin ý nghĩa (như vật thể, cạnh, hoặc vùng) nằm trong cách sắp xếp và biến đổi gradient của các giá trị pixel này.\autocite{lowe1999} Ví dụ, từ dữ liệu pixel, hệ thống có thể tái tạo mô hình 3D hoặc phân tích chuyển động.
@@ -17,14 +17,14 @@ Một hệ thống Thị giác Máy tính điển hình hoạt động theo quy 
 
 \begin{enumerate}
     \item \textbf{Thu nhận Dữ liệu}: Thu thập hình ảnh tĩnh hoặc chuỗi video từ camera hoặc cảm biến (RGB, hồng ngoại, hoặc 3D), đảm bảo chất lượng và độ phân giải phù hợp.\autocite{szeliski2010}
-    \item \textbf{Tiền xử lý (Preprocessing)}: Chuẩn bị dữ liệu số để phân tích bằng cách giảm nhiễu (lọc Gaussian: $I_{\text{filtered}} = \text{Gaussian}(I, \sigma)$), chuẩn hóa giá trị pixel về [0,1], hoặc cân bằng độ sáng qua histogram equalization. Chuyển đổi không gian màu (RGB sang HSV hoặc thang xám) giúp tách màu, bão hòa, và giá trị sáng.\autocite{szeliski2010}
-    \item \textbf{Trích xuất Đặc trưng (Feature Extraction)}: Biến dữ liệu pixel thành đặc trưng có ý nghĩa:
+    \item \textbf{Tiền xử lý}: Chuẩn bị dữ liệu số để phân tích bằng cách giảm nhiễu (lọc Gaussian: $I_{\text{filtered}} = \text{Gaussian}(I, \sigma)$), chuẩn hóa giá trị pixel về [0,1], hoặc cân bằng độ sáng qua histogram equalization. Chuyển đổi không gian màu (RGB sang HSV hoặc thang xám) giúp tách màu, bão hòa, và giá trị sáng.\autocite{szeliski2010}
+    \item \textbf{Trích xuất Đặc trưng}: Biến dữ liệu pixel thành đặc trưng có ý nghĩa:
     \begin{itemize}
         \item \textbf{Cạnh}: Phát hiện thay đổi cường độ đột ngột bằng gradient (Sobel: $G = \sqrt{G_x^2 + G_y^2}$, với $G_x = \partial I / \partial x$, $G_y = \partial I / \partial y$) hoặc thuật toán Canny (kết hợp lọc Gaussian, non-max suppression, và hysteresis).\autocite{sobel1968,canny1986}
         \item \textbf{Điểm đặc trưng}: Harris dùng ma trận tự tương quan để tìm góc với eigenvalue $\lambda_1, \lambda_2$ lớn; SIFT tạo đặc trưng bất biến quy mô qua Difference of Gaussians (DoG).\autocite{lowe1999}
         \item \textbf{Mô tả toàn cục}: Histogram hướng gradient (HOG) phân tích hướng cạnh; Local Binary Patterns (LBP) mã hóa nhị phân lân cận pixel.\autocite{dalal2005}
     \end{itemize}
-    \item \textbf{Phân tích và Ra quyết định (Analysis and Decision Making)}: Dựa trên đặc trưng, mô hình thực hiện phân loại, nhận dạng, hoặc ước lượng tư thế, sau đó đưa ra kết quả như nhãn, hộp giới hạn, hoặc hành động (ví dụ, xe tự hành dừng khi phát hiện chướng ngại).\autocite{horn1981}
+    \item \textbf{Phân tích và Ra quyết định}: Dựa trên đặc trưng, mô hình thực hiện phân loại, nhận dạng, hoặc ước lượng tư thế, sau đó đưa ra kết quả như nhãn, hộp giới hạn, hoặc hành động (ví dụ, xe tự hành dừng khi phát hiện chướng ngại).\autocite{horn1981}
 \end{enumerate}
 
 \subsection{Phân loại các Bài toán CV Cốt lõi}
@@ -47,7 +47,11 @@ CNN là kiến trúc chủ đạo, tự động học đặc trưng phân cấp 
 
 \begin{itemize}
     \item \textbf{Phép Tích chập}: Trích xuất đặc trưng cục bộ: $(I * K)(i, j) = \sum_{m} \sum_{n} I(i-m, j-n) K(m, n)$, với $K$ là kernel, $I$ là ảnh đầu vào.\autocite{lecun1998}
-    \item \textbf{Phép Gộp}: Giảm kích thước không gian, ví dụ Max Pooling: $O_{i,j} = \max \left( I_{2i, 2j}, I_{2i+1, 2j}, I_{2i, 2j+1}, I_{2i+1, 2j+1} \right)$.\autocite{lecun1998}
+    \item \textbf{Phép Gộp}: Giảm kích thước không gian, ví dụ Max Pooling:
+\[
+O_{i,j} = \max \bigl( I_{2i,\,2j},\; I_{2i+1,\,2j},\; I_{2i,\,2j+1},\; I_{2i+1,\,2j+1} \bigr)
+\]
+\autocite{lecun1998}
     \item \textbf{Kiến trúc nổi bật}: AlexNet, VGG, ResNet (dùng Residual Block), YOLO (phát hiện thời gian thực).\autocite{krizhevsky2012,simonyan2014,he2016,redmon2016} Autoencoder nén dữ liệu để học biểu diễn ẩn.\autocite{szeliski2010}
 \end{itemize}
 
@@ -59,7 +63,7 @@ CNN là kiến trúc chủ đạo, tự động học đặc trưng phân cấp 
 \end{figure}
 
 \subsubsection{Mô hình dựa trên Transformer}
-Vision Transformer (ViT) chia ảnh thành các miếng vá (patches), xử lý như chuỗi token, sử dụng cơ chế Self-Attention: $\text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V$, với $Q, K, V$ là ma trận Query, Key, Value.\autocite{dosovitskiy2021} ViT vượt qua giới hạn cục bộ của CNN bằng cách học mối quan hệ toàn cục.
+Vision Transformer (ViT) chia ảnh thành các miếng vá, xử lý như chuỗi token, sử dụng cơ chế Self-Attention: $\text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V$, với $Q, K, V$ là ma trận Query, Key, Value.\autocite{dosovitskiy2021} ViT vượt qua giới hạn cục bộ của CNN bằng cách học mối quan hệ toàn cục.
 
 \begin{figure}[h]
     \centering
