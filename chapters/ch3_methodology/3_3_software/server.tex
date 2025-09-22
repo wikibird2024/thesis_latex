@@ -1,28 +1,26 @@
-
 \subsection{Máy chủ: Quản lý và Xử lý Dữ liệu Trung tâm}
 \label{sec:server_overview}
 
-Máy chủ Python đóng vai trò là \textbf{"bộ não"} trung tâm, chịu trách nhiệm \textbf{kết hợp thông minh} dữ liệu từ hai nguồn độc lập: 
+Máy chủ Python đóng vai trò trung tâm xử lý, tích hợp dữ liệu từ hai nguồn độc lập:
 \begin{enumerate}
-    \item \textbf{ESP32 (cảm biến chuyển động)}: Triển khai tại hiện trường, gửi dữ liệu trạng thái té ngã và GPS qua MQTT.
-    \item \textbf{Camera IP (xử lý thị giác)}: Chạy trên máy chủ hoặc máy tính chuyên dụng, thực hiện phát hiện người, theo dõi đối tượng và ước lượng tư thế bằng AI.
+    \item \textbf{ESP32 (cảm biến chuyển động)}: Triển khai tại hiện trường, gửi dữ liệu trạng thái té ngã và tọa độ GPS qua giao thức MQTT.
+    \item \textbf{Camera IP (xử lý thị giác)}: Chạy trên máy chủ hoặc máy tính chuyên dụng, thực hiện phát hiện người, theo dõi đối tượng, và ước lượng tư thế bằng mô hình AI.
 \end{enumerate}
 
-Máy chủ nhận kết quả từ hai nguồn này, hợp nhất để đưa ra quyết định phát hiện té ngã đáng tin cậy, đa dạng phạm vi đồng thời kích hoạt cảnh báo và ghi nhận sự kiện.
+Máy chủ đồng bộ hóa và tích hợp dữ liệu từ hai nguồn này để đưa ra quyết định phát hiện té ngã chính xác, kích hoạt cảnh báo, và ghi nhận sự kiện vào cơ sở dữ liệu.
 
 \subsubsection{Kiến trúc Hệ thống}
 \label{subsubsec:system_overview}
 
-Hệ thống máy chủ được thiết kế theo mô hình phân tầng và mô-đun hóa. Như minh họa trong Hình~\ref{fig:system_architecture}:
-
+Hệ thống được thiết kế theo mô hình phân tầng và mô-đun hóa, như minh họa trong Hình~\ref{fig:system_architecture}, bao gồm:
 \begin{itemize}
-    \item \textbf{Lớp thu nhận dữ liệu từ các module độc lập}:
+    \item \textbf{Lớp thu nhận dữ liệu}:
     \begin{itemize}
-        \item \texttt{comm/}: Nhận dữ liệu ESP32 qua MQTT, API Bot Telegram, kích hoạt AMI.
-        \item \texttt{detection/}: Nhận dữ liệu video từ camera IP, xử lý thị giác máy tính.
+        \item \texttt{comm/}: Nhận dữ liệu từ ESP32 qua MQTT, quản lý Telegram Bot và AMI để gửi cảnh báo.
+        \item \texttt{detection/}: Xử lý khung hình từ camera IP, thực hiện phát hiện người, theo dõi, và ước lượng tư thế.
     \end{itemize}
-    \item \textbf{Lớp xử lý tổng hợp}: \texttt{fall/} + \texttt{processing/} tổng hợp dữ liệu từ hai module để ra quyết định té ngã.
-    \item \textbf{Lớp đầu ra}: \texttt{database/} ghi sự kiện, \texttt{comm/} gửi cảnh báo qua Telegram/AMI.
+    \item \textbf{Lớp xử lý tổng hợp}: \texttt{fall/} và \texttt{processing/} tích hợp dữ liệu từ ESP32 và camera, sử dụng \texttt{DetectionProcessor} để đồng bộ và ra quyết định té ngã.
+    \item \textbf{Lớp đầu ra}: \texttt{database/} ghi sự kiện vào \texttt{fall\_events.db}, \texttt{comm/} gửi cảnh báo qua Telegram và AMI.
 \end{itemize}
 
 \begin{table}[H]
@@ -33,155 +31,33 @@ Hệ thống máy chủ được thiết kế theo mô hình phân tầng và m�
 \hline
 \textbf{Module} & \textbf{Lớp (Layer)} & \textbf{Vai trò và chức năng} \\
 \hline
-\texttt{comm/} & ESP32 Input & Nhận dữ liệu MQTT từ ESP32, Telegram Bot, và AMI để gửi cảnh báo \\
+\texttt{comm/} & Input/Output & Nhận dữ liệu MQTT, quản lý Telegram Bot và AMI \\
 \hline
-\texttt{detection/} & Vision Input & Xử lý khung hình từ camera IP, phát hiện con người, theo dõi, ước lượng tư thế \\
+\texttt{detection/} & Input & Xử lý video, phát hiện người, theo dõi, ước lượng tư thế \\
 \hline
-\texttt{fall/} & Processing & Thuật toán phát hiện té ngã, kết hợp dữ liệu từ ESP32 và camera \\
+\texttt{fall/} & Processing & Thuật toán phát hiện té ngã từ ESP32 và camera \\
 \hline
-\texttt{processing/} & Processing & \texttt{DetectionProcessor} xử lý đồng bộ, pipeline tiền xử lý, kết hợp dữ liệu \\
+\texttt{processing/} & Processing & \texttt{DetectionProcessor} đồng bộ và tích hợp dữ liệu \\
 \hline
-\texttt{database/} & Storage & Ghi lại các sự kiện vào \texttt{fall\_events.db}, quản lý lịch sử \\
+\texttt{database/} & Storage & Ghi sự kiện vào \texttt{fall\_events.db} \\
 \hline
-\texttt{config/} & Support & Cấu hình MQTT, AI, cơ sở dữ liệu, AMI, Telegram \\
+\texttt{config/} & Support & Cấu hình hệ thống (MQTT, AI, database, AMI, Telegram) \\
 \hline
-\texttt{models/} & Support & Lưu trữ mô hình YOLOv8n và trọng số (weights) \\
+\texttt{models/} & Support & Lưu trữ mô hình YOLOv8n và trọng số \\
 \hline
-\texttt{utils/} & Support & Công cụ trực quan hóa, overlay skeleton, tiện ích debug \\
+\texttt{utils/} & Support & Công cụ vẽ skeleton, hỗ trợ debug \\
 \hline
-\texttt{tests/} & Testing & Script để kiểm tra logic phát hiện té ngã \\
+\texttt{tests/} & Testing & Script kiểm tra logic phát hiện té ngã \\
 \hline
-\texttt{main.py} & Entry point & Vòng lặp chính, nhận dữ liệu ESP32 và camera, kết hợp, đưa ra quyết định \\
+\texttt{main.py} & Entry point & Điều phối dữ liệu và ra quyết định \\
 \hline
 \end{tabular}
 \end{table}
 
-\subsubsection{Luồng Xử lý Máy chủ}
-\label{subsubsec:server_flow}
-
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.85\textwidth]{figures/server_flow.pdf}
-\caption{Luồng dữ liệu và xử lý trên máy chủ: kết hợp ESP32 và IP Camera thông qua \textbf{DetectionProcessor}.}
-\label{fig:server_flow}
-\end{figure}
-\subsubsection{Kết hợp Dữ liệu Đa phương thức}
-\label{subsubsec:multi_input_fusion}
-
-Các module ESP32 và Camera IP hoàn toàn độc lập, máy chủ chỉ chịu trách nhiệm:
-\begin{itemize}
-    \item Thu nhận kết quả từ ESP32 (MQTT JSON) và camera (AI).
-    \item Đồng bộ hóa dữ liệu dựa trên timestamp.
-    \item Kết hợp dữ liệu bằng logic AND/OR với trọng số dựa trên độ tin cậy nguồn.
-    \item Kích hoạt cảnh báo và ghi nhận sự kiện.
-\end{itemize}
-
-\begin{minted}[linenos, frame=lines, fontsize=\small, bgcolor=lightgray, breaklines]{python}
-# DetectionProcessor: core fusion logic
-async def process_person(frame, person_id, box, landmarks, mqtt_msg):
-    """
-    Process individual person: fuse Camera + ESP32, draw visuals, send alerts.
-    """
-    # 1. Initialize FallDetector for new person
-    if person_id not in fall_detectors:
-        fall_detectors[person_id] = FallDetector()
-        person_status[person_id] = 'normal'
-
-    # 2. Check MQTT message
-    mqtt_status = None
-    if mqtt_msg and mqtt_msg.get('device_id') == f"ESP32_DEV_{person_id}":
-        mqtt_status = mqtt_msg
-
-    # 3. Detect fall
-    is_fall = fall_detectors[person_id].detect_fall(landmarks, mqtt_status)
-
-    # 4. Update status
-    person_status[person_id] = 'fall' if is_fall else 'normal'
-
-    # 5. Draw visuals
-    draw_bounding_box(frame, box, person_id, person_status[person_id])
-    if landmarks:
-        draw_skeleton(frame, landmarks)
-
-    # 6. Handle alerts
-    if is_fall:
-        fall_id = insert_fall_event(mqtt_msg or {...})
-        alert_msg = f"Fall detected. Event ID: {fall_id}"
-        await ami_trigger.alert_devices(alert_msg)
-        if telegram_bot:
-            _, img_encoded = cv2.imencode('.jpg', frame)
-            await telegram_bot.send_photo(img_encoded.tobytes(), alert_msg)
-\end{minted}
-
-
-\subsubsection{Thuật toán phát hiện té ngã bằng Python}
-
-Thuật toán phát hiện té ngã được cài đặt bằng Python nhằm phân tích chuyển động và góc thân người (\textit{torso angle}) dựa trên các tọa độ landmarks thu được từ mô hình nhận diện. 
-Quy trình xử lý được mô tả trong Hình~\ref{fig:python_fall_diagram}.
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.9\textwidth]{python_fall_diagram.pdf}
-    \caption{Lưu đồ giải thuật phát hiện té ngã trong Python}
-    \label{fig:python_fall_diagram}
-\end{figure}
-
-Thuật toán hoạt động theo các bước sau:
-\begin{itemize}
-    \item \textbf{Kiểm tra landmarks:} Nếu dữ liệu landmarks không hợp lệ, hệ thống reset bộ đếm và kết thúc vòng lặp mà không báo té ngã.
-    \item \textbf{Tính toán góc và vận tốc:} Dựa trên các điểm vai và hông, thuật toán tính góc thân người so với phương thẳng đứng và vận tốc chuyển động.
-    \item \textbf{Xác định trạng thái:} 
-    \begin{itemize}
-        \item \textit{Falling}: Khi góc vượt ngưỡng và vận tốc lớn hơn ngưỡng cho phép.
-        \item \textit{Lying}: Khi góc vượt ngưỡng nằm ngang trong một khoảng thời gian nhất định.
-    \end{itemize}
-    \item \textbf{Cập nhật bộ đếm:} Mỗi trạng thái có bộ đếm riêng được cập nhật theo từng khung hình.
-    \item \textbf{Ra quyết định:} Nếu một trong hai bộ đếm vượt quá ngưỡng thời gian định trước, thuật toán kết luận có sự kiện té ngã, sau đó reset các bộ đếm để tránh lặp lại.
-\end{itemize}
-
-\subsubsection{Lưu trữ và Cảnh báo}
-\label{subsubsec:data_storage_alerts}
-
-SQLite logs fall events into \texttt{fall\_events.db}:
-
-\begin{minted}[linenos, frame=lines, fontsize=\small, bgcolor=lightgray, breaklines]{sql}
-CREATE TABLE fall_events (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
-    confidence REAL NOT NULL,
-    sensor_data TEXT,
-    pose_data TEXT,
-    alert_status INTEGER DEFAULT 0,
-    snapshot TEXT
-);
-\end{minted}
-
-Main loop collects asynchronous data, processes each module, fuses, and triggers alerts:
-
-\begin{minted}[linenos, frame=lines, fontsize=\small, bgcolor=lightgray, breaklines]{python}
-while system_is_running:
-    # Collect data from ESP32 and camera
-    frame = camera_thread.get_latest_frame()
-    sensor_data = mqtt_thread.get_latest_data()
-    
-    # AI processing
-    detections = human_detector.process(frame)
-    poses = pose_estimator.process(detections)
-    
-    # Data fusion
-    fall_detected, confidence = fall_detector.analyze(poses, sensor_data)
-    
-    if fall_detected:
-        alert_manager.trigger_notifications(confidence)
-        database.log_event(poses, sensor_data, confidence)
-\end{minted}
-
-\subsubsection{Cấu trúc thư mục dự án (phiên bản rút gọn)}
+\subsubsection{Cấu trúc Thư mục Dự án}
 \label{subsubsec:project_structure}
 
-
-Nhằm tập trung vào cấu trúc mã nguồn chính, các tệp phụ trợ và thư mục \texttt{\_\_pycache\_\_} được lược bỏ trong phần minh họa của báo cáo này.
+Cấu trúc thư mục dự án được tổ chức để phản ánh mô-đun hóa của hệ thống:
 
 \begin{minted}[fontsize=\footnotesize, breaklines, frame=single, linenos]{text}
 intergrate_fall/
@@ -204,10 +80,147 @@ intergrate_fall/
 ├── utils/
 │   └── draw_utils.py
 ├── models/
-│   └── __init__.py
+│   └── yolov8n.pt
 ├── tests/
 │   └── test_fall.py
 ├── main.py
 ├── fall_events.db
-├── yolov8n.pt
+\end{minted}
+
+\subsubsection{Luồng Xử lý Máy chủ}
+\label{subsubsec:server_flow}
+
+Hệ thống xử lý dữ liệu theo luồng sau (xem Hình~\ref{fig:server_flow}):
+\begin{enumerate}
+    \item Thu nhận dữ liệu từ ESP32 (qua MQTT) và camera IP (qua xử lý thị giác).
+    \item \texttt{DetectionProcessor} đồng bộ và tích hợp dữ liệu, xác định trạng thái té ngã.
+    \item Ghi sự kiện té ngã vào \texttt{fall\_events.db} và gửi cảnh báo qua AMI/Telegram.
+\end{enumerate}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\textwidth]{figures/server_flow.pdf}
+\caption{Luồng dữ liệu và xử lý trên máy chủ: tích hợp ESP32 và Camera IP qua \texttt{DetectionProcessor}.}
+\label{fig:server_flow}
+\end{figure}
+
+\begin{minted}[linenos, frame=lines, fontsize=\small, bgcolor=lightgray, breaklines]{python}
+while system_is_running:
+    frame = camera_thread.get_latest_frame()
+    sensor_data = mqtt_thread.get_latest_data()
+    
+    detections = human_detector.process(frame)
+    poses = pose_estimator.process(detections)
+    
+    for person_id, (box, landmarks) in enumerate(detections):
+        await processor.handle_camera_data(frame, person_id, box, landmarks)
+    
+    if sensor_data:
+        await processor.handle_mqtt_data(sensor_data)
+\end{minted}
+
+\subsubsection{Kết hợp Dữ liệu Đa phương thức}
+\label{subsubsec:multi_input_fusion}
+
+\texttt{DetectionProcessor} tích hợp dữ liệu từ ESP32 (MQTT JSON) và camera IP (AI), thực hiện:
+\begin{itemize}
+    \item Xác thực dữ liệu ESP32: kiểm tra \texttt{device\_id}, \texttt{fall\_detected}, và tọa độ GPS (nếu có).
+    \item Xử lý dữ liệu camera: phát hiện người, ước lượng tư thế, xác định trạng thái té ngã.
+    \item Đồng bộ dữ liệu dựa trên timestamp và kiểm tra cooldown (5 phút) để tránh gửi cảnh báo lặp lại.
+    \item Gửi cảnh báo qua AMI và Telegram, với cơ chế thử lại khi gặp lỗi mạng.
+\end{itemize}
+
+\begin{minted}[linenos, frame=lines, fontsize=\small, bgcolor=lightgray, breaklines]{python}
+async def handle_camera_data(self, frame: Optional[np.ndarray], person_id: int, box: list, landmarks: list):
+    """Process camera frame, detect falls, and send alerts if needed."""
+    entity_id = f"camera_person_{person_id}"
+    detector = self._get_or_create_detector(entity_id)
+    is_fall = detector.detect_fall(landmarks)
+
+    if frame is not None and isinstance(frame, np.ndarray) and frame.size > 0:
+        status = "fall" if is_fall else "normal"
+        draw_person(frame, box, landmarks, entity_id, status)
+
+    if is_fall and self._can_alert(entity_id):
+        fall_event = self._create_fall_event("camera", entity_id, latitude=0, longitude=0, has_gps_fix=False)
+        fall_id = await self._insert_fall_event_with_retry(fall_event)
+        if fall_id is None:
+            return
+
+        alert_msg = f"⚠️ Fall detected by camera for {entity_id}. Event ID: {fall_id}"
+        logger.info(alert_msg)
+        await self._send_alerts(alert_msg, frame)
+        self._update_last_alert(entity_id)
+\end{minted}
+
+\begin{minted}[linenos, frame=lines, fontsize=\small, bgcolor=lightgray, breaklines]{python}
+async def handle_mqtt_data(self, mqtt_msg: Any, topic: str = None) -> None:
+    """Process MQTT data from ESP32, validate, and handle fall alerts."""
+    if not isinstance(mqtt_msg, dict):
+        try:
+            mqtt_msg = json.loads(mqtt_msg)
+        except (json.JSONDecodeError, TypeError):
+            logger.error("[MQTT] Failed to parse JSON payload")
+            return
+
+    device_id = mqtt_msg.get("device_id")
+    fall_detected = mqtt_msg.get("fall_detected")
+    if not device_id or fall_detected is not True:
+        return
+
+    latitude = mqtt_msg.get("latitude")
+    longitude = mqtt_msg.get("longitude")
+    has_gps_fix = mqtt_msg.get("has_gps_fix", False)
+
+    if self._can_alert(device_id):
+        fall_event = self._create_fall_event("esp32", device_id, latitude, longitude, has_gps_fix)
+        fall_id = await self._insert_fall_event_with_retry(fall_event)
+        if fall_id is None:
+            return
+
+        gps_info = f"{latitude}, {longitude}" if has_gps_fix and latitude is not None else "Unknown"
+        alert_msg = f"🚨 Fall detected by device {device_id} at GPS: {gps_info}. Event ID: {fall_id}"
+        await self._send_alerts(alert_msg, None)
+        self._update_last_alert(device_id)
+\end{minted}
+
+\subsubsection{Thuật toán Phát hiện Té ngã}
+\label{subsubsec:fall_detection_algorithm}
+
+Thuật toán trong \texttt{FallDetector} phân tích chuyển động và góc thân người dựa trên landmarks từ camera và dữ liệu cảm biến từ ESP32, như minh họa trong Hình~\ref{fig:python_fall_diagram}:
+\begin{itemize}
+    \item \textbf{Kiểm tra landmarks:} Xác thực dữ liệu, reset bộ đếm nếu không hợp lệ.
+    \item \textbf{Tính toán góc và vận tốc:} Dựa trên vai và hông, tính góc thân người so với phương thẳng đứng và vận tốc chuyển động.
+    \item \textbf{Xác định trạng thái:}
+    \begin{itemize}
+        \item \textit{Falling}: Góc thân người vượt ngưỡng và vận tốc cao.
+        \item \textit{Lying}: Góc thân người gần ngang trong thời gian nhất định.
+    \end{itemize}
+    \item \textbf{Ra quyết định:} Nếu trạng thái \textit{Falling} hoặc \textit{Lying} kéo dài quá ngưỡng thời gian, kết luận té ngã và reset bộ đếm.
+\end{itemize}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{figures/python_fall_diagram.pdf}
+\caption{Lưu đồ thuật toán phát hiện té ngã trong Python.}
+\label{fig:python_fall_diagram}
+\end{figure}
+
+\subsubsection{Lưu trữ và Cảnh báo}
+\label{subsubsec:data_storage_alerts}
+
+Sự kiện té ngã được ghi vào \texttt{fall\_events.db}:
+
+\begin{minted}[linenos, frame=lines, fontsize=\small, bgcolor=lightgray, breaklines]{sql}
+CREATE TABLE fall_events (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+    source TEXT NOT NULL,
+    entity_id TEXT NOT NULL,
+    fall_detected BOOLEAN NOT NULL,
+    latitude REAL,
+    longitude REAL,
+    has_gps_fix BOOLEAN,
+    alert_status INTEGER DEFAULT 0
+);
 \end{minted}

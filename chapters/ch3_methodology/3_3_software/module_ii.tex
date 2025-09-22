@@ -4,7 +4,7 @@
 \subsubsection{Tổng quan phần mềm}
 Phần mềm của Module II được triển khai trên vi điều khiển \textbf{ESP32-S3} để thu thập và truyền tải video từ camera OV5640 theo thời gian thực. Hệ thống hoạt động như một thiết bị đầu cuối thông minh, cung cấp luồng video MJPEG qua HTTP làm nguồn dữ liệu cho các module xử lý thị giác máy tính ở tầng cao hơn.  
 
-Mô hình phần mềm dựa trên kiến trúc **hướng sự kiện (event-driven)** của ESP-IDF, cho phép quản lý đồng thời các tác vụ mạng, camera, và xử lý bộ đệm mà không làm nghẽn luồng.
+Mô hình phần mềm dựa trên kiến trúc hướng sự kiện của ESP-IDF, cho phép quản lý đồng thời các tác vụ mạng, camera, và xử lý bộ đệm mà không làm nghẽn luồng.
 
 \subsubsection{Luồng hoạt động chính}
 Sơ đồ Hình \ref{fig:sw_architecture_flow} minh họa luồng phần mềm:
