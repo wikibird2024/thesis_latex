@@ -10,15 +10,3 @@
     \item \textbf{Xử lý phía dịch vụ cảnh báo}: bao gồm việc Python script nhận dữ liệu từ broker, xử lý sự kiện, và kích hoạt bot Telegram để gửi tin nhắn cảnh báo đến người dùng cuối.
 \end{itemize}
 
-\subsection*{Hạn chế thử nghiệm}
-Trong quá trình triển khai, do hạn chế về thời gian và điều kiện thử nghiệm, việc ghi nhận log chi tiết để đo đạc độ trễ thực tế ở từng khâu chưa được thực hiện đầy đủ. Tuy nhiên, theo thiết kế, tổng thời gian từ khi phát sinh sự kiện té ngã đến khi người dùng cuối nhận được cảnh báo không vượt quá 5 giây.
-
-\subsection*{Hướng phát triển}
-Trong các thử nghiệm tiếp theo, có thể triển khai cơ chế ghi log timestamp tại:
-\begin{enumerate}
-    \item Thời điểm phát hiện té ngã trên ESP32.
-    \item Thời điểm gửi và nhận gói tin MQTT.
-    \item Thời điểm bot Telegram phát cảnh báo.
-\end{enumerate}
-
-Việc so sánh các mốc thời gian trên sẽ cho phép định lượng độ trễ đầu-cuối và đánh giá mức độ đáp ứng yêu cầu thời gian thực của hệ thống.
