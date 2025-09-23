@@ -1,13 +1,13 @@
 \subsection{Máy chủ: Quản lý và Xử lý Dữ liệu Trung tâm}
 \label{sec:server_overview}
 
-Máy chủ Python đóng vai trò trung tâm xử lý, tích hợp dữ liệu từ hai nguồn độc lập:
+Hệ thống Python đóng vai trò trung tâm, tích hợp dữ liệu từ hai nguồn độc lập để phát hiện té ngã:
 \begin{enumerate}
-    \item \textbf{ESP32 (cảm biến chuyển động)}: Triển khai tại hiện trường, gửi dữ liệu trạng thái té ngã và tọa độ GPS qua giao thức MQTT.
+    \item \textbf{ESP32 (cảm biến chuyển động)}: Triển khai tại hiện trường, gửi trạng thái té ngã và tọa độ GPS qua giao thức MQTT.
     \item \textbf{Camera IP (xử lý thị giác)}: Chạy trên máy chủ hoặc máy tính chuyên dụng, thực hiện phát hiện người, theo dõi đối tượng, và ước lượng tư thế bằng mô hình AI.
 \end{enumerate}
 
-Máy chủ đồng bộ hóa và tích hợp dữ liệu từ hai nguồn này để đưa ra quyết định phát hiện té ngã chính xác, kích hoạt cảnh báo, và ghi nhận sự kiện vào cơ sở dữ liệu.
+Hệ thống đồng bộ hóa và tích hợp dữ liệu từ hai nguồn này để đưa ra quyết định phát hiện té ngã chính xác, kích hoạt cảnh báo qua AMI/Telegram, và ghi sự kiện vào cơ sở dữ liệu.
 
 \subsubsection{Kiến trúc Hệ thống}
 \label{subsubsec:system_overview}
@@ -25,7 +25,7 @@ Hệ thống được thiết kế theo mô hình phân tầng và mô-đun hóa
 
 \begin{table}[H]
 \centering
-\caption{Cấu trúc các mô-đun máy chủ và vai trò}
+\caption{Cấu trúc các mô-đun và vai trò}
 \label{tab:server_modules}
 \begin{tabular}{|l|l|p{7cm}|}
 \hline
@@ -100,7 +100,7 @@ Hệ thống xử lý dữ liệu theo luồng sau (xem Hình~\ref{fig:server_fl
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.85\textwidth]{figures/server_flow.pdf}
-\caption{Luồng dữ liệu và xử lý trên máy chủ: tích hợp ESP32 và Camera IP qua \texttt{DetectionProcessor}.}
+\caption{Luồng dữ liệu và xử lý: tích hợp ESP32 và Camera IP qua \texttt{DetectionProcessor}.}
 \label{fig:server_flow}
 \end{figure}
 
@@ -124,9 +124,9 @@ while system_is_running:
 
 \texttt{DetectionProcessor} tích hợp dữ liệu từ ESP32 (MQTT JSON) và camera IP (AI), thực hiện:
 \begin{itemize}
-    \item Xác thực dữ liệu ESP32: kiểm tra \texttt{device\_id}, \texttt{fall\_detected}, và tọa độ GPS (nếu có).
-    \item Xử lý dữ liệu camera: phát hiện người, ước lượng tư thế, xác định trạng thái té ngã.
-    \item Đồng bộ dữ liệu dựa trên timestamp và kiểm tra cooldown (5 phút) để tránh gửi cảnh báo lặp lại.
+    \item Xác thực dữ liệu ESP32: kiểm tra \texttt{device\_id}, \texttt{fall\_detected}, và tọa độ GPS.
+    \item Xử lý camera: Phát hiện người, ước lượng tư thế, sử dụng \texttt{FallDetector} để xác định té ngã dựa trên landmarks.
+    \item Đồng bộ dữ liệu dựa trên timestamp, kiểm tra cooldown (5 phút) để tránh lặp cảnh báo.
     \item Gửi cảnh báo qua AMI và Telegram, với cơ chế thử lại khi gặp lỗi mạng.
 \end{itemize}
 
@@ -189,14 +189,18 @@ async def handle_mqtt_data(self, mqtt_msg: Any, topic: str = None) -> None:
 
 Thuật toán trong \texttt{FallDetector} phân tích chuyển động và góc thân người dựa trên landmarks từ camera và dữ liệu cảm biến từ ESP32, như minh họa trong Hình~\ref{fig:python_fall_diagram}:
 \begin{itemize}
-    \item \textbf{Kiểm tra landmarks:} Xác thực dữ liệu, reset bộ đếm nếu không hợp lệ.
-    \item \textbf{Tính toán góc và vận tốc:} Dựa trên vai và hông, tính góc thân người so với phương thẳng đứng và vận tốc chuyển động.
-    \item \textbf{Xác định trạng thái:}
-    \begin{itemize}
-        \item \textit{Falling}: Góc thân người vượt ngưỡng và vận tốc cao.
-        \item \textit{Lying}: Góc thân người gần ngang trong thời gian nhất định.
-    \end{itemize}
-    \item \textbf{Ra quyết định:} Nếu trạng thái \textit{Falling} hoặc \textit{Lying} kéo dài quá ngưỡng thời gian, kết luận té ngã và reset bộ đếm.
+    \item \textbf{Kiểm tra landmarks}: Xác thực landmarks với độ tin cậy $\geq 0.5$, đặt lại bộ đếm nếu không hợp lệ.
+    \item \textbf{Tính toán góc và vận tốc}:
+        \begin{itemize}
+            \item Góc thân người: Tính dựa trên vai và hông, so với phương dọc ($>60^\circ$) hoặc ngang ($>45^\circ$).
+            \item Vận tốc: Tính dịch chuyển thân người giữa các frame ($>0.5$ đơn vị).
+        \end{itemize}
+    \item \textbf{Xác định trạng thái}:
+        \begin{itemize}
+            \item \textit{Falling}: Góc (dọc $>60^\circ$ hoặc ngang $>45^\circ$) và vận tốc ($>0.5$) vượt ngưỡng, kéo dài $\geq 5$ frame.
+            \item \textit{Lying}: Góc (dọc $>70^\circ$ hoặc ngang $>55^\circ$) kéo dài $\geq 5$ frame.
+        \end{itemize}
+    \item \textbf{Ra quyết định}: Nếu trạng thái \textit{Falling} hoặc \textit{Lying} đạt ngưỡng thời gian (5 frame), kết luận té ngã và đặt lại bộ đếm.
 \end{itemize}
 
 \begin{figure}[H]
@@ -209,7 +213,7 @@ Thuật toán trong \texttt{FallDetector} phân tích chuyển động và góc 
 \subsubsection{Lưu trữ và Cảnh báo}
 \label{subsubsec:data_storage_alerts}
 
-Sự kiện té ngã được ghi vào \texttt{fall\_events.db}:
+Sự kiện té ngã được ghi vào cơ sở dữ liệu SQLite \texttt{fall\_events.db}:
 
 \begin{minted}[linenos, frame=lines, fontsize=\small, bgcolor=lightgray, breaklines]{sql}
 CREATE TABLE fall_events (
@@ -224,3 +228,4 @@ CREATE TABLE fall_events (
     alert_status INTEGER DEFAULT 0
 );
 \end{minted}
+
