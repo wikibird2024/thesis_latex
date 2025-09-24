@@ -15,29 +15,31 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                        FONT CONFIGURATION
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 \usepackage{unicode-math}
 
-% Main serif font: TeX Gyre Termes (clone Times New Roman, rõ ràng, an toàn)
-\setmainfont{TeX Gyre Termes}[
-  Ligatures=TeX,
-  Scale=1.05 % hơi lớn hơn chút, dễ đọc khi in
+% ============================
+% Font Setup
+% ============================
+% Main serif font (văn bản chính)
+\setmainfont{EB Garamond}[
+    Path = /home/hx/.fonts/EBGaramond/,
+    UprightFont = EBGaramond-VariableFont_wght.ttf,
+    ItalicFont = EBGaramond-Italic-VariableFont_wght.ttf,
+    BoldFont = EBGaramond-VariableFont_wght.ttf,
+    BoldItalicFont = EBGaramond-Italic-VariableFont_wght.ttf,
+    BoldFeatures = {Weight = 700},
+    Ligatures = TeX,
+    Scale = 1.05
 ]
 
-% Sans-serif: TeX Gyre Heros (clone Helvetica – rõ, mạnh mẽ, hợp tiêu đề)
-\setsansfont{TeX Gyre Heros}[
-  Ligatures=TeX,
-  Scale=1.0
-]
+% Sans-serif: TeX Gyre Heros (dùng cho tiêu đề, box, \textsf{})
+\setsansfont{TeX Gyre Heros}[Scale=1.05]
 
-% Monospace: Fira Code (cho code block, hỗ trợ ligature đẹp)
-\setmonofont{Fira Code}[
-  Scale=0.9,
-  Contextuals={Alternate} % bật ligature code
-]
+% Monospace: Fira Code (cho code block, hỗ trợ ligature)
+\setmonofont{Fira Code}[Scale=0.9, Contextuals={Alternate}]
 
-% Math font: Latin Modern Math (ổn định, rõ ràng)
-\setmathfont{Latin Modern Math}
+% Math font 
+\setmathfont{EB Garamond Math}
 
 % ============================
 % Micro-typography
@@ -49,10 +51,10 @@
 % Line spacing & Paragraph
 % ============================
 \usepackage{setspace}
-\onehalfspacing           % 1.5 line spacing – chuẩn luận văn
-\usepackage{indentfirst}  % thụt đầu dòng đoạn đầu
+\onehalfspacing
+\usepackage{indentfirst}
 \setlength{\parindent}{1.2em}
-\setlength{\parskip}{0pt}
+\setlength{\parskip}{0.5\baselineskip}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                    ADDITIONAL PACKAGES
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
