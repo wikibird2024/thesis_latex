@@ -1,0 +1,168 @@
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%       VIETNAMESE LATEX THESIS PREAMBLE - XeLaTeX + Cormorant Garamond
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% --- XeLaTeX required ---
+\usepackage{fontspec}
+\usepackage{pifont}
+% --- Polyglossia for Vietnamese and English ---
+\usepackage{polyglossia}
+\setmainlanguage{vietnamese}
+\setotherlanguage{english}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                        FONT CONFIGURATION
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{unicode-math}
+
+% ============================
+% Font Setup
+% ============================
+% Main serif font (văn bản chính)
+\setmainfont{EB Garamond}[
+    Path = /home/hx/.fonts/EBGaramond/,
+    UprightFont = EBGaramond-VariableFont_wght.ttf,
+    ItalicFont = EBGaramond-Italic-VariableFont_wght.ttf,
+    BoldFont = EBGaramond-VariableFont_wght.ttf,
+    BoldItalicFont = EBGaramond-Italic-VariableFont_wght.ttf,
+    BoldFeatures = {Weight = 700},
+    Ligatures = TeX,
+    Scale = 1.05
+]
+
+% Sans-serif: TeX Gyre Heros (dùng cho tiêu đề, box, \textsf{})
+\setsansfont{TeX Gyre Heros}[Scale=1.05]
+
+% Monospace: Fira Code (cho code block, hỗ trợ ligature)
+\setmonofont{Fira Code}[Scale=0.9, Contextuals={Alternate}]
+
+% Math font 
+\setmathfont{EB Garamond Math}
+
+% ============================
+% Micro-typography
+% ============================
+\usepackage[protrusion=true, expansion=true]{microtype}
+\microtypesetup{spacing=true, kerning=true}
+
+% ============================
+% Line spacing & Paragraph
+% ============================
+\usepackage{setspace}
+\onehalfspacing
+\usepackage{indentfirst}
+\setlength{\parindent}{1.2em}
+\setlength{\parskip}{0.5\baselineskip}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                    ADDITIONAL PACKAGES
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{xcolor}
+\usepackage{minted} % Cache để tránh shell-escape mỗi lần
+\usepackage{graphicx}
+\graphicspath{{figures/}{chapters/ch2_background/}{chapters/ch3_methodology/}}
+\usepackage{calc}
+\usepackage{url}
+\usepackage{amsmath}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{tabularx}
+
+% For graphic plot
+\usepackage{tikz}
+\usetikzlibrary{positioning, calc,arrows.meta}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+
+% Caption style: centered, nhỏ hơn body text, bold label
+\captionsetup{justification=centering, labelfont=bf, font=small}
+\captionsetup[subfigure]{justification=centering}
+\captionsetup{justification=centering, labelfont=bf}
+\captionsetup[subfigure]{justification=centering}
+
+% Màu cho minted
+\definecolor{darkblue}{RGB}{0,0,139}
+\definecolor{lightgray}{gray}{0.95}
+
+% Cấu hình minted
+\setminted{
+    frame=single,
+    linenos=true,
+    numbersep=10pt,
+    bgcolor=lightgray,
+    fontsize=\small,
+    breaklines=true,
+    tabsize=4,
+    xleftmargin=10pt,
+    escapeinside=||
+}
+
+% Bibliography
+\usepackage[backend=biber,style=ieee]{biblatex}
+\addbibresource{references.bib}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                    CUSTOM MACROS FOR THESIS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\TENLUANVAN}{Hệ thống phát hiện và cảnh báo té ngã thời gian thực tích hợp cảm biến, xử lý ảnh và định vị}
+\newcommand{\THESISNAME}{Real-time fall detection and alert system integrating sensors, image processing, and positioning}
+\newcommand{\TENTACGIA}{Trần Đức Hảo}
+\newcommand{\MASOSV}{1734011}
+\newcommand{\KHOA}{Điện - Điện tử}
+\newcommand{\BOMON}{Viễn thông}
+\newcommand{\TENNGUOIHUONGDAN}{PSG.TS Hà Hoàng Kha}
+\newcommand{\NAMBAOVE}{2025}
+\newcommand{\DEPARTMENT}{\KHOA}
+\newcommand{\TENTACGIAFACULTY}{\TENTACGIA}
+\newcommand{\MSSV}{\MASOSV}
+\newcommand{\TENCANBO}{\TENNGUOIHUONGDAN}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                        PAGE & LAYOUT SETTINGS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{geometry}
+\geometry{
+    a4paper,
+    top=2.5cm,
+    bottom=2.5cm,
+    left=3.0cm,
+    right=2.0cm,
+    headheight=18pt,
+    headsep=12pt,
+    footskip=20pt
+}
+
+\onehalfspacing
+\usepackage{indentfirst}
+\setlength{\parindent}{1.2em}
+\setlength{\parskip}{0pt}
+\tolerance=2000
+\emergencystretch=0.5em
+\hyphenpenalty=5000
+\exhyphenpenalty=5000
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                     HEADER, FOOTER & TITLES
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\nouppercase{\leftmark}} % Set the chapter title on the left
+\fancyhead[R]{\TENTACGIA}              % Set the author's name on the right
+\fancyfoot[C]{\thepage}                % Set the page number in the center
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0pt}
+\renewcommand{\chaptermark}[1]{\markboth{\chaptername\ \thechapter.\ #1}{}}
+
+% Hyperref (load last)
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=darkblue,
+    urlcolor=darkblue,
+    citecolor=darkblue,
+    pdfauthor={\TENTACGIA},
+    pdftitle={\TENLUANVAN}
+}
