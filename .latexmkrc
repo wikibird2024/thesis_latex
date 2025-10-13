@@ -1,38 +1,33 @@
 
-# =======================================================
-# Latexmk configuration: XeLaTeX + Biber + minted + pvc
-# =======================================================
+# ===============================
+# Latexmk config (XeLaTeX + Biber + Minted)
+# ===============================
 
-# PDF mode trực tiếp
-$pdf_mode = 4;
+# Engine: dùng XeLaTeX với minted (bắt buộc -shell-escape)
+$pdflatex = 'xelatex -shell-escape -interaction=nonstopmode -synctex=1 %O %S';
 
-# Engine chính
-$pdflatex = 'xelatex -synctex=1 -shell-escape -interaction=nonstopmode %O %S';
+# Chạy XeLaTeX nhiều lần nếu cần (default latexmk sẽ xử lý)
+$latex = $pdflatex;
 
-# Continuous preview
-$preview_continuous_mode = 1;
+# Dùng Biber thay cho BibTeX
+$biber = 'biber %O %B';
 
-# Force build tiếp tục nếu có cảnh báo
+# Viewer PDF (đồng bộ tốt với Zathura, Sumatra, Evince,…)
+$pdf_previewer = 'zathura %S';
+
+# Giữ file log để debug
+$recorder = 1;
+
+# Mặc định latexmk dọn file tạm sau khi build thành công
+# Nếu muốn giữ lại để debug, comment dòng dưới
+$cleanup_includes_cusdep_generated = 1;
+
+# Danh sách các file phụ sẽ được xóa khi 'latexmk -c'
+@generated_exts = qw(aux bbl bcf blg fdb_latexmk fls log out run.xml toc lof lot lol synctex.gz);
+
+# Khi có lỗi thì vẫn tạo PDF (nếu có thể)
+$pdf_mode = 1;  # 1 = PDF via pdflatex/xelatex
 $force_mode = 1;
 
-# File gốc
-@default_files = ('main.tex');
-
-# Bibliography
-$biber = 'biber %O %B';
-$bibtex_use = 2;
-
-# Clean file tạm, không xóa cache minted
-$clean_ext = 'aux log out toc bbl blg run.xml nav snm synctex.gz fdb_latexmk fls';
-$cleanup_includes_cusdep_generated = 0;
-
-# PDF viewer
-if (system("command -v zathura >/dev/null 2>&1") == 0) {
-    $pdf_previewer = 'zathura %O %S';
-} elsif (system("command -v okular >/dev/null 2>&1") == 0) {
-    $pdf_previewer = 'okular %S';
-} elsif (system("command -v evince >/dev/null 2>&1") == 0) {
-    $pdf_previewer = 'evince %S';
-} else {
-    $pdf_previewer = 'xdg-open %S';
-}
+# Bật chế độ tự động build khi file thay đổi (khi gọi latexmk -pvc)
+$pvc_view_file_via_temporary = 0;
