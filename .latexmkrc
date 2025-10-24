@@ -1,33 +1,49 @@
 
 # ===============================
 # Latexmk config (XeLaTeX + Biber + Minted)
+# Author: Ginko
 # ===============================
 
-# Engine: dùng XeLaTeX với minted (bắt buộc -shell-escape)
+# ─── Engine Configuration ────────────────────────────────────────────────
+# Dùng XeLaTeX với minted (cần bật -shell-escape cho Pygments)
 $pdflatex = 'xelatex -shell-escape -interaction=nonstopmode -synctex=1 %O %S';
+$latex    = $pdflatex;
 
-# Chạy XeLaTeX nhiều lần nếu cần (default latexmk sẽ xử lý)
-$latex = $pdflatex;
-
+# ─── Bibliography Engine ────────────────────────────────────────────────
 # Dùng Biber thay cho BibTeX
-$biber = 'biber %O %B';
+$biber = 'biber --input-directory=%D --output-directory=%D %B';
 
-# Viewer PDF (đồng bộ tốt với Zathura, Sumatra, Evince,…)
+# ─── PDF Viewer (Linux Mint friendly) ───────────────────────────────────
+# Zathura hỗ trợ synctex rất tốt; có thể thay bằng evince hoặc okular
 $pdf_previewer = 'zathura %S';
 
-# Giữ file log để debug
+# ─── Error & Log Handling ───────────────────────────────────────────────
+# Giữ file .fls, .fdb_latexmk để latexmk nhận biết dependency
 $recorder = 1;
 
-# Mặc định latexmk dọn file tạm sau khi build thành công
-# Nếu muốn giữ lại để debug, comment dòng dưới
+# Luôn cố gắng sinh PDF ngay cả khi có lỗi nhỏ
+$pdf_mode = 1;     # 1 = pdfLaTeX/XeLaTeX, 5 = LuaLaTeX
+$force_mode = 1;   # build PDF dù có lỗi không nghiêm trọng
+
+# ─── Cleanup Behavior ───────────────────────────────────────────────────
+# Dọn file tạm khi build thành công
 $cleanup_includes_cusdep_generated = 1;
 
-# Danh sách các file phụ sẽ được xóa khi 'latexmk -c'
-@generated_exts = qw(aux bbl bcf blg fdb_latexmk fls log out run.xml toc lof lot lol synctex.gz);
+# Danh sách file phụ cần xóa với `latexmk -c`
+@generated_exts = qw(
+  aux bbl bcf blg fdb_latexmk fls log out run.xml toc lof lot lol
+  synctex.gz idx ilg ind acr acn glo gls ist xdy
+);
 
-# Khi có lỗi thì vẫn tạo PDF (nếu có thể)
-$pdf_mode = 1;  # 1 = PDF via pdflatex/xelatex
-$force_mode = 1;
-
-# Bật chế độ tự động build khi file thay đổi (khi gọi latexmk -pvc)
+# ─── Automatic Build Mode ───────────────────────────────────────────────
+# Khi gọi `latexmk -pvc`, theo dõi file thay đổi và rebuild tự động
 $pvc_view_file_via_temporary = 0;
+
+# ─── Custom Dependencies (optional, advanced users) ─────────────────────
+# Minted có thể cần chạy lại nếu file .pyg thay đổi
+add_cus_dep('pyg', 'tex', 0, 'do_nothing');
+
+# ─── Optional: Notification ─────────────────────────────────────────────
+# Khi build xong, có thể bật âm thanh hoặc notify-send
+# $postscript_mode = 1;
+# system("notify-send 'LaTeX build complete'");
